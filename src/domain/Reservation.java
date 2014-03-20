@@ -1,6 +1,7 @@
 package domain;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 public class Reservation {
 
@@ -56,5 +57,10 @@ public class Reservation {
 
     public void setNumberNights(int numberNights) {
         this.numberNights = numberNights;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation: " + "ID = " + ID + ", roomID = " + roomID + ", customerID = " + customerID + ", checkinDate = " + checkinDate + ", numberNights = " + numberNights + '.';
     }
 }

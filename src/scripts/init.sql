@@ -10,6 +10,9 @@ Type varchar2(30) NOT NULL,
 PRIMARY KEY (ID)
 );
 
+DROP SEQUENCE orderSeq;
+CREATE SEQUENCE orderSeq START WITH 1;
+
 CREATE TABLE room_cost (
 Type varchar2(30) NOT NULL,
 Cost number(4) NOT NULL,
