@@ -44,12 +44,14 @@ public class Reservation extends javax.swing.JFrame {
         travelAgencyLabel = new javax.swing.JLabel();
         checkinLabel = new javax.swing.JLabel();
         nightsLabel = new javax.swing.JLabel();
-        nightsField = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
         typeField = new javax.swing.JComboBox();
         submitButton = new javax.swing.JButton();
+        checkDatePicker = new org.jdesktop.swingx.JXDatePicker();
+        nightsCounter = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registration of apartment");
 
         reservationTitle.setText("Reservation of apartment:");
 
@@ -102,17 +104,6 @@ public class Reservation extends javax.swing.JFrame {
 
         nightsLabel.setText("No. of Nights:");
 
-        nightsField.setMajorTickSpacing(10);
-        nightsField.setMaximum(30);
-        nightsField.setMinimum(1);
-        nightsField.setMinorTickSpacing(1);
-        nightsField.setPaintLabels(true);
-        nightsField.setPaintTicks(true);
-        nightsField.setSnapToTicks(true);
-        nightsField.setToolTipText("");
-        nightsField.setValue(7);
-        nightsField.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
         jLabel2.setText("Ap. type:");
 
         submitButton.setText("Submit");
@@ -142,13 +133,14 @@ public class Reservation extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(107, 107, 107)
-                                        .addComponent(nightsLabel))
-                                    .addComponent(typeField, 0, 207, Short.MAX_VALUE))
+                                .addComponent(typeField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(178, 178, 178))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nightsField, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                                .addComponent(nightsLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nightsCounter, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(phoneField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -159,9 +151,9 @@ public class Reservation extends javax.swing.JFrame {
                             .addComponent(countryField)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(familyNameLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(24, 24, 24)
                                 .addComponent(familyNameField))
                             .addComponent(travelAgencyField)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -201,15 +193,15 @@ public class Reservation extends javax.swing.JFrame {
                     .addComponent(travelAgencyLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(checkinLabel)
-                            .addComponent(nightsLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(nightsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkinLabel)
+                        .addComponent(nightsLabel)
+                        .addComponent(nightsCounter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(submitButton)
                 .addContainerGap())
@@ -271,6 +263,7 @@ public class Reservation extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField addressField;
     private javax.swing.JLabel addressLabel;
+    private org.jdesktop.swingx.JXDatePicker checkDatePicker;
     private javax.swing.JLabel checkinLabel;
     private javax.swing.JTextField countryField;
     private javax.swing.JLabel countryLabel;
@@ -282,7 +275,7 @@ public class Reservation extends javax.swing.JFrame {
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JSlider nightsField;
+    private javax.swing.JSpinner nightsCounter;
     private javax.swing.JLabel nightsLabel;
     private javax.swing.JTextField phoneField;
     private javax.swing.JLabel phoneLabel;
