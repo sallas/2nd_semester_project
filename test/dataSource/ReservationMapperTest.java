@@ -20,8 +20,11 @@ public class ReservationMapperTest {
     public ReservationMapperTest() {
     }
 
+    /*
+    * Sets up reservation mapper with our connection
+    */
     @Before
-    public void setUp() {
+    public void init() {
         getConnection();
         ReservationMapperFixture.setUp(con);
         rm = new ReservationMapper(con);
@@ -32,6 +35,9 @@ public class ReservationMapperTest {
         releaseConnection();
     }
 
+    /*
+    * Checks so the correct reservation is returned by the mapper
+    */
     @Test
     public void testGetReservationMatch() {
         Reservation r = rm.getReservation(1);
@@ -39,12 +45,18 @@ public class ReservationMapperTest {
         assertTrue("GetOrderMatch failed2", r.getID() == 1);
     }
     
+    /*
+    * Checks so no reservation is returned when bad ID is given
+    */
     @Test
     public void testGetReservationNoMatch() {
         Reservation r = rm.getReservation(33);
         assertTrue("GetOrderMatch failed1", r == null);
     }
     
+    /*
+    * Checks so the reservation is inserted 
+    */
     @Test
     public void testSaveReservationNewID()
     {
@@ -53,6 +65,10 @@ public class ReservationMapperTest {
         assertTrue(status);
     }
     
+    /*
+    * Checks so the reservation is not inserted when the Customer ID
+    * doesn't exist in database.
+    */
     @Test
     public void testSaveReservationNoMatchCustomerID()
     {
@@ -61,6 +77,10 @@ public class ReservationMapperTest {
         assertFalse(status);
     }
     
+    /*
+    * Checks so the reservation is not inserted when the Room ID
+    * doesn't exist in database.
+    */
     @Test
     public void testSaveReservationNoMatchRoomID()
     {
@@ -69,9 +89,6 @@ public class ReservationMapperTest {
         assertFalse(status);
     }
     
-    
-    
-
     private void getConnection() {
         try {
             con = DriverManager.getConnection("jdbc:oracle:thin:@datdb.cphbusiness.dk:1521:dat", id, pw);

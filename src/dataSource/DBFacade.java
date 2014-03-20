@@ -1,18 +1,25 @@
 package dataSource;
 
 import domain.Reservation;
+import domain.Room;
+import java.util.List;
 
 public class DBFacade {
 
     private static ReservationMapperInterface reservationMapper;
+    private static RoomMapperInterface roomMapper;
     private static DBFacade instance;
 
     private DBFacade() {
         reservationMapper = new ReservationMapper(DBConnector.getConnection());
     }
-    
-    public DBFacade(ReservationMapperInterface resMapper){
-      reservationMapper = resMapper;
+
+    public DBFacade(ReservationMapperInterface resMapper) {
+        reservationMapper = resMapper;
+    }
+
+    public DBFacade(RoomMapperInterface rmMapper) {
+        roomMapper = rmMapper;
     }
 
     public static DBFacade getInstance() {
@@ -25,5 +32,13 @@ public class DBFacade {
 
     public boolean saveReservatoin(Reservation r) {
         return reservationMapper.saveReservation(r);
+    }
+
+    public Room getRoom(int ID) {
+        return roomMapper.getRoom(ID);
+    }
+
+    public List<Room> getAllRooms() {
+        return roomMapper.getAllRooms();
     }
 }

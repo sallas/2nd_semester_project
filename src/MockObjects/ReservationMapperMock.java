@@ -17,10 +17,17 @@ public class ReservationMapperMock implements ReservationMapperInterface {
         reservations = new HashMap<>();
     }
     
+    /*
+    * Returns the reservation with key ID if it exists
+    * otherwise it will return null
+    */
     @Override
     public Reservation getReservation(int ID)
     {
-        return reservations.get(ID);
+        Reservation r = null;
+        if(reservations.containsKey(ID))
+            r = reservations.get(ID);
+        return r;
     }
     
     

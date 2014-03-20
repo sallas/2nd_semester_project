@@ -12,12 +12,12 @@ public class RoomMapperFixture {
             // start transaction
             con.setAutoCommit(false);
 
-            // create table
+            // delete informtation from tables
             st.addBatch("delete from Room");
-
+            // resets sequence
             st.addBatch("drop sequence orderseq");
             st.addBatch("create sequence orderseq start with 3");
-            // insert tuples
+            // insert tuples into room
             String insert = "insert into room values ";
             st.addBatch(insert + "(1,'double')");
             st.addBatch(insert + "(2,'single')");
