@@ -51,7 +51,41 @@ public class ReservationMapper implements ReservationMapperInterface {
 
     @Override
     public boolean saveReservation(Reservation r) {
-        
+        int rowsInserted = 0;
+        String SQLString1
+                = "select reservationseq.nextval  "
+                + "from dual";
+        String SQLString2
+                = "insert into reservation "
+                + "values (?,?,?,?,?)";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString1);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                r.setID(rs.getInt(1));
+            }
+
+            statement = con.prepareStatement(SQLString2);
+            statement.setInt(1, r.getID());
+            statement.setInt(2, r.getRoomID());
+            statement.setInt(3, r.getCustomerID());
+            statement.setDate(4, r.getCheckinDate());
+            statement.setInt(5, r.getNumberNights());
+            rowsInserted = statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Fail in ReservationMapper - saveReservation");
+            System.out.println(e.getMessage());
+        } finally // must close statement
+        {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Fail in ReservationMapper - saveReservation");
+                System.out.println(e.getMessage());
+            }
+        }
+        return rowsInserted == 1;
     }
 
 }
