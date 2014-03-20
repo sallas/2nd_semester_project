@@ -4,11 +4,15 @@ import domain.Reservation;
 
 public class DBFacade {
 
-    private static ReservationMapperInterface rm;
+    private static ReservationMapperInterface reservationMapper;
     private static DBFacade instance;
 
     private DBFacade() {
-        rm = new ReservationMapper(DBConnector.getConnection());
+        reservationMapper = new ReservationMapper(DBConnector.getConnection());
+    }
+    
+    public DBFacade(ReservationMapperInterface resMapper){
+      reservationMapper = resMapper;
     }
 
     public static DBFacade getInstance() {
@@ -16,10 +20,10 @@ public class DBFacade {
     }
 
     public Reservation getReservation(int ID) {
-        return rm.getReservation(ID);
+        return reservationMapper.getReservation(ID);
     }
 
     public boolean saveReservatoin(Reservation r) {
-        return rm.saveReservation(r);
+        return reservationMapper.saveReservation(r);
     }
 }
