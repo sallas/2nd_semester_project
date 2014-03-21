@@ -12,6 +12,7 @@ public class DBFacade {
 
     private DBFacade() {
         reservationMapper = new ReservationMapper(DBConnector.getConnection());
+        roomMapper = new RoomMapper(DBConnector.getConnection());
     }
 
     public DBFacade(ReservationMapperInterface resMapper) {
@@ -23,6 +24,8 @@ public class DBFacade {
     }
 
     public static DBFacade getInstance() {
+        if(instance == null)
+            instance = new DBFacade();
         return instance;
     }
 
