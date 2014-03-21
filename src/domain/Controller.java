@@ -1,5 +1,13 @@
 package domain;
 
-public class Controller {
+import dataSource.DBFacade;
 
+public class Controller {
+    private DBFacade facade = new DBFacade();
+
+    /*
+     * Init a controller.
+     */
+    public Controller() {
+    }
 }
