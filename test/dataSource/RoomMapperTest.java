@@ -1,6 +1,9 @@
 package dataSource;
 
+import domain.Room;
 import java.sql.*;
+import java.util.List;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -8,30 +11,46 @@ import static org.junit.Assert.*;
 public class RoomMapperTest {
 
     Connection con;
-    private String id = "cphbk77";
-    private String pw = "cphbk77";
+    RoomMapper rm;
+    TestDBConnector connector = new TestDBConnector();
 
+    /*
+     * Sets up room mapper with our connection
+     */
     @Before
-    public void setUp() {
+    public void init() {
+        con = connector.getConnection();
+        ReservationMapperFixture.setUp(con);
+        rm = new RoomMapper(con);
     }
 
-    private void getConnection() {
-        try {
-            con = DriverManager.getConnection("jdbc:oracle:thin:@datdb.cphbusiness.dk:1521:dat", id, pw);
-        }
-        catch (SQLException e) {
-            System.out.println("fail in getConnection() - Did you add your Username and Password");
-            System.out.println(e);
-        }
+    @After
+    public void tearDown() throws Exception {
+        connector.releaseConnection(con);
     }
 
-    public void releaseConnection() {
-        try {
-            con.close();
-        }
-        catch (Exception e) {
-            System.err.println(e);
-        }
+    /*
+     * Checks so the correct room is returned by the mapper
+     */
+    @Test
+    public void testGetRoomMatch() {
+        Room r = rm.getRoom(1);
+        assertTrue(r != null);
+        assertTrue(r.getID() == 1);
     }
 
+    /*
+     * Checks so no room is returned when bad ID is given
+     */
+    @Test
+    public void testGetReservationNoMatch() {
+        Room r = rm.getRoom(9999);
+        assertTrue(r == null);
+    }
+
+    @Test
+    public void testGetAllRooms() {
+        List<Room> rooms = rm.getAllRooms();
+        assertEquals(2, rooms.size());
+    }
 }

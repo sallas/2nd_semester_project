@@ -53,7 +53,6 @@ public class ReservationMapperMockTest {
     @Test
     public void testGetReservationNotMatchingID() {
         int ID = 99;
-        Reservation expResult = reservationOne;
         Reservation result = dbf.getReservation(ID);
         assertTrue(result == null);
     }

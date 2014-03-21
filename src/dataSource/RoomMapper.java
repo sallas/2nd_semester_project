@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoomMapper implements RoomMapperInterface {
@@ -51,7 +52,7 @@ public class RoomMapper implements RoomMapperInterface {
     //This method returns a list of all the room objects.
     @Override
     public List<Room> getAllRooms() {
-        List<Room> allRooms = null;
+        List<Room> allRooms = new ArrayList();
         String SQLString = "select *"
                 + "from room";
         PreparedStatement statement = null;

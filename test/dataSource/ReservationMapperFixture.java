@@ -1,7 +1,6 @@
 package dataSource;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -35,7 +34,6 @@ public class ReservationMapperFixture {
             // insert data into reservation
             insert = "insert into reservation values ";
             st.addBatch(insert + "(1, 1, 1,'01-JAN-2014',4)");
-            int[] opcounts = st.executeBatch();
 
             // end transaction
             con.commit();
