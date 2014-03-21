@@ -50,7 +50,7 @@ public class Reservation {
     public void setCheckinDate(Date checkinDate) {
         this.checkinDate = checkinDate;
     }
-
+    public int getNumberNights() {
         return numberNights;
     }
 
