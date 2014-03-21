@@ -15,6 +15,7 @@ public class RoomMapper implements RoomMapperInterface {
         this.con = con;
     }
 
+    //This method returns a room object based on the ID that's being given to the method as a parameter.
     @Override
     public Room getRoom(int ID) {
         Room r = null;
@@ -47,6 +48,7 @@ public class RoomMapper implements RoomMapperInterface {
         return r;
     }
 
+    //This method returns a list of all the room objects.
     @Override
     public List<Room> getAllRooms() {
         List<Room> allRooms = null;
