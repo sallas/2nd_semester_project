@@ -26,7 +26,8 @@ public class Controller {
     /*
      * Create a new reservation in the controller and returns true on success.
      */
-    public boolean createNewReservation(Reservation res) {
-        return facade.saveReservatoin(res);
+    public boolean createNewReservation() {
+        //return facade.saveReservatoin();
+        return true;
     }
 }
