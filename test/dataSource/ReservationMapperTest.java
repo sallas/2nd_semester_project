@@ -13,8 +13,9 @@ import static org.junit.Assert.*;
 public class ReservationMapperTest {
 
     Connection con;
+    private String id = "SEM2_TEST_GR24";
+    private String pw = "SEM2_TEST_GR24";
     ReservationMapper rm;
-    TestDBConnector connector = new TestDBConnector();
 
     public ReservationMapperTest() {
     }
@@ -24,14 +25,14 @@ public class ReservationMapperTest {
     */
     @Before
     public void init() {
-        con = connector.getConnection();
+        getConnection();
         ReservationMapperFixture.setUp(con);
         rm = new ReservationMapper(con);
     }
 
     @After
     public void tearDown() throws Exception {
-        connector.releaseConnection(con);
+        releaseConnection();
     }
 
     /*
@@ -86,5 +87,24 @@ public class ReservationMapperTest {
         Reservation r = new Reservation(1, 99, 1, new Date(01,01,2014), 4);
         boolean status = rm.saveReservation(r);
         assertFalse(status);
+    }
+    
+    private void getConnection() {
+        try {
+            con = DriverManager.getConnection("jdbc:oracle:thin:@datdb.cphbusiness.dk:1521:dat", id, pw);
+        }
+        catch (SQLException e) {
+            System.out.println("fail in getConnection() - Did you add your Username and Password");
+            System.out.println(e);
+        }
+    }
+
+    public void releaseConnection() {
+        try {
+            con.close();
+        }
+        catch (Exception e) {
+            System.err.println(e);
+        }
     }
 }

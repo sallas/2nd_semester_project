@@ -20,13 +20,4 @@ public class TestDBConnector {
         }
         return con;
     }
-
-    public void releaseConnection(Connection con) {
-        try {
-            con.close();
-        }
-        catch (Exception e) {
-            System.err.println(e);
-        }
-    }
 }
