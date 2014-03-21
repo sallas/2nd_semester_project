@@ -14,6 +14,8 @@ public class ReservationMapper implements ReservationMapperInterface {
         this.con = con;
     }
 
+//    This method returns a reservation object based on the ID parameter.
+//    It uses a select sql query from the reservation table.
     @Override
     public Reservation getReservation(int ID) {
         Reservation r = null;
@@ -49,6 +51,11 @@ public class ReservationMapper implements ReservationMapperInterface {
         return r;
     }
 
+    //This method saves a reservation into the database.
+    //It gets the reservation object as a parameter.
+    //The first SQL query is meant to create a unique ID for the reservation.
+    //The second query simply inserts the data into the database table.
+    
     @Override
     public boolean saveReservation(Reservation r) {
         int rowsInserted = 0;
