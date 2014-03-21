@@ -51,7 +51,6 @@ public class Reservation {
         this.checkinDate = checkinDate;
     }
 
-    public int getNumberNights() {
         return numberNights;
     }
 
