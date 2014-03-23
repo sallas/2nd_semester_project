@@ -61,26 +61,26 @@ public class ReservationMapperMockTest {
     * Checks so the reservation is inserted when reservation ID
     * doesn't exist in another reservation
     */
-    @Test
-    public void testSaveReservationNoConflict()
-    {
-        Reservation reservation = 
-            new Reservation(4, 102, 40, new Date(01,01,2014), 4);
-        boolean status = dbf.saveReservatoin(reservation);
-        assertTrue(status);
-    }
+//    @Test
+//    public void testSaveReservationNoConflict()
+//    {
+//        Reservation reservation = 
+//            new Reservation(4, 102, 40, new Date(01,01,2014), 4);
+//        boolean status = dbf.saveReservatoin(reservation);
+//        assertTrue(status);
+//    }
     
     
     /*
     * Checks so the reservation is not inserted when the ID exists
     * in another reservation.
     */
-    @Test (expected = AssertionError.class)
-    public void testSaveReservationWithConflict()
-    {
-        Reservation reservation = 
-            new Reservation(3, 102, 40, new Date(01,01,2014), 4);
-        boolean status = dbf.saveReservatoin(reservation);
-        assertFalse(status);
-    }
+//    @Test (expected = AssertionError.class)
+//    public void testSaveReservationWithConflict()
+//    {
+//        Reservation reservation = 
+//            new Reservation(3, 102, 40, new Date(01,01,2014), 4);
+//        boolean status = dbf.saveReservatoin(reservation);
+//        assertFalse(status);
+//    }
 }

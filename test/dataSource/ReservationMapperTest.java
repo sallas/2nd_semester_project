@@ -1,5 +1,6 @@
 package dataSource;
 
+import domain.Customer;
 import domain.Reservation;
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,13 +14,14 @@ public class ReservationMapperTest {
     Connection con;
     ReservationMapper rm;
     TestDBConnector connector = new TestDBConnector();
+    DBFacade dbf;
 
     public ReservationMapperTest() {
     }
 
     /*
-    * Sets up reservation mapper with our connection
-    */
+     * Sets up reservation mapper with our connection
+     */
     @Before
     public void init() {
         con = connector.getConnection();
@@ -33,56 +35,65 @@ public class ReservationMapperTest {
     }
 
     /*
-    * Checks so the correct reservation is returned by the mapper
-    */
+     * Checks so the correct reservation is returned by the mapper
+     */
     @Test
     public void testGetReservationMatch() {
         Reservation r = rm.getReservation(1);
         assertTrue(r != null);
         assertTrue(r.getID() == 1);
     }
-    
+
     /*
-    * Checks so no reservation is returned when bad ID is given
-    */
+     * Checks so no reservation is returned when bad ID is given
+     */
     @Test
     public void testGetReservationNoMatch() {
         Reservation r = rm.getReservation(33);
         assertTrue(r == null);
     }
-    
+
     /*
-    * Checks so the reservation is inserted 
-    */
+     * Checks so the reservation is inserted 
+     */
     @Test
-    public void testSaveReservationNewID()
-    {
-        Reservation r = new Reservation(1, 1, 1, new Date(01,01,2014), 4);
+    public void testSaveReservationNewID() {
+        Reservation r = new Reservation(1, 1, 1, new Date(01, 01, 2014), 4);
         boolean status = rm.saveReservation(r);
+        System.out.println(status);
         assertTrue(status);
     }
-    
+
     /*
-    * Checks so the reservation is not inserted when the Customer ID
-    * doesn't exist in database.
-    */
+     * Checks so the reservation is not inserted when the Customer ID
+     * doesn't exist in database.
+     */
     @Test
-    public void testSaveReservationNoMatchCustomerID()
-    {
-        Reservation r = new Reservation(1, 1, 99, new Date(01,01,2014), 4);
+    public void testSaveReservationNoMatchCustomerID() {
+        Reservation r = new Reservation(1, 1, 99, new Date(01, 01, 2014), 4);
         boolean status = rm.saveReservation(r);
         assertFalse(status);
     }
-    
+
     /*
-    * Checks so the reservation is not inserted when the Room ID
-    * doesn't exist in database.
-    */
+     * Checks so the reservation is not inserted when the Room ID
+     * doesn't exist in database.
+     */
     @Test
-    public void testSaveReservationNoMatchRoomID()
-    {
-        Reservation r = new Reservation(1, 99, 1, new Date(01,01,2014), 4);
+    public void testSaveReservationNoMatchRoomID() {
+        Reservation r = new Reservation(1, 99, 1, new Date(01, 01, 2014), 4);
         boolean status = rm.saveReservation(r);
         assertFalse(status);
+    }
+
+    @Test
+    public void testPROOOPPPAAARESERVATIOn() {
+        dbf = DBFacade.getInstance();
+        Reservation r = new Reservation(1, 99, 1, new Date(01, 01, 2014), 4);
+        Customer c = new Customer(45,"home","sweden","TEEEEOOOOO","karlsson",
+                    "33","email","agency");
+        dbf.saveReservationInformation(r, c);
+        assertTrue(true);
+        
     }
 }
