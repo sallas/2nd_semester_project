@@ -18,8 +18,9 @@ public class DBFacade {
         customerMapper = new CustomerMapper(DBConnector.getConnection());
     }
 
-    public DBFacade(ReservationMapperInterface resMapper) {
+    public DBFacade(ReservationMapperInterface resMapper, CustomerMapperInterface cusMapper) {
         reservationMapper = resMapper;
+        customerMapper = cusMapper;
     }
 
     public DBFacade(RoomMapperInterface rmMapper) {
@@ -47,9 +48,14 @@ public class DBFacade {
 
     public boolean saveReservationInformation(Reservation r, Customer c) {
         int customerID = customerMapper.saveNewCustomer(c);
-        if(customerID == 0)
+        if (customerID == -1) {
             return false;
+        }
         r.setCustomerID(customerID);
         return reservationMapper.saveReservation(r);
+    }
+
+    Customer getCustomer(int ID) {
+        return customerMapper.getCustomer(ID);
     }
 }

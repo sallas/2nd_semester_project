@@ -55,7 +55,6 @@ public class ReservationMapper implements ReservationMapperInterface {
     //It gets the reservation object as a parameter.
     //The first SQL query is meant to create a unique ID for the reservation.
     //The second query simply inserts the data into the database table.
-    
     @Override
     public boolean saveReservation(Reservation r) {
         int rowsInserted = 0;

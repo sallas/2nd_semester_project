@@ -20,7 +20,7 @@ public class RoomMapperTest {
     @Before
     public void init() {
         con = connector.getConnection();
-        ReservationMapperFixture.setUp(con);
+        ReservationFixture.setUp(con);
         rm = new RoomMapper(con);
     }
 
@@ -34,9 +34,9 @@ public class RoomMapperTest {
      */
     @Test
     public void testGetRoomMatch() {
-        Room r = rm.getRoom(1);
+        Room r = rm.getRoom(100);
         assertTrue(r != null);
-        assertTrue(r.getID() == 1);
+        assertTrue(r.getID() == 100);
     }
 
     /*

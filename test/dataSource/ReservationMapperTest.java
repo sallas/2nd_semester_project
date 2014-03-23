@@ -1,6 +1,5 @@
 package dataSource;
 
-import domain.Customer;
 import domain.Reservation;
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,7 +13,6 @@ public class ReservationMapperTest {
     Connection con;
     ReservationMapper rm;
     TestDBConnector connector = new TestDBConnector();
-    DBFacade dbf;
 
     public ReservationMapperTest() {
     }
@@ -25,7 +23,7 @@ public class ReservationMapperTest {
     @Before
     public void init() {
         con = connector.getConnection();
-        ReservationMapperFixture.setUp(con);
+        ReservationFixture.setUp(con);
         rm = new ReservationMapper(con);
     }
 
@@ -58,9 +56,8 @@ public class ReservationMapperTest {
      */
     @Test
     public void testSaveReservationNewID() {
-        Reservation r = new Reservation(1, 1, 1, new Date(01, 01, 2014), 4);
+        Reservation r = new Reservation(1, 100, 1, new Date(01, 03, 2014), 4);
         boolean status = rm.saveReservation(r);
-        System.out.println(status);
         assertTrue(status);
     }
 
@@ -70,7 +67,7 @@ public class ReservationMapperTest {
      */
     @Test
     public void testSaveReservationNoMatchCustomerID() {
-        Reservation r = new Reservation(1, 1, 99, new Date(01, 01, 2014), 4);
+        Reservation r = new Reservation(1, 100, 99, new Date(01, 01, 2014), 4);
         boolean status = rm.saveReservation(r);
         assertFalse(status);
     }
@@ -84,16 +81,5 @@ public class ReservationMapperTest {
         Reservation r = new Reservation(1, 99, 1, new Date(01, 01, 2014), 4);
         boolean status = rm.saveReservation(r);
         assertFalse(status);
-    }
-
-    @Test
-    public void testPROOOPPPAAARESERVATIOn() {
-        dbf = DBFacade.getInstance();
-        Reservation r = new Reservation(1, 99, 1, new Date(01, 01, 2014), 4);
-        Customer c = new Customer(45,"home","sweden","TEEEEOOOOO","karlsson",
-                    "33","email","agency");
-        dbf.saveReservationInformation(r, c);
-        assertTrue(true);
-        
     }
 }

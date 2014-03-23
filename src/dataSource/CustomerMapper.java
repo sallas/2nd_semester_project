@@ -107,7 +107,7 @@ public class CustomerMapper implements CustomerMapperInterface {
             }
         }
         if (rowsInserted == 0) {
-            return 0;
+            return -1;
         }
         return c.getID();
     }
