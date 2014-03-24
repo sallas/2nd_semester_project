@@ -2,7 +2,6 @@ package domain;
 
 import java.sql.Date;
 
-
 public class Reservation {
 
     private int ID;
@@ -61,6 +60,8 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Reservation: " + "ID = " + ID + ", roomID = " + roomID + ", customerID = " + customerID + ", checkinDate = " + checkinDate + ", numberNights = " + numberNights + '.';
+        return "Reservation: " + "ID = " + ID + ", roomID = " + roomID
+                + ", customerID = " + customerID + ", checkinDate = "
+                + checkinDate + ", numberNights = " + numberNights + '.';
     }
 }
