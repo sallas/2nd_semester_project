@@ -2,10 +2,12 @@ package dataSource;
 
 import domain.Room;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RoomMapper implements RoomMapperInterface {
@@ -76,5 +78,45 @@ public class RoomMapper implements RoomMapperInterface {
             }
         }
         return allRooms;
+    }
+
+    @Override
+    public Date getRoomAvailabilityDate(int ID) {
+        Date date = null;
+        int number_nights = 0;
+        String SQLString = "select checkin_date, number_nights"
+                + "from reservation"
+                + "where room_id = ? AND checkin_date = "
+                + "(select max(checkin_date) "
+                + "from reservation "
+                + "where room_ID = ?)";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                date = rs.getDate(1);
+                number_nights = rs.getInt(2);
+            }
+        } catch (SQLException e) {
+            System.out.println("Fail in RoomMapper - getAllRooms");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Fail in RoomMapper - getAllRooms");
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        Calendar availabilityDate = Calendar.getInstance();
+        availabilityDate.setTimeInMillis(date.getTime());
+        availabilityDate.add(Calendar.DAY_OF_MONTH, number_nights);
+        date.setTime(availabilityDate.getTimeInMillis());
+        
+        return date;
     }
 }

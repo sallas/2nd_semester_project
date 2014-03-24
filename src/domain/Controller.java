@@ -2,15 +2,19 @@ package domain;
 
 import dataSource.DBFacade;
 import java.sql.Date;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     private DBFacade facade;
     private EmailValidator emailValidator;
     private static Controller instance = null;
 
-    /*
-     * Init a controller.
-     */
+    public List<String> getRooms() {
+        List<String> roomList = new ArrayList();
+        List<Room> tempRoomList = instance.getAllRooms();
     private Controller() {
         facade = DBFacade.getInstance();
         emailValidator = new EmailValidator();
