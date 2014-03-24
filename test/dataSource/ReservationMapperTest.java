@@ -3,6 +3,7 @@ package dataSource;
 import domain.Reservation;
 import java.sql.Connection;
 import java.sql.Date;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,4 +83,25 @@ public class ReservationMapperTest {
         boolean status = rm.saveReservation(r);
         assertFalse(status);
     }
+
+    /*
+     * Checks so the correct amount of reservations are returned 
+     * when looking for single rooms
+     */
+    @Test
+    public void testgetAllReservationsOfSpecificTypeSingle() {
+        List<Reservation> resList = rm.getAllReservationsOfSpecificType("single");
+        assertTrue(resList.size() == 2);
+    }
+
+    /*
+     * Checks so the correct amount of reservations are returned 
+     * when looking for double rooms
+     */
+    @Test
+    public void testgetAllReservationsOfSpecificTypeDouble() {
+        List<Reservation> resList = rm.getAllReservationsOfSpecificType("double");
+        assertTrue(resList.size() == 1);
+    }
+
 }
