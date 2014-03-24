@@ -5,7 +5,7 @@ import java.sql.Date;
 
 public class Controller {
     private DBFacade facade;
-    private Reservation currentReservation;
+    private EmailValidator emailValidator;
     private static Controller instance = null;
 
     /*
@@ -13,7 +13,7 @@ public class Controller {
      */
     private Controller() {
         facade = DBFacade.getInstance();
-        currentReservation = new Reservation(0, 0, 0, null, 0);
+        emailValidator = new EmailValidator();
     }
     
     public static Controller getInstance(){
@@ -26,8 +26,23 @@ public class Controller {
     /*
      * Create a new reservation in the controller and returns true on success.
      */
-    public boolean createNewReservation() {
-        //return facade.saveReservatoin();
-        return true;
+    public boolean createNewReservation(String firstName, String familyName,
+                                        String address, String country,
+                                        String phone, String email,
+                                        String agency, Date checkin,
+                                        int nights, int roomID) 
+            throws WrongNumberOfNights, WrongEmail {
+        if (nights <= 0){
+            throw new WrongNumberOfNights("Zero or less than zero"
+                      + "number of nights");
+        }
+        if (!emailValidator.validate(email)){
+            throw new WrongEmail("Email is wrong.");
+        }
+        Customer customer = new Customer(-1 , address, country, firstName,
+                                         familyName, phone, email, agency);
+        Reservation reservation = new Reservation(-1, roomID,
+                                         -1, checkin, nights);
+        return facade.saveReservationInformation(reservation, customer);
     }
 }
