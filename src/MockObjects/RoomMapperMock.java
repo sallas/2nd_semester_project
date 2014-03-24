@@ -2,6 +2,7 @@ package MockObjects;
 
 import dataSource.RoomMapperInterface;
 import domain.Room;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,5 +47,10 @@ public class RoomMapperMock implements RoomMapperInterface {
             returnRooms.add(entry.getValue());
         }
         return returnRooms;
+    }
+
+    @Override
+    public Date getRoomAvailabilityDate(int ID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

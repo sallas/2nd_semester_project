@@ -14,7 +14,20 @@ public class Controller {
 
     public List<String> getRooms() {
         List<String> roomList = new ArrayList();
-        List<Room> tempRoomList = instance.getAllRooms();
+        List<Room> tempRoomList = facade.getAllRooms();
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date currentDate = new java.sql.Date(utilDate.getTime());
+        for (Room r : tempRoomList) {
+            Date date = facade.getRoomAvailabilityDate(r.getID());
+            Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String s = formatter.format(date);
+            if (date.compareTo(currentDate) < 0) {
+                s = "NOW";
+            }
+            roomList.add(Integer.toString(r.getID()) + "_" + r.getType() + "_" + s);
+        }
+        return roomList;
+    }
     private Controller() {
         facade = DBFacade.getInstance();
         emailValidator = new EmailValidator();
