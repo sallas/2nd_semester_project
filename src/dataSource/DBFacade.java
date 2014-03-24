@@ -3,6 +3,7 @@ package dataSource;
 import domain.Customer;
 import domain.Reservation;
 import domain.Room;
+import java.sql.Date;
 import java.util.List;
 
 public class DBFacade {
@@ -55,7 +56,11 @@ public class DBFacade {
         return reservationMapper.saveReservation(r);
     }
 
-    Customer getCustomer(int ID) {
+    public Customer getCustomer(int ID) {
         return customerMapper.getCustomer(ID);
+    }
+
+    public Date getRoomAvailabilityDate(int ID) {
+        return roomMapper.getRoomAvailabilityDate(ID);
     }
 }
