@@ -35,8 +35,8 @@ public class ReservationFixture {
                     + ",'lastName2','332','email2','agency2')");
             // insert data into reservation
             insert = "insert into reservation values ";
-            st.addBatch(insert + "(1, 100, 1,to_date('01-01-2014', 'DD-MM-YYYY'),4)");
-            st.addBatch(insert + "(2, 101, 2,to_date('01-01-2014', 'DD-MM-YYYY'),4)");
+            st.addBatch(insert + "(1, 100, 1,to_date('24-03-2014', 'DD-MM-YYYY'),4)");
+            st.addBatch(insert + "(2, 101, 2,to_date('23-01-2014', 'DD-MM-YYYY'),9)");
             st.addBatch(insert + "(3, 101, 1,to_date('01-02-2014', 'DD-MM-YYYY'),4)");
             st.executeBatch();
             // end transaction

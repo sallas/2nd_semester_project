@@ -137,5 +137,14 @@ public class ReservationMapperTest {
         List<Reservation> resList = rm.getAllReservationsOfSpecificType("double");
         assertTrue(resList.size() == 1);
     }
+    
+     /*
+     * Checks so the correct amount of rooms are returned
+     */
+    @Test
+    public void testGetAllReservations() {
+        List<Reservation> reservations = rm.getAllReservations();
+        assertEquals(3, reservations.size());
+    }
 
 }

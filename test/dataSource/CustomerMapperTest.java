@@ -2,6 +2,7 @@ package dataSource;
 
 import domain.Customer;
 import java.sql.Connection;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +55,15 @@ public class CustomerMapperTest {
                         "33", "email1", "agency1");
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == 3);
+    }
+    
+         /*
+     * Checks so the correct amount of rooms are returned
+     */
+    @Test
+    public void testGetAllReservations() {
+        List<Customer> customers = cm.getAllCustomers();
+        assertEquals(2, customers.size());
     }
     
     /*

@@ -61,12 +61,11 @@ public class Controller {
             throw new WrongNumberOfNights("Zero or less than zero"
                     + "number of nights");
         }
-        if (!emailValidator.validate(email)){
+        if (!emailValidator.validate(email)) {
             throw new WrongEmail("Email is wrong.");
         }
         Customer customer = new Customer(-1, address, country, firstName,
                 familyName, phone, email, agency);
-        System.out.println(customer);
         Reservation reservation = new Reservation(-1, roomID,
                 -1, checkin, nights);
         return facade.saveReservationInformation(reservation, customer);
@@ -130,6 +129,31 @@ public class Controller {
         Random rand = new Random();
         currentRoomID = roomID.get(rand.nextInt(roomID.size()));
         return currentRoomID;
+    }
+
+    public List<Customer> getAllCurrentGuests() {
+        List<Customer> allCustomers = facade.getAllCustomers();
+        Map<Integer, Customer> customerMap = new HashMap<>();
+        for (Customer c : allCustomers) {
+            customerMap.put(c.getID(), c);
+        }
+        List<Reservation> allReservations = facade.getAllReservations();
+        List<Customer> currentGuests = new ArrayList<>();
+        Calendar rightNow = Calendar.getInstance();
+        Calendar arrivalDate = (Calendar) rightNow.clone();
+        arrivalDate.clear();
+        Calendar departureDate;
+        
+        for (Reservation r : allReservations) {
+            arrivalDate.setTimeInMillis(r.getCheckinDate().getTime());
+            departureDate = (Calendar) arrivalDate.clone();
+            departureDate.add(Calendar.DATE, r.getNumberNights());
+            if(rightNow.after(arrivalDate) && rightNow.before(departureDate)) {
+                currentGuests.add(customerMap.get(r.getCustomerID()));
+            }
+                
+        }
+        return currentGuests;
     }
 
 }

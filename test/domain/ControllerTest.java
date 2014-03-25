@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -156,5 +157,11 @@ public class ControllerTest {
         departureDate.add(Calendar.DATE, 2);
         int roomID = controller.getAvailableRoomOfSpecificType("double", arrivalDate, departureDate);
         assertTrue(roomID == -1);
+    }
+    
+    @Test
+    public void getAllCurrentGuests() {
+        List<Customer> guests = controller.getAllCurrentGuests();
+        assertTrue(guests.size() == 1);
     }
 }

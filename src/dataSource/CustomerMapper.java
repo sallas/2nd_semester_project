@@ -5,8 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerMapper implements CustomerMapperInterface {
 
@@ -110,5 +110,36 @@ public class CustomerMapper implements CustomerMapperInterface {
             return -1;
         }
         return c.getID();
+    }
+    
+    @Override
+    public List<Customer> getAllCustomers() {
+        List<Customer> allCustomers = new ArrayList();
+        String SQLString = "select * "
+                + "from customer";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                allCustomers.add(
+                        new Customer(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7), rs.getString(8)));
+            }
+        } catch (SQLException e) {
+            System.out.println("Fail in CustomerMapper - getAllCustomers");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Fail in CustomerMapper - getAllCustomers");
+                System.out.println(e.getMessage());
+            }
+        }
+        return allCustomers;
     }
 }
