@@ -85,14 +85,17 @@ public class RoomMapper implements RoomMapperInterface {
         Date date = null;
         int number_nights = 0;
         String SQLString = "select checkin_date, number_nights"
-                + "from reservation"
+                + " from reservation "
                 + "where room_id = ? AND checkin_date = "
                 + "(select max(checkin_date) "
                 + "from reservation "
                 + "where room_ID = ?)";
         PreparedStatement statement = null;
         try {
+            
             statement = con.prepareStatement(SQLString);
+            statement.setInt(1, ID);
+            statement.setInt(2, ID);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 date = rs.getDate(1);
@@ -111,6 +114,9 @@ public class RoomMapper implements RoomMapperInterface {
                 System.out.println(e.getMessage());
             }
         }
+        
+        if(date == null)
+            return null;
         
         Calendar availabilityDate = Calendar.getInstance();
         availabilityDate.setTimeInMillis(date.getTime());

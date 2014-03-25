@@ -53,4 +53,18 @@ public class RoomMapperTest {
         List<Room> rooms = rm.getAllRooms();
         assertEquals(2, rooms.size());
     }
+
+    @Test
+    public void testGetRoomAvailabilityDateMatchingID() {
+        Date date = rm.getRoomAvailabilityDate(101);
+        Date expectedDate = Date.valueOf("2014-02-05");
+        assertTrue(expectedDate.equals(date));
+    }
+    
+    @Test
+    public void testGetRoomAvailabilityDateNoMatchingID() {
+        Date date = rm.getRoomAvailabilityDate(99);
+        assertTrue(date == null);
+    }
+
 }
