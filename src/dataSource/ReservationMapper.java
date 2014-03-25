@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationMapper implements ReservationMapperInterface {
 
@@ -35,15 +37,18 @@ public class ReservationMapper implements ReservationMapperInterface {
                         rs.getDate(4),
                         rs.getInt(5));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Fail in ReservationMapper - getReservation");
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
                 if (statement != null) {
                     statement.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 System.out.println("Fail in ReservationMapper - getReservation");
                 System.out.println(e.getMessage());
             }
@@ -79,14 +84,17 @@ public class ReservationMapper implements ReservationMapperInterface {
             statement.setDate(4, r.getCheckinDate());
             statement.setInt(5, r.getNumberNights());
             rowsInserted = statement.executeUpdate();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Fail in ReservationMapper - saveReservation");
             System.out.println(e.getMessage());
-        } finally // must close statement
+        }
+        finally // must close statement
         {
             try {
                 statement.close();
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 System.out.println("Fail in ReservationMapper - saveReservation");
                 System.out.println(e.getMessage());
             }
@@ -94,4 +102,41 @@ public class ReservationMapper implements ReservationMapperInterface {
         return rowsInserted == 1;
     }
 
+    //This method returns a list of all the reservation objects of specified type
+    @Override
+    public List<Reservation> getAllReservationsOfSpecificType(String type) {
+        List<Reservation> allSpecificReservations = new ArrayList();
+        String SQLString = "select *"
+                + "from reservation where room_id in "
+                + " (select id from room where type = ?)";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setString(1, type);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                allSpecificReservations.add(
+                        new Reservation(rs.getInt(1), rs.getInt(2),
+                                rs.getInt(3), rs.getDate(4), rs.getInt(5)));
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Fail in ReservationMapper -"
+                    + " getAllReservationsOfSpecificType");
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            }
+            catch (SQLException e) {
+                System.out.println("Fail in ReservationMapper -"
+                        + " getAllReservationsOfSpecificType");
+                System.out.println(e.getMessage());
+            }
+        }
+        return allSpecificReservations;
+    }
 }

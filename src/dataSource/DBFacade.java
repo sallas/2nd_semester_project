@@ -63,4 +63,9 @@ public class DBFacade {
     public Date getRoomAvailabilityDate(int ID) {
         return roomMapper.getRoomAvailabilityDate(ID);
     }
+    
+    public List<Reservation> getAllReservationsOfSpecificType(String type) {
+        return reservationMapper.getAllReservationsOfSpecificType(type);
+    }
+    
 }

@@ -54,4 +54,9 @@ public class ReservationMapperMock implements ReservationMapperInterface {
         return true;
     }
 
+    @Override
+    public List<Reservation> getAllReservationsOfSpecificType(String type) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
