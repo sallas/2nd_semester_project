@@ -51,6 +51,16 @@ public class ReservationMapperTest {
         Reservation r = rm.getReservation(33);
         assertTrue(r == null);
     }
+    
+     /*
+     * Checks so no reservation is returned when bad ID is given
+     */
+    @Test
+    public void testGetReservationNoReservationsInDB() {
+        EmptyDBFixture.setUp(con);
+        Reservation r = rm.getReservation(33);
+        assertTrue(r == null);
+    }
 
     /*
      * Checks so the reservation is inserted 
@@ -68,6 +78,18 @@ public class ReservationMapperTest {
      */
     @Test
     public void testSaveReservationNoMatchCustomerID() {
+        Reservation r = new Reservation(1, 100, 99, new Date(01, 01, 2014), 4);
+        boolean status = rm.saveReservation(r);
+        assertFalse(status);
+    }
+    
+    /*
+     * Checks so the reservation is not inserted when the DB 
+     * doesn't have any Rooms or Customers in it
+     */
+    @Test
+    public void testSaveReservationNoRoomsAndCustomersInDB() {
+        EmptyDBFixture.setUp(con);
         Reservation r = new Reservation(1, 100, 99, new Date(01, 01, 2014), 4);
         boolean status = rm.saveReservation(r);
         assertFalse(status);
@@ -93,6 +115,18 @@ public class ReservationMapperTest {
         List<Reservation> resList = rm.getAllReservationsOfSpecificType("single");
         assertTrue(resList.size() == 2);
     }
+    
+    /*
+     * Checks so the correct amount of reservations are returned 
+     * when looking for single rooms
+     */
+    @Test
+    public void testgetAllReservationsOfSpecificTypeNoReservationsInDB() {
+        EmptyDBFixture.setUp(con);
+        List<Reservation> resList = rm.getAllReservationsOfSpecificType("single");
+        assertTrue(resList.isEmpty());
+    }
+    
 
     /*
      * Checks so the correct amount of reservations are returned 

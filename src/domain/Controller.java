@@ -35,6 +35,7 @@ public class Controller {
         }
         return roomList;
     }
+
     private Controller() {
         facade = DBFacade.getInstance();
         emailValidator = new EmailValidator();
@@ -51,22 +52,23 @@ public class Controller {
      * Create a new reservation in the controller and returns true on success.
      */
     public boolean createNewReservation(String firstName, String familyName,
-                                        String address, String country,
-                                        String phone, String email,
-                                        String agency, Date checkin,
-                                        int nights, int roomID) 
+            String address, String country,
+            String phone, String email,
+            String agency, Date checkin,
+            int nights, int roomID)
             throws WrongNumberOfNights, WrongEmail {
-        if (nights <= 0){
+        if (nights <= 0) {
             throw new WrongNumberOfNights("Zero or less than zero"
-                      + "number of nights");
+                    + "number of nights");
         }
         if (!emailValidator.validate(email)){
             throw new WrongEmail("Email is wrong.");
         }
-        Customer customer = new Customer(-1 , address, country, firstName,
-                                         familyName, phone, email, agency);
+        Customer customer = new Customer(-1, address, country, firstName,
+                familyName, phone, email, agency);
+        System.out.println(customer);
         Reservation reservation = new Reservation(-1, roomID,
-                                         -1, checkin, nights);
+                -1, checkin, nights);
         return facade.saveReservationInformation(reservation, customer);
     }
 
@@ -81,6 +83,14 @@ public class Controller {
                 = facade.getAllReservationsOfSpecificType(type);
 
         Map<Integer, Boolean> roomAvailability = new HashMap<>();
+        List<Room> rooms = facade.getAllRooms();
+        for (Room room : rooms) {
+            if (room.getType().equals(type)) {
+                roomAvailability.put(room.getID(), Boolean.TRUE);
+            }
+
+        }
+
         for (Reservation r : reservations) {
             bookedArrivalDate.setTimeInMillis(r.getCheckinDate().getTime());
             bookedDepartureDate = (Calendar) bookedArrivalDate.clone();

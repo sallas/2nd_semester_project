@@ -1,11 +1,13 @@
 package domain;
 
+import dataSource.EmptyDBFixture;
 import dataSource.ReservationFixture;
 import dataSource.RoomMapper;
 import dataSource.TestDBConnector;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -13,10 +15,6 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 
-/**
- *
- * @author martin
- */
 public class ControllerTest {
     
     Connection con;
@@ -98,5 +96,65 @@ public class ControllerTest {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia", 
                 "00000", "igor@gmail.com", "sunshine", new Date(1994, 12, 31), 2, 20);
         assertFalse(res);
+    }
+    
+    /*
+    *   Checks so -1 is returned if no room of speciefied type is available 
+    *    on the specified dates
+    */
+    @Test
+    public void testGetAvailableRoomOfSpecificTypeNoRoomAvailable() {
+        Calendar arrivalDate = Calendar.getInstance();
+        arrivalDate.clear();
+        arrivalDate.set(2014, 01, 02);
+        Calendar departureDate = (Calendar) arrivalDate.clone();
+        departureDate.add(Calendar.DATE, 2);
+        int roomID = controller.getAvailableRoomOfSpecificType("single", arrivalDate, departureDate);
+        assertTrue(roomID == -1);
+    }
+
+    /*
+    *   Checks so a roomID is returned if a room of tpye Single is available 
+    *    on the specified dates
+    */
+    @Test
+    public void testGetAvailableRoomOfSpecificTypeSingleWorking() {
+        Calendar arrivalDate = Calendar.getInstance();
+        arrivalDate.clear();
+        arrivalDate.set(2015, 03, 02);
+        Calendar departureDate = (Calendar) arrivalDate.clone();
+        departureDate.add(Calendar.DATE, 2);
+        int roomID = controller.getAvailableRoomOfSpecificType("single", arrivalDate, departureDate);
+        assertTrue(roomID == 101);
+    }
+    
+    /*
+    *   Checks so a roomID is returned if a room of type Double is available 
+    *    on the specified dates
+    */
+    @Test
+    public void testGetAvailableRoomOfSpecificTypeDoubleRoomWorking() {
+        Calendar arrivalDate = Calendar.getInstance();
+        arrivalDate.clear();
+        arrivalDate.set(2015, 03, 02);
+        Calendar departureDate = (Calendar) arrivalDate.clone();
+        departureDate.add(Calendar.DATE, 2);
+        int roomID = controller.getAvailableRoomOfSpecificType("double", arrivalDate, departureDate);
+        assertTrue(roomID == 100);
+    }
+    
+    /*
+    *   Checks so -1 is returned if no rooms exist in the database
+    */
+    @Test
+    public void testGetAvailableRoomOfSpecificTypeDoubleRoomNoRoomsInDB() {
+        EmptyDBFixture.setUp(con);
+        Calendar arrivalDate = Calendar.getInstance();
+        arrivalDate.clear();
+        arrivalDate.set(2015, 03, 02);
+        Calendar departureDate = (Calendar) arrivalDate.clone();
+        departureDate.add(Calendar.DATE, 2);
+        int roomID = controller.getAvailableRoomOfSpecificType("double", arrivalDate, departureDate);
+        assertTrue(roomID == -1);
     }
 }

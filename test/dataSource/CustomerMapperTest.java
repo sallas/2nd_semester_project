@@ -55,5 +55,89 @@ public class CustomerMapperTest {
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == 3);
     }
+    
+    /*
+     * Checks so the customer is not inserted when address is null
+     */
+    @Test
+    public void testSaveReservationAddressEqualNull() {
+        Customer customerOne
+                = new Customer(111, null, "country1", "firstName1", "lastName1",
+                        "33", "email1", "agency1");
+        int customerID = cm.saveNewCustomer(customerOne);
+        assertTrue(customerID == -1);
+    }
+    
+     /*
+     * Checks so the customer is not inserted when firstName is null
+     */
+    @Test
+    public void testSaveReservationFirstNameEqualNull() {
+        Customer customerOne
+                = new Customer(111, "address", "country1", null, "lastName1",
+                        "33", "email1", "agency1");
+        int customerID = cm.saveNewCustomer(customerOne);
+        assertTrue(customerID == -1);
+    }
+    
+     /*
+     * Checks so the customer is not inserted when last name is null
+     */
+    @Test
+    public void testSaveReservationLastNameEqualNull() {
+        Customer customerOne
+                = new Customer(111, "address", "country1", "firstName1", null,
+                        "33", "email1", "agency1");
+        int customerID = cm.saveNewCustomer(customerOne);
+        assertTrue(customerID == -1);
+    }
+    
+     /*
+     * Checks so the customer is not inserted when country is null
+     */
+    @Test
+    public void testSaveReservationCountryEqualNull() {
+        Customer customerOne
+                = new Customer(111, "address", null, "firstName1", "lastName1",
+                        "33", "email1", "agency1");
+        int customerID = cm.saveNewCustomer(customerOne);
+        assertTrue(customerID == -1);
+    }
+    
+     /*
+     * Checks so the customer is not inserted when email is null
+     */
+    @Test
+    public void testSaveReservationEmailEqualNull() {
+        Customer customerOne
+                = new Customer(111, "address", "country1", "firstName1", "lastName1",
+                        "33", null, "agency1");
+        int customerID = cm.saveNewCustomer(customerOne);
+        assertTrue(customerID == -1);
+    }
+    
+     /*
+     * Checks so the customer is not inserted when phone number is null
+     */
+    @Test
+    public void testSaveReservationPhoneNumEqualNull() {
+        Customer customerOne
+                = new Customer(111, "address", "country1", "firstName1", "lastName1",
+                        null, "email1", "agency1");
+        int customerID = cm.saveNewCustomer(customerOne);
+        assertTrue(customerID == -1);
+    }
+    
+     /*
+     * Checks so the customer is inserted when agency is null
+     */
+    @Test
+    public void testSaveReservationLastAgencyEqualNull() {
+        Customer customerOne
+                = new Customer(111, "address", "country1", "firstName1", "lastName1",
+                        "33", "email1", null);
+        int customerID = cm.saveNewCustomer(customerOne);
+        assertTrue(customerID == 3);
+    }
 
 }

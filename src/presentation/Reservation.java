@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package presentation;
 
 import domain.Controller;
+import domain.WrongEmail;
+import domain.WrongNumberOfNights;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextField;
 
-/**
- *
- * @author martin
- */
 public class Reservation extends javax.swing.JFrame {
 
     Controller control = Controller.getInstance();
@@ -20,6 +16,7 @@ public class Reservation extends javax.swing.JFrame {
     private int currentBookingRoomID;
     private int currentBookingNumNights;
     private Date currentBookingArrivalDate = null;
+    private String currentBookingType = null;
 
     /**
      * Creates new form Reservation
@@ -27,6 +24,9 @@ public class Reservation extends javax.swing.JFrame {
     public Reservation() {
         initComponents();
         typeField.addItem("single");
+        typeField.addItem("double");
+        typeField.addItem("family");
+
     }
 
     /**
@@ -275,15 +275,16 @@ public class Reservation extends javax.swing.JFrame {
         arrivalDate.setTime(checkDatePicker.getDate());
         Calendar departureDate = (Calendar) arrivalDate.clone();
         currentBookingNumNights = (Integer) nightsCounter.getValue();
-        if(currentBookingNumNights <= 0) {
+        if (currentBookingNumNights <= 0) {
             statusText.setText("Please choose a positive number of nights");
             return;
         }
-            
+
         departureDate.add(Calendar.DATE, currentBookingNumNights);
         currentBookingArrivalDate = checkDatePicker.getDate();
         currentBookingRoomID = control.getAvailableRoomOfSpecificType((String) typeField.getSelectedItem(),
                 arrivalDate, departureDate);
+        currentBookingType = (String) typeField.getSelectedItem();
         if (currentBookingRoomID == -1) {
             RoomNumLabel.setText("No room");
             statusText.setText("No room is available on those dates");
@@ -295,29 +296,29 @@ public class Reservation extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         statusText.setText(null);
-        String firstName = null;
-        String familyName = null;
-        String address = null;
-        String country = null;
-        String phone = null;
-        String travelAgency = null;
-        String email = null;
         status = true;
 
-        textFieldChecker(firstNameField, firstName, "Please enter first name");
-        textFieldChecker(familyNameField, familyName, "Please Enter family name");
-        textFieldChecker(addressField, address, "Please enter address");
-        textFieldChecker(countryField, country, "Please enter country");
-        textFieldChecker(phoneField, phone, "Please enter phone number");
-        textFieldChecker(travelAgencyField, travelAgency, "Please enter travel agency name");
-        textFieldChecker(emailField, email, "Please enter email");
+        String firstName
+                = textFieldChecker(firstNameField, "Please enter first name");
+        String familyName
+                = textFieldChecker(familyNameField, "Please Enter family name");
+        String address
+                = textFieldChecker(addressField, "Please enter address");
+        String country
+                = textFieldChecker(countryField, "Please enter country");
+        String phone
+                = textFieldChecker(phoneField, "Please enter phone number");
+        String travelAgency
+                = textFieldChecker(travelAgencyField,
+                        "Please enter travel agency name");
+        String email
+                = textFieldChecker(emailField, "Please enter email");
 
+        System.out.println(address);
         if (status == false) {
             return;
         }
-
-        if (checkDatePicker.getDate() == null
-                || currentBookingArrivalDate == null) {
+        if (checkDatePicker.getDate() == null) {
             statusText.setText("Please choose a arrival date");
             return;
         }
@@ -325,7 +326,6 @@ public class Reservation extends javax.swing.JFrame {
             statusText.setText("This date hasn't been checked");
             return;
         }
-
         if ((int) nightsCounter.getValue() <= 0) {
             statusText.setText("Please choose a positive number of nights");
             return;
@@ -334,24 +334,43 @@ public class Reservation extends javax.swing.JFrame {
             statusText.setText("Those number of nights hasn't been checked");
             return;
         }
-
         if (currentBookingRoomID == -1) {
             statusText.setText("Please check to find availble room");
+            return;
         }
-
-
+        String type = (String) typeField.getSelectedItem();
+        if (!type.equals(currentBookingType)) {
+            statusText.setText("That room type hasn't beeen checked");
+            return;
+        }
+        java.sql.Date arrival = java.sql.Date.valueOf("2000-01-01");
+        arrival.setTime(currentBookingArrivalDate.getTime());
+        try {
+            control.createNewReservation(firstName, familyName, address,
+                    country, phone, email, travelAgency, arrival,
+                    currentBookingNumNights, currentBookingRoomID);
+        }
+        catch (WrongNumberOfNights ex) {
+            statusText.setText("Please choose a positive number of nights");
+            return;
+        }
+        catch (WrongEmail ex) {
+            statusText.setText("Please enter a correct email");
+            return;
+        }
+        statusText.setText("Registered");
     }//GEN-LAST:event_submitButtonActionPerformed
 
-    private void textFieldChecker(JTextField textField, String s,
-            String errorString) {
+    private String textFieldChecker(JTextField textField, String errorString) {
+        String returnString = null;
         if (textField.getText().equals("")) {
             statusText.setText(errorString);
             status = false;
         }
         else {
-            s = textField.getText();
+            returnString = textField.getText();
         }
-
+        return returnString;
     }
 
     /**

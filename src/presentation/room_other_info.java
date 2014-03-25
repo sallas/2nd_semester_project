@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package presentation;
 
 import javax.swing.event.RowSorterEvent;
 
-/**
- *
- * @author Kaloyan
- */
 public class room_other_info extends javax.swing.JFrame
 {
 
