@@ -270,16 +270,17 @@ public class Reservation extends javax.swing.JFrame {
 
     private void roomAvailabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomAvailabilityActionPerformed
         statusText.setText(null);
-        Calendar arrivalDate = Calendar.getInstance();
-        arrivalDate.clear();
-        arrivalDate.setTime(checkDatePicker.getDate());
-        Calendar departureDate = (Calendar) arrivalDate.clone();
+        
         currentBookingNumNights = (Integer) nightsCounter.getValue();
         if (currentBookingNumNights <= 0) {
             statusText.setText("Please choose a positive number of nights");
             return;
         }
-
+        
+        Calendar arrivalDate = Calendar.getInstance();
+        arrivalDate.clear();
+        arrivalDate.setTime(checkDatePicker.getDate());
+        Calendar departureDate = (Calendar) arrivalDate.clone();
         departureDate.add(Calendar.DATE, currentBookingNumNights);
         currentBookingArrivalDate = checkDatePicker.getDate();
         currentBookingRoomID = control.getAvailableRoomOfSpecificType((String) typeField.getSelectedItem(),

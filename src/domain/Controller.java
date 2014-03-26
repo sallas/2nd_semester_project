@@ -35,7 +35,7 @@ public class Controller {
                     s = "Available";
                 }
             }
-            else{
+            else {
                 s = "Available";
             }
             roomList.add(Integer.toString(r.getID()) + "_" + r.getType() + "_" + s);
@@ -71,19 +71,25 @@ public class Controller {
         if (!emailValidator.validate(email)) {
             throw new WrongEmail("Email is wrong.");
         }
+        Calendar departureDate = Calendar.getInstance();
+        departureDate.clear();
+        departureDate.setTimeInMillis(checkin.getTime());
+        departureDate.add(Calendar.DATE, nights);
+        Date departureSQLDate = new Date(departureDate.getTimeInMillis());
         Customer customer = new Customer(-1, address, country, firstName,
                 familyName, phone, email, agency);
         Reservation reservation = new Reservation(-1, roomID,
-                -1, checkin, nights);
+                -1, checkin, departureSQLDate);
         return facade.saveReservationInformation(reservation, customer);
     }
 
     public int getAvailableRoomOfSpecificType(String type,
             Calendar arrivalDate, Calendar departureDate) {
 
-        Calendar bookedArrivalDate = Calendar.getInstance();
-        bookedArrivalDate.clear();
-        Calendar bookedDepartureDate;
+        Date bookedArrivalDate;
+        Date bookedDepartureDate;
+        Date arrivalSQLDate = new Date(arrivalDate.getTimeInMillis());
+        Date departureSQLDate = new Date(departureDate.getTimeInMillis());
 
         List<Reservation> reservations
                 = facade.getAllReservationsOfSpecificType(type);
@@ -98,23 +104,24 @@ public class Controller {
         }
 
         for (Reservation r : reservations) {
-            bookedArrivalDate.setTimeInMillis(r.getCheckinDate().getTime());
-            bookedDepartureDate = (Calendar) bookedArrivalDate.clone();
-            bookedDepartureDate.add(Calendar.DATE, r.getNumberNights());
+            bookedArrivalDate = r.getCheckinDate();
+            bookedDepartureDate = r.getDepartureDate();
             boolean status = true;
-            if (roomAvailability.containsKey(r.getRoomID())) {
-                if (roomAvailability.get(r.getRoomID()) == Boolean.FALSE) {
-                    status = false;
-                }
+
+            if (roomAvailability.get(r.getRoomID()) == Boolean.FALSE) {
+                status = false;
+
             }
             if (status) {
-                if (arrivalDate.before(bookedArrivalDate)) {
-                    if (departureDate.before(bookedArrivalDate)) {
+                if (arrivalSQLDate.before(bookedArrivalDate)) {
+                    if (departureSQLDate.before(bookedArrivalDate)) {
                         roomAvailability.put(r.getRoomID(), Boolean.TRUE);
                     }
-                } else if (arrivalDate.after(bookedDepartureDate)) {
+                }
+                else if (arrivalSQLDate.after(bookedDepartureDate)) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
-                } else {
+                }
+                else {
                     roomAvailability.put(r.getRoomID(), Boolean.FALSE);
                 }
             }
@@ -144,19 +151,17 @@ public class Controller {
         }
         List<Reservation> allReservations = facade.getAllReservations();
         List<Customer> currentGuests = new ArrayList<>();
-        Calendar rightNow = Calendar.getInstance();
-        Calendar arrivalDate = (Calendar) rightNow.clone();
-        arrivalDate.clear();
-        Calendar departureDate;
-        
+        Date rightNow = new Date(Calendar.getInstance().getTimeInMillis());
+        Date arrivalDate;
+        Date departureDate;
+
         for (Reservation r : allReservations) {
-            arrivalDate.setTimeInMillis(r.getCheckinDate().getTime());
-            departureDate = (Calendar) arrivalDate.clone();
-            departureDate.add(Calendar.DATE, r.getNumberNights());
-            if(rightNow.after(arrivalDate) && rightNow.before(departureDate)) {
+            arrivalDate = r.getCheckinDate();
+            departureDate = r.getDepartureDate();
+            if (rightNow.after(arrivalDate) && rightNow.before(departureDate)) {
                 currentGuests.add(customerMap.get(r.getCustomerID()));
             }
-                
+
         }
         return currentGuests;
     }

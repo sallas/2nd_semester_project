@@ -85,8 +85,8 @@ public class RoomMapper implements RoomMapperInterface {
     @Override
     public Date getRoomAvailabilityDate(int ID) {
         Date date = null;
-        int number_nights = 0;
-        String SQLString = "select checkin_date, number_nights"
+        Date departure_date = null;
+        String SQLString = "select checkin_date, departure_date"
                 + " from reservation "
                 + "where room_id = ? AND checkin_date = "
                 + "(select max(checkin_date) "
@@ -100,7 +100,7 @@ public class RoomMapper implements RoomMapperInterface {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 date = rs.getDate(1);
-                number_nights = rs.getInt(2);
+                departure_date = rs.getDate(2);
             }
         } catch (SQLException e) {
             System.out.println("Fail in RoomMapper - getAllRooms");
@@ -115,12 +115,11 @@ public class RoomMapper implements RoomMapperInterface {
                 System.out.println(e.getMessage());
             }
         }
-        if(date == null)
+        if(departure_date == null)
             return null;
         Calendar availabilityDate = Calendar.getInstance();
-        availabilityDate.setTimeInMillis(date.getTime());
-        availabilityDate.add(Calendar.DAY_OF_MONTH, number_nights);
-        date.setTime(availabilityDate.getTimeInMillis());
-        return date;
+        availabilityDate.setTimeInMillis(departure_date.getTime());
+        departure_date.setTime(availabilityDate.getTimeInMillis());
+        return departure_date;
     }
 }

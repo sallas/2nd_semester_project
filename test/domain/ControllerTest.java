@@ -122,10 +122,11 @@ public class ControllerTest {
     public void testGetAvailableRoomOfSpecificTypeSingleWorking() {
         Calendar arrivalDate = Calendar.getInstance();
         arrivalDate.clear();
-        arrivalDate.set(2015, 03, 02);
+        arrivalDate.set(2020, 03, 02);
         Calendar departureDate = (Calendar) arrivalDate.clone();
         departureDate.add(Calendar.DATE, 2);
         int roomID = controller.getAvailableRoomOfSpecificType("single", arrivalDate, departureDate);
+        System.out.println(roomID);
         assertTrue(roomID == 101);
     }
     
@@ -137,10 +138,11 @@ public class ControllerTest {
     public void testGetAvailableRoomOfSpecificTypeDoubleRoomWorking() {
         Calendar arrivalDate = Calendar.getInstance();
         arrivalDate.clear();
-        arrivalDate.set(2015, 03, 02);
+        arrivalDate.set(2020, 03, 02);
         Calendar departureDate = (Calendar) arrivalDate.clone();
         departureDate.add(Calendar.DATE, 2);
         int roomID = controller.getAvailableRoomOfSpecificType("double", arrivalDate, departureDate);
+        System.out.println(roomID);
         assertTrue(roomID == 100);
     }
     

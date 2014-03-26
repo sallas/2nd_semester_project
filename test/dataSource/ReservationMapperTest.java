@@ -67,7 +67,7 @@ public class ReservationMapperTest {
      */
     @Test
     public void testSaveReservationNewID() {
-        Reservation r = new Reservation(1, 100, 1, new Date(01, 03, 2014), 4);
+        Reservation r = new Reservation(1, 100, 1, new Date(01, 07, 2014), new Date(05, 07, 2014));
         boolean status = rm.saveReservation(r);
         assertTrue(status);
     }
@@ -78,7 +78,7 @@ public class ReservationMapperTest {
      */
     @Test
     public void testSaveReservationNoMatchCustomerID() {
-        Reservation r = new Reservation(1, 100, 99, new Date(01, 01, 2014), 4);
+        Reservation r = new Reservation(1, 100, 99, new Date(01, 07, 2014), new Date(05, 07, 2014));
         boolean status = rm.saveReservation(r);
         assertFalse(status);
     }
@@ -90,7 +90,7 @@ public class ReservationMapperTest {
     @Test
     public void testSaveReservationNoRoomsAndCustomersInDB() {
         EmptyDBFixture.setUp(con);
-        Reservation r = new Reservation(1, 100, 99, new Date(01, 01, 2014), 4);
+        Reservation r = new Reservation(1, 100, 99, new Date(01, 07, 2014), new Date(05, 07, 2014));
         boolean status = rm.saveReservation(r);
         assertFalse(status);
     }
@@ -101,7 +101,7 @@ public class ReservationMapperTest {
      */
     @Test
     public void testSaveReservationNoMatchRoomID() {
-        Reservation r = new Reservation(1, 99, 1, new Date(01, 01, 2014), 4);
+        Reservation r = new Reservation(1, 99, 1, new Date(01, 07, 2014), new Date(05, 07, 2014));
         boolean status = rm.saveReservation(r);
         assertFalse(status);
     }

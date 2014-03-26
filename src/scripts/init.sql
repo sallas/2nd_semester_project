@@ -39,8 +39,8 @@ CREATE TABLE reservation (
 ID number(5) NOT NULL,
 Room_ID number(5) NOT NULL,
 Customer_ID number(5) NOT NULL,
-Checkin_date date,
-Number_nights number(5) NOT NULL,
+Checkin_date date NOT NULL,
+Departure_date date NOT NULL,
 PRIMARY KEY (ID),
 FOREIGN KEY (Room_ID) REFERENCES Room(ID),
 FOREIGN KEY (Customer_ID) REFERENCES Customer

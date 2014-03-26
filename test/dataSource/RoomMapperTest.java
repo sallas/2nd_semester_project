@@ -73,7 +73,7 @@ public class RoomMapperTest {
     @Test
     public void testGetRoomAvailabilityDateMatchingID() {
         Date date = rm.getRoomAvailabilityDate(101);
-        Date expectedDate = Date.valueOf("2014-02-05");
+        Date expectedDate = Date.valueOf("24-03-2014");
         assertTrue(expectedDate.equals(date));
     }
 
