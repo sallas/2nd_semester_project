@@ -113,10 +113,9 @@ public class Controller {
 
             }
             if (status) {
-                if (arrivalSQLDate.before(bookedArrivalDate)) {
-                    if (departureSQLDate.before(bookedArrivalDate)) {
+                if (arrivalSQLDate.before(bookedArrivalDate) &&
+                        departureSQLDate.before(bookedArrivalDate)) {
                         roomAvailability.put(r.getRoomID(), Boolean.TRUE);
-                    }
                 }
                 else if (arrivalSQLDate.after(bookedDepartureDate)) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
