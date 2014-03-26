@@ -94,7 +94,6 @@ public class RoomMapper implements RoomMapperInterface {
                 + "where room_ID = ?)";
         PreparedStatement statement = null;
         try {
-            
             statement = con.prepareStatement(SQLString);
             statement.setInt(1, ID);
             statement.setInt(2, ID);
@@ -116,15 +115,12 @@ public class RoomMapper implements RoomMapperInterface {
                 System.out.println(e.getMessage());
             }
         }
-        
         if(date == null)
             return null;
-        
         Calendar availabilityDate = Calendar.getInstance();
         availabilityDate.setTimeInMillis(date.getTime());
         availabilityDate.add(Calendar.DAY_OF_MONTH, number_nights);
         date.setTime(availabilityDate.getTimeInMillis());
-        
         return date;
     }
 }
