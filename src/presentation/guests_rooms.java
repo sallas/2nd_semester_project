@@ -1,22 +1,54 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package presentation;
 
-/**
- *
- * @author Kaloyan
- */
+import domain.Controller;
+import domain.Customer;
+import java.util.List;
+
 public class guests_rooms extends javax.swing.JFrame
 {
-
+    Controller instance = Controller.getInstance();
   
     public guests_rooms()
     {
         initComponents();
+        refreshList();
+    }
+    
+    private void refreshList() {
+        List<Customer> customers = instance.getAllCurrentGuests();
+        System.out.println(customers.size());
+        System.out.println(customers.get(0));
+        int counter = 0;
+        Object[][] ob = new Object[customers.size()][8];
+        for (Customer c : customers) {
+            ob[counter][0] = c.getID();
+            ob[counter][1] = c.getFirst_name();
+            ob[counter][2] = c.getLast_name();
+            ob[counter][3] = c.getCountry();
+            ob[counter][4] = c.getAddres();
+            ob[counter][5] = c.getPhone();
+            ob[counter][6] = c.getTravel_agency();
+            ob[counter][7] = c.getEmail();
+            counter++;
+        }
+
+        jTableGuests.setModel(new javax.swing.table.DefaultTableModel(
+                ob,
+                new String[]{
+                    "ID", "First Name", "Last Name", "Country",
+                    "Address", "Phone", "Agency", "Email"
+                }
+        ) {
+            Class[] types = new Class[]{
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+        });
     }
 
     /**

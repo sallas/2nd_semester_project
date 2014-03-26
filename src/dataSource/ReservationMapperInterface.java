@@ -10,4 +10,6 @@ public interface ReservationMapperInterface {
     boolean saveReservation(Reservation r);
     
     List<Reservation> getAllReservationsOfSpecificType(String type);
+    
+    List<Reservation> getAllReservations();
 }

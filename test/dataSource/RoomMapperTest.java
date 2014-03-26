@@ -48,9 +48,52 @@ public class RoomMapperTest {
         assertTrue(r == null);
     }
 
+    /*
+     * Checks so the correct amount of rooms are returned
+     */
     @Test
     public void testGetAllRooms() {
         List<Room> rooms = rm.getAllRooms();
         assertEquals(2, rooms.size());
     }
+
+    /*
+     *   Checks so no rooms are returend when the DB is empty
+     */
+    @Test
+    public void testGetAllRoomsNoRoomsInDB() {
+        EmptyDBFixture.setUp(con);
+        List<Room> rooms = rm.getAllRooms();
+        assertEquals(0, rooms.size());
+    }
+
+    /*
+     *   Checks so the correct date is returned
+     */
+    @Test
+    public void testGetRoomAvailabilityDateMatchingID() {
+        Date date = rm.getRoomAvailabilityDate(101);
+        Date expectedDate = Date.valueOf("24-03-2014");
+        assertTrue(expectedDate.equals(date));
+    }
+
+    /*
+     *   Checks so null is returned when a none existing Room ID is given
+     */
+    @Test
+    public void testGetRoomAvailabilityDateNoMatchingID() {
+        Date date = rm.getRoomAvailabilityDate(99);
+        assertTrue(date == null);
+    }
+
+    /*
+     *   Checks so null is returend when there are no rooms in the DB
+     */
+    @Test
+    public void testGetRoomAvailabilityDateNoRoomsInDB() {
+        EmptyDBFixture.setUp(con);
+        Date date = rm.getRoomAvailabilityDate(100);
+        assertTrue(date == null);
+    }
+
 }

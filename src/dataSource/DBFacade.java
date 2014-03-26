@@ -68,4 +68,12 @@ public class DBFacade {
         return reservationMapper.getAllReservationsOfSpecificType(type);
     }
     
+    public List<Customer> getAllCustomers() {
+        return customerMapper.getAllCustomers();
+    }
+    
+    public List<Reservation> getAllReservations() {
+        return reservationMapper.getAllReservations();
+    }
+    
 }

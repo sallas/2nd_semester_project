@@ -1,24 +1,43 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package presentation;
 
-import javax.swing.event.RowSorterEvent;
+import domain.Controller;
+import java.util.List;
 
-/**
- *
- * @author Kaloyan
- */
-public class room_other_info extends javax.swing.JFrame
-{
+public class room_other_info extends javax.swing.JFrame {
 
- 
-    public room_other_info()
-    {
+    Controller instance = Controller.getInstance();
+
+    public room_other_info() {
         initComponents();
+        refreshList();
+    }
+
+    private void refreshList() {
+        List<String> roomList = instance.getRooms();
+        int counter = 0;
+        Object[][] ob = new Object[roomList.size()][3];
+        for (String i : roomList) {
+            String[] separated = i.split("_");
+            ob[counter][0] = separated[0];
+            ob[counter][1] = separated[1];
+            ob[counter][2] = separated[2];
+            counter++;
+        }
+
+        jTableRooms.setModel(new javax.swing.table.DefaultTableModel(
+                ob,
+                new String[]{
+                    "ID", "Type", "Available"
+                }
+        ) {
+            Class[] types = new Class[]{
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+        });
     }
 
     /**
@@ -28,8 +47,7 @@ public class room_other_info extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabelRooms = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -44,57 +62,30 @@ public class room_other_info extends javax.swing.JFrame
 
         jTableRooms.setAutoCreateRowSorter(true);
         jTableRooms.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
+            new Object [][] {
                 {null, null, null},
                 {null, null, null},
                 {null, null, null}
             },
-            new String []
-            {
-                "Number", "Type", "Available from "
+            new String [] {
+                "ID", "Type", "Available From"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        jTableRooms.setToolTipText("");
         jTableRooms.setCellSelectionEnabled(true);
         jScrollPane1.setViewportView(jTableRooms);
 
         jButtonBackToMenu.setText("Back to Menu");
-        jButtonBackToMenu.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonBackToMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBackToMenuActionPerformed(evt);
             }
         });
@@ -136,54 +127,42 @@ public class room_other_info extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
-    
-    
+
     private void jButtonBackToMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonBackToMenuActionPerformed
     {//GEN-HEADEREND:event_jButtonBackToMenuActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jButtonBackToMenuActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex)
-        {
+        } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
+        } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
+        } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
                 new room_other_info().setVisible(true);
             }
         });

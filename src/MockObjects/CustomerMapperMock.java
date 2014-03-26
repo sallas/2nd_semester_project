@@ -3,6 +3,7 @@ package MockObjects;
 import dataSource.CustomerMapperInterface;
 import domain.Customer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CustomerMapperMock implements CustomerMapperInterface {
@@ -37,6 +38,11 @@ public class CustomerMapperMock implements CustomerMapperInterface {
             c = customers.get(ID);
         }
         return c;
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

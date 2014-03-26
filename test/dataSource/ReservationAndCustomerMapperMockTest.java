@@ -18,11 +18,11 @@ public class ReservationAndCustomerMapperMockTest {
     DBFacade dbf;
     // Creation of reservation to use in tests
     Reservation reservationOne
-            = new Reservation(1, 100, 1, new Date(01, 01, 2014), 4);
+            = new Reservation(1, 100, 1, new Date(01, 01, 2014), new Date(05, 01, 2014));
     Reservation reservationTwo
-            = new Reservation(2, 101, 2, new Date(01, 01, 2014), 4);
+            = new Reservation(2, 101, 2, new Date(01, 01, 2014), new Date(05, 01, 2014));
     Reservation reservationThree
-            = new Reservation(3, 101, 1, new Date(01, 02, 2014), 4);
+            = new Reservation(3, 101, 1, new Date(01, 02, 2014), new Date(05, 02, 2014));
     Customer customerOne
             = new Customer(1, "address1", "country1", "firstName1", "lastName1",
                     "33", "email1", "agency1");
@@ -112,7 +112,7 @@ public class ReservationAndCustomerMapperMockTest {
     @Test
     public void testSaveReservationNoConflict() {
         Reservation reservation
-                = new Reservation(IRRELEVANT, 101, IRRELEVANT, new Date(01, 01, 2014), 4);
+                = new Reservation(IRRELEVANT, 101, IRRELEVANT, new Date(01, 01, 2014), new Date(01, 04, 2014));
         Customer customer = new Customer(IRRELEVANT, "address3", "country3", "firstName3", "lastName3",
                 "333", "email3", "agency3");
         boolean status = dbf.saveReservationInformation(reservation, customer);
@@ -126,7 +126,7 @@ public class ReservationAndCustomerMapperMockTest {
     @Test
     public void testSaveReservationWithConflict() {
         Reservation reservation
-                = new Reservation(IRRELEVANT, 999, IRRELEVANT, new Date(01, 01, 2014), 4);
+                = new Reservation(IRRELEVANT, 999, IRRELEVANT, new Date(01, 01, 2014), new Date(01, 04, 2014));
         Customer customer = new Customer(IRRELEVANT, "address3", "country3", "firstName3", "lastName3",
                 "333", "email3", "agency3");
         boolean status = dbf.saveReservationInformation(reservation, customer);

@@ -35,7 +35,7 @@ public class ReservationMapper implements ReservationMapperInterface {
                         rs.getInt(2),
                         rs.getInt(3),
                         rs.getDate(4),
-                        rs.getInt(5));
+                        rs.getDate(5));
             }
         }
         catch (SQLException e) {
@@ -82,7 +82,7 @@ public class ReservationMapper implements ReservationMapperInterface {
             statement.setInt(2, r.getRoomID());
             statement.setInt(3, r.getCustomerID());
             statement.setDate(4, r.getCheckinDate());
-            statement.setInt(5, r.getNumberNights());
+            statement.setDate(5, r.getDepartureDate());
             rowsInserted = statement.executeUpdate();
         }
         catch (SQLException e) {
@@ -117,7 +117,7 @@ public class ReservationMapper implements ReservationMapperInterface {
             while (rs.next()) {
                 allSpecificReservations.add(
                         new Reservation(rs.getInt(1), rs.getInt(2),
-                                rs.getInt(3), rs.getDate(4), rs.getInt(5)));
+                                rs.getInt(3), rs.getDate(4), rs.getDate(5)));
             }
         }
         catch (SQLException e) {
@@ -138,5 +138,35 @@ public class ReservationMapper implements ReservationMapperInterface {
             }
         }
         return allSpecificReservations;
+    }
+    
+    @Override
+    public List<Reservation> getAllReservations() {
+        List<Reservation> allReservations = new ArrayList();
+        String SQLString = "select * "
+                + "from reservation";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                allReservations.add(
+                        new Reservation(rs.getInt(1), rs.getInt(2),
+                        rs.getInt(3), rs.getDate(4), rs.getDate(5)));
+            }
+        } catch (SQLException e) {
+            System.out.println("Fail in ReservationMapper - getAllReservations");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Fail in ReservationMapper - getAllReservations");
+                System.out.println(e.getMessage());
+            }
+        }
+        return allReservations;
     }
 }

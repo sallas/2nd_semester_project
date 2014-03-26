@@ -1,19 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package presentation;
 
 import domain.Controller;
+import domain.WrongEmail;
+import domain.WrongNumberOfNights;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTextField;
 
-/**
- *
- * @author martin
- */
 public class Reservation extends javax.swing.JFrame {
 
     Controller control = Controller.getInstance();
+    private boolean status;
+    private int currentBookingRoomID;
+    private int currentBookingNumNights;
+    private Date currentBookingArrivalDate = null;
+    private String currentBookingType = null;
 
     /**
      * Creates new form Reservation
@@ -21,6 +24,9 @@ public class Reservation extends javax.swing.JFrame {
     public Reservation() {
         initComponents();
         typeField.addItem("single");
+        typeField.addItem("double");
+        typeField.addItem("family");
+
     }
 
     /**
@@ -55,8 +61,9 @@ public class Reservation extends javax.swing.JFrame {
         submitButton = new javax.swing.JButton();
         checkDatePicker = new org.jdesktop.swingx.JXDatePicker();
         nightsCounter = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
+        roomAvailability = new javax.swing.JButton();
         RoomNumLabel = new javax.swing.JLabel();
+        statusText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registration of apartment");
@@ -116,77 +123,88 @@ public class Reservation extends javax.swing.JFrame {
 
         submitButton.setText("Submit");
         submitButton.setToolTipText("");
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                submitButtonActionPerformed(evt);
+            }
+        });
+
+        roomAvailability.setText("Check");
+        roomAvailability.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roomAvailabilityActionPerformed(evt);
             }
         });
 
         RoomNumLabel.setText("Room Number");
+
+        statusText.setMaximumSize(new java.awt.Dimension(150, 15));
+        statusText.setMinimumSize(new java.awt.Dimension(150, 15));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(phoneLabel)
+                    .addComponent(addressLabel)
+                    .addComponent(firstNameLabel)
+                    .addComponent(countryLabel)
+                    .addComponent(jLabel1)
+                    .addComponent(travelAgencyLabel)
+                    .addComponent(checkinLabel)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(reservationTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(phoneLabel)
-                            .addComponent(addressLabel)
-                            .addComponent(firstNameLabel)
-                            .addComponent(countryLabel)
-                            .addComponent(jLabel1)
-                            .addComponent(travelAgencyLabel)
-                            .addComponent(checkinLabel)
-                            .addComponent(jLabel2))
+                        .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(nightsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nightsCounter, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(phoneField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(emailLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(emailField))
+                    .addComponent(addressField, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(countryField)
+                    .addComponent(travelAgencyField)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nightsLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nightsCounter, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(phoneField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(emailLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(emailField))
-                            .addComponent(addressField, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(countryField)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(familyNameLabel)
-                                .addGap(24, 24, 24)
-                                .addComponent(familyNameField))
-                            .addComponent(travelAgencyField)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(typeField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(33, 33, 33)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(RoomNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(roomAvailability, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(typeField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RoomNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(familyNameLabel)
+                        .addGap(24, 24, 24)
+                        .addComponent(familyNameField)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(reservationTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(statusText, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(reservationTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reservationTitle)
+                    .addComponent(statusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(firstNameLabel)
@@ -227,7 +245,7 @@ public class Reservation extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(submitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(roomAvailability))
                 .addContainerGap())
         );
 
@@ -250,18 +268,110 @@ public class Reservation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_travelAgencyFieldActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void roomAvailabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomAvailabilityActionPerformed
+        statusText.setText(null);
+        
+        currentBookingNumNights = (Integer) nightsCounter.getValue();
+        if (currentBookingNumNights <= 0) {
+            statusText.setText("Please choose a positive number of nights");
+            return;
+        }
+        
         Calendar arrivalDate = Calendar.getInstance();
         arrivalDate.clear();
         arrivalDate.setTime(checkDatePicker.getDate());
         Calendar departureDate = (Calendar) arrivalDate.clone();
-        int numNights = (Integer) nightsCounter.getValue();
-        departureDate.add(Calendar.DATE, numNights);
-        
-        int roomID = control.getAvailableRoomOfSpecificType((String) typeField.getSelectedItem(),
+        departureDate.add(Calendar.DATE, currentBookingNumNights);
+        currentBookingArrivalDate = checkDatePicker.getDate();
+        currentBookingRoomID = control.getAvailableRoomOfSpecificType((String) typeField.getSelectedItem(),
                 arrivalDate, departureDate);
-        RoomNumLabel.setText(roomID + "");
-    }//GEN-LAST:event_jButton1ActionPerformed
+        currentBookingType = (String) typeField.getSelectedItem();
+        if (currentBookingRoomID == -1) {
+            RoomNumLabel.setText("No room");
+            statusText.setText("No room is available on those dates");
+        }
+        else {
+            RoomNumLabel.setText(currentBookingRoomID + "");
+        }
+    }//GEN-LAST:event_roomAvailabilityActionPerformed
+
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
+        statusText.setText(null);
+        status = true;
+
+        String email
+                = textFieldChecker(emailField, "Please enter email");
+        String travelAgency
+                = textFieldChecker(travelAgencyField,
+                        "Please enter travel agency name");
+        String phone
+                = textFieldChecker(phoneField, "Please enter phone number");
+        String country
+                = textFieldChecker(countryField, "Please enter country");
+        String address
+                = textFieldChecker(addressField, "Please enter address");
+        String familyName
+                = textFieldChecker(familyNameField, "Please Enter family name");
+        String firstName
+                = textFieldChecker(firstNameField, "Please enter first name");
+
+        if (status == false) {
+            return;
+        }
+        if (checkDatePicker.getDate() == null) {
+            statusText.setText("Please choose a arrival date");
+            return;
+        }
+        if (!checkDatePicker.getDate().equals(currentBookingArrivalDate)) {
+            statusText.setText("This date hasn't been checked");
+            return;
+        }
+        if ((int) nightsCounter.getValue() <= 0) {
+            statusText.setText("Please choose a positive number of nights");
+            return;
+        }
+        if ((int) nightsCounter.getValue() != currentBookingNumNights) {
+            statusText.setText("Those number of nights hasn't been checked");
+            return;
+        }
+        if (currentBookingRoomID == -1) {
+            statusText.setText("Please check to find availble room");
+            return;
+        }
+        String type = (String) typeField.getSelectedItem();
+        if (!type.equals(currentBookingType)) {
+            statusText.setText("That room type hasn't beeen checked");
+            return;
+        }
+        java.sql.Date arrival = java.sql.Date.valueOf("2000-01-01");
+        arrival.setTime(currentBookingArrivalDate.getTime());
+        try {
+            control.createNewReservation(firstName, familyName, address,
+                    country, phone, email, travelAgency, arrival,
+                    currentBookingNumNights, currentBookingRoomID);
+        }
+        catch (WrongNumberOfNights ex) {
+            statusText.setText("Please choose a positive number of nights");
+            return;
+        }
+        catch (WrongEmail ex) {
+            statusText.setText("Please enter a correct email");
+            return;
+        }
+        statusText.setText("Registered");
+    }//GEN-LAST:event_submitButtonActionPerformed
+
+    private String textFieldChecker(JTextField textField, String errorString) {
+        String returnString = null;
+        if (textField.getText().equals("")) {
+            statusText.setText(errorString);
+            status = false;
+        }
+        else {
+            returnString = textField.getText();
+        }
+        return returnString;
+    }
 
     /**
      * @param args the command line arguments
@@ -315,7 +425,6 @@ public class Reservation extends javax.swing.JFrame {
     private javax.swing.JLabel familyNameLabel;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JLabel firstNameLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSpinner nightsCounter;
@@ -323,6 +432,8 @@ public class Reservation extends javax.swing.JFrame {
     private javax.swing.JTextField phoneField;
     private javax.swing.JLabel phoneLabel;
     private javax.swing.JLabel reservationTitle;
+    private javax.swing.JButton roomAvailability;
+    private javax.swing.JLabel statusText;
     private javax.swing.JButton submitButton;
     private javax.swing.JTextField travelAgencyField;
     private javax.swing.JLabel travelAgencyLabel;
