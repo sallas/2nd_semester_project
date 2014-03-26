@@ -298,23 +298,22 @@ public class Reservation extends javax.swing.JFrame {
         statusText.setText(null);
         status = true;
 
-        String firstName
-                = textFieldChecker(firstNameField, "Please enter first name");
-        String familyName
-                = textFieldChecker(familyNameField, "Please Enter family name");
-        String address
-                = textFieldChecker(addressField, "Please enter address");
-        String country
-                = textFieldChecker(countryField, "Please enter country");
-        String phone
-                = textFieldChecker(phoneField, "Please enter phone number");
+        String email
+                = textFieldChecker(emailField, "Please enter email");
         String travelAgency
                 = textFieldChecker(travelAgencyField,
                         "Please enter travel agency name");
-        String email
-                = textFieldChecker(emailField, "Please enter email");
+        String phone
+                = textFieldChecker(phoneField, "Please enter phone number");
+        String country
+                = textFieldChecker(countryField, "Please enter country");
+        String address
+                = textFieldChecker(addressField, "Please enter address");
+        String familyName
+                = textFieldChecker(familyNameField, "Please Enter family name");
+        String firstName
+                = textFieldChecker(firstNameField, "Please enter first name");
 
-        System.out.println(address);
         if (status == false) {
             return;
         }
