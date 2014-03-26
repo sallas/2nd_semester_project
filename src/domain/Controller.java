@@ -2,6 +2,7 @@ package domain;
 
 import dataSource.DBFacade;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,10 +27,16 @@ public class Controller {
         java.sql.Date currentDate = new java.sql.Date(utilDate.getTime());
         for (Room r : tempRoomList) {
             Date date = facade.getRoomAvailabilityDate(r.getID());
-            Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String s = formatter.format(date);
-            if (date.compareTo(currentDate) < 0) {
-                s = "NOW";
+            String s = null;
+            if (date != null) {
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                s = "Not Available";
+                if (date.compareTo(currentDate) < 0) {
+                    s = "Available";
+                }
+            }
+            else{
+                s = "Available";
             }
             roomList.add(Integer.toString(r.getID()) + "_" + r.getType() + "_" + s);
         }
@@ -105,11 +112,9 @@ public class Controller {
                     if (departureDate.before(bookedArrivalDate)) {
                         roomAvailability.put(r.getRoomID(), Boolean.TRUE);
                     }
-                }
-                else if (arrivalDate.after(bookedDepartureDate)) {
+                } else if (arrivalDate.after(bookedDepartureDate)) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
-                }
-                else {
+                } else {
                     roomAvailability.put(r.getRoomID(), Boolean.FALSE);
                 }
             }
