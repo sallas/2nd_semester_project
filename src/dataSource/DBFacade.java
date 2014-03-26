@@ -44,6 +44,7 @@ public class DBFacade {
     }
 
     public List<Room> getAllRooms() {
+        System.out.println("In the facade, about to go to roomMapper.getAllRooms()");
         return roomMapper.getAllRooms();
     }
 

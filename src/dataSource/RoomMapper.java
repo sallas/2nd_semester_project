@@ -54,9 +54,10 @@ public class RoomMapper implements RoomMapperInterface {
     //This method returns a list of all the room objects.
     @Override
     public List<Room> getAllRooms() {
+        System.out.println("Start of all Rooms");
         List<Room> allRooms = new ArrayList();
         String SQLString = "select *"
-                + "from room";
+                + " from room";
         PreparedStatement statement = null;
         try {
             statement = con.prepareStatement(SQLString);
@@ -77,6 +78,7 @@ public class RoomMapper implements RoomMapperInterface {
                 System.out.println(e.getMessage());
             }
         }
+        System.out.println("allRooms: " + allRooms.size());
         return allRooms;
     }
 
