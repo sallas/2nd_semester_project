@@ -5,8 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class AbstractMapper {
     protected final Connection con;
@@ -17,16 +15,16 @@ public abstract class AbstractMapper {
     
     /*
      * Utility function for executing SQL Queries with automatic mapping
-     * and exception message.
+     * and exception message. The result set is not closed so close after usage.
      */
-    private ResultSet executeSQLQuery(String statement, String exMessage, Object... values) {
+    protected ResultSet executeSQLQuery(String statement, String exMessage, Object... values) {
         ResultSet result = null;
         int counter = 1;
         PreparedStatement st = null;
         try {
             st = con.prepareStatement(statement);
             for (Object value : values) {
-                if (value instanceof Integer){
+                if (value instanceof Integer) {
                     st.setInt(counter, (int) value);
                 } else if (value instanceof String) {
                     st.setString(counter, (String) value);
@@ -35,17 +33,10 @@ public abstract class AbstractMapper {
                 }
                 counter++;
             }
-            st.executeQuery();
+            result = st.executeQuery();
         } catch (SQLException ex) {
             System.out.println(exMessage);
             System.out.println(ex.getMessage());
-        } finally {
-            try {
-                st.close();
-            } catch (SQLException e) {
-                System.out.println(exMessage);
-                System.out.println(e.getMessage());
-            }
         }
         return result;
     }

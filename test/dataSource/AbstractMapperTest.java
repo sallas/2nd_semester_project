@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package dataSource;
 
 import java.sql.Connection;
@@ -38,13 +34,22 @@ public class AbstractMapperTest {
         ResultSet rs = am.executeSQLQueryPrivate("SELECT type FROM room WHERE ID= ?",
                 "Problem with my test statement", 101);
         assertTrue(rs.next());
+        rs.close();
     }
     
-    @Test(expected = SQLException.class)
+    @Test
     public void testExecuteSQLQueryWrongSelectStatement() throws SQLException {
         ResultSet rs = am.executeSQLQueryPrivate("SELECT t!pe FROM room WHERE ID= ?",
                 "Problem with my test statement", 101);
-        assertTrue(rs.next());
+        assertNull(rs);
     }
     
+    @Test
+    public void testExecuteSQLQueryComplexSelectStatement() throws SQLException {
+        ResultSet rs = am.executeSQLQueryPrivate(
+                "SELECT first_name FROM customer WHERE last_name = ? AND phone = ?",
+                "Problem with my test statement", "lastName1", "33");
+        assertTrue(rs.next());
+    }
+
 }

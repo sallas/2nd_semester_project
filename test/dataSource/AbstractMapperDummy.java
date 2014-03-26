@@ -13,6 +13,6 @@ public class AbstractMapperDummy extends AbstractMapper{
      * A dummy map for the private method.
      */
     public ResultSet executeSQLQueryPrivate(String statement, String exMessage, Object... values) {
-        return executeSQLQueryPrivate(statement, exMessage, values);
+        return executeSQLQuery(statement, exMessage, values);
     }
 }
