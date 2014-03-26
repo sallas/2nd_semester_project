@@ -49,8 +49,4 @@ public class RoomMapperMock implements RoomMapperInterface {
         return returnRooms;
     }
 
-    @Override
-    public Date getRoomAvailabilityDate(int ID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

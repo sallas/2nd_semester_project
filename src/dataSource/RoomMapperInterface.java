@@ -10,5 +10,4 @@ public interface RoomMapperInterface {
 
     List<Room> getAllRooms();
     
-    Date getRoomAvailabilityDate(int ID);
 }

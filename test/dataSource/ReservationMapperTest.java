@@ -51,8 +51,8 @@ public class ReservationMapperTest {
         Reservation r = rm.getReservation(33);
         assertTrue(r == null);
     }
-    
-     /*
+
+    /*
      * Checks so no reservation is returned when bad ID is given
      */
     @Test
@@ -82,7 +82,7 @@ public class ReservationMapperTest {
         boolean status = rm.saveReservation(r);
         assertFalse(status);
     }
-    
+
     /*
      * Checks so the reservation is not inserted when the DB 
      * doesn't have any Rooms or Customers in it
@@ -115,7 +115,7 @@ public class ReservationMapperTest {
         List<Reservation> resList = rm.getAllReservationsOfSpecificType("single");
         assertTrue(resList.size() == 2);
     }
-    
+
     /*
      * Checks so the correct amount of reservations are returned 
      * when looking for single rooms
@@ -126,7 +126,7 @@ public class ReservationMapperTest {
         List<Reservation> resList = rm.getAllReservationsOfSpecificType("single");
         assertTrue(resList.isEmpty());
     }
-    
+
 
     /*
      * Checks so the correct amount of reservations are returned 
@@ -137,8 +137,8 @@ public class ReservationMapperTest {
         List<Reservation> resList = rm.getAllReservationsOfSpecificType("double");
         assertTrue(resList.size() == 1);
     }
-    
-     /*
+
+    /*
      * Checks so the correct amount of rooms are returned
      */
     @Test
@@ -147,4 +147,48 @@ public class ReservationMapperTest {
         assertEquals(3, reservations.size());
     }
 
+    @Test
+    public void testCheckAvailableReservationAvailable() {
+        Date arrivalDate = Date.valueOf("2015-03-10");
+        Date departureDate = Date.valueOf("2015-03-13");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertTrue(status);
+    }
+
+    @Test
+    public void testCheckAvailableReservationNotAvailableDatesInsideExistingReservtion() {
+        Date arrivalDate = Date.valueOf("2014-01-24");
+        Date departureDate = Date.valueOf("2014-01-26");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertFalse(status);
+    }
+
+    @Test
+    public void testCheckAvailableReservationNotAvailableDatesOutsideExistingReservtion() {
+        Date arrivalDate = Date.valueOf("2014-01-20");
+        Date departureDate = Date.valueOf("2014-01-30");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertFalse(status);
+    }
+
+    @Test
+    public void testCheckAvailableReservationNotAvailableArrivalDateOutsideExistingReservtion() {
+        Date arrivalDate = Date.valueOf("2014-01-20");
+        Date departureDate = Date.valueOf("2014-01-26");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertFalse(status);
+    }
+
+    @Test
+    public void testCheckAvailableReservationNotAvailableDepartureDateOutsideExistingReservtion() {
+        Date arrivalDate = Date.valueOf("2014-01-24");
+        Date departureDate = Date.valueOf("2014-01-30");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertFalse(status);
+    }
 }

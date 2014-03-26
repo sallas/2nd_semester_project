@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.Controller;
+import domain.UnavailableReservation;
 import domain.WrongEmail;
 import domain.WrongNumberOfNights;
 import java.util.Calendar;
@@ -282,9 +283,11 @@ public class Reservation extends javax.swing.JFrame {
         arrivalDate.setTime(checkDatePicker.getDate());
         Calendar departureDate = (Calendar) arrivalDate.clone();
         departureDate.add(Calendar.DATE, currentBookingNumNights);
+        java.sql.Date arrival = new java.sql.Date(arrivalDate.getTimeInMillis());
+        java.sql.Date departure = new java.sql.Date(departureDate.getTimeInMillis());
         currentBookingArrivalDate = checkDatePicker.getDate();
-        currentBookingRoomID = control.getAvailableRoomOfSpecificType((String) typeField.getSelectedItem(),
-                arrivalDate, departureDate);
+        currentBookingRoomID = control.getAvailableRoomIDOfTypeBetweenDates((String) typeField.getSelectedItem(),
+                arrival, departure);
         currentBookingType = (String) typeField.getSelectedItem();
         if (currentBookingRoomID == -1) {
             RoomNumLabel.setText("No room");
@@ -357,7 +360,10 @@ public class Reservation extends javax.swing.JFrame {
         catch (WrongEmail ex) {
             statusText.setText("Please enter a correct email");
             return;
-        }
+        } catch (UnavailableReservation ex) {
+            statusText.setText("Someone already booked that reservation");
+            return;
+        } 
         statusText.setText("Registered");
     }//GEN-LAST:event_submitButtonActionPerformed
 
