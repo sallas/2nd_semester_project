@@ -51,7 +51,7 @@ public class ControllerTest {
     public void saveReservationInControllerProperFull()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", new Date(1994, 12, 31), 30, 100);
+                "00000", "igor@gmail.com", "sunshine", Date.valueOf("1995-01-01"), 30, 100);
         assertTrue(res);
     }
 

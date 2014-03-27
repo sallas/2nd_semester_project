@@ -31,4 +31,6 @@ public interface ReservationMapperInterface {
      * Otherwise returns false
      */
     boolean checkAvailableReservation(Reservation r);
+    
+    void lockReservationTable();
 }
