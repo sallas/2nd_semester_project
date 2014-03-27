@@ -2,10 +2,6 @@ package domain;
 
 import dataSource.DBFacade;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -21,23 +17,26 @@ public class Controller {
     private int currentRoomID;
 
     public List<String> getRooms() {
-        List<String> roomList = new ArrayList();
-        List<Room> tempRoomList = facade.getAllRooms();
+         List<String> roomList = new ArrayList();
+        List<Room> allRooms = facade.getAllRooms();
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date currentDate = new java.sql.Date(utilDate.getTime());
-        for (Room r : tempRoomList) {
-            Date date = facade.getRoomAvailabilityDate(r.getID());
-            String s = null;
-            if (date != null) {
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                s = "Not Available";
-                if (date.compareTo(currentDate) < 0) {
-                    s = "Available";
-                }
-            }
-            else {
+        List<Integer> availableSingleRooms
+                = getAllAvailableRoomIDsOfTypeAndBetweenDates("single", currentDate, currentDate);
+        List<Integer> availableDoubleRooms
+                = getAllAvailableRoomIDsOfTypeAndBetweenDates("double", currentDate, currentDate);
+        List<Integer> availableFamilyRooms
+                = getAllAvailableRoomIDsOfTypeAndBetweenDates("family", currentDate, currentDate);
+        for (Room r : allRooms) {
+            String s;
+            if (availableSingleRooms.contains(r.getID())
+                    || availableDoubleRooms.contains(r.getID())
+                    || availableFamilyRooms.contains(r.getID())) {
                 s = "Available";
+            } else {
+                s = "Not Available";
             }
+
             roomList.add(Integer.toString(r.getID()) + "_" + r.getType() + "_" + s);
         }
         return roomList;
@@ -63,7 +62,7 @@ public class Controller {
             String phone, String email,
             String agency, Date checkin,
             int nights, int roomID)
-            throws WrongNumberOfNights, WrongEmail {
+            throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         if (nights <= 0) {
             throw new WrongNumberOfNights("Zero or less than zero"
                     + "number of nights");
@@ -80,16 +79,31 @@ public class Controller {
                 familyName, phone, email, agency);
         Reservation reservation = new Reservation(-1, roomID,
                 -1, checkin, departureSQLDate);
+        if (!facade.checkAvailableReservation(reservation)) {
+            throw new UnavailableReservation("Another reservation conflict with this reservation");
+        }
         return facade.saveReservationInformation(reservation, customer);
     }
 
-    public int getAvailableRoomOfSpecificType(String type,
-            Calendar arrivalDate, Calendar departureDate) {
+    /*
+     *   Returns a availableRooms of a avialable room during your specified time period
+     */
+    public int getAvailableRoomIDOfTypeBetweenDates(String type, Date arrivalDate, Date departureDate) {
 
+        List<Integer> availableRoomIDs
+                = getAllAvailableRoomIDsOfTypeAndBetweenDates(type, arrivalDate, departureDate);
+        if (availableRoomIDs.isEmpty()) {
+            currentRoomID = -1;
+            return -1;
+        }
+        Random rand = new Random();
+        currentRoomID = availableRoomIDs.get(rand.nextInt(availableRoomIDs.size()));
+        return currentRoomID;
+    }
+
+    private List<Integer> getAllAvailableRoomIDsOfTypeAndBetweenDates(String type, Date arrivalDate, Date departureDate) {
         Date bookedArrivalDate;
         Date bookedDepartureDate;
-        Date arrivalSQLDate = new Date(arrivalDate.getTimeInMillis());
-        Date departureSQLDate = new Date(departureDate.getTimeInMillis());
 
         List<Reservation> reservations
                 = facade.getAllReservationsOfSpecificType(type);
@@ -113,35 +127,30 @@ public class Controller {
 
             }
             if (status) {
-                if (arrivalSQLDate.before(bookedArrivalDate) &&
-                        departureSQLDate.before(bookedArrivalDate)) {
-                        roomAvailability.put(r.getRoomID(), Boolean.TRUE);
-                }
-                else if (arrivalSQLDate.after(bookedDepartureDate)) {
+                if (arrivalDate.before(bookedArrivalDate)
+                        && departureDate.before(bookedArrivalDate)) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
-                }
-                else {
+                } else if (arrivalDate.after(bookedDepartureDate)) {
+                    roomAvailability.put(r.getRoomID(), Boolean.TRUE);
+                } else {
                     roomAvailability.put(r.getRoomID(), Boolean.FALSE);
                 }
             }
 
         }
-        List<Integer> roomID = new ArrayList<>();
+        List<Integer> availableRooms = new ArrayList<>();
 
         for (Map.Entry<Integer, Boolean> entry : roomAvailability.entrySet()) {
             if (entry.getValue()) {
-                roomID.add(entry.getKey());
+                availableRooms.add(entry.getKey());
             }
         }
-        if (roomID.isEmpty()) {
-            currentRoomID = -1;
-            return -1;
-        }
-        Random rand = new Random();
-        currentRoomID = roomID.get(rand.nextInt(roomID.size()));
-        return currentRoomID;
+        return availableRooms;
     }
 
+    /*
+     *   Returns a list of a customers currently in the hotel
+     */
     public List<Customer> getAllCurrentGuests() {
         List<Customer> allCustomers = facade.getAllCustomers();
         Map<Integer, Customer> customerMap = new HashMap<>();

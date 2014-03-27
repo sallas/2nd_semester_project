@@ -54,7 +54,6 @@ public class RoomMapper implements RoomMapperInterface {
     //This method returns a list of all the room objects.
     @Override
     public List<Room> getAllRooms() {
-        System.out.println("Start of all Rooms");
         List<Room> allRooms = new ArrayList();
         String SQLString = "select *"
                 + " from room";
@@ -78,48 +77,6 @@ public class RoomMapper implements RoomMapperInterface {
                 System.out.println(e.getMessage());
             }
         }
-        System.out.println("allRooms: " + allRooms.size());
         return allRooms;
-    }
-
-    @Override
-    public Date getRoomAvailabilityDate(int ID) {
-        Date date = null;
-        Date departure_date = null;
-        String SQLString = "select checkin_date, departure_date"
-                + " from reservation "
-                + "where room_id = ? AND checkin_date = "
-                + "(select max(checkin_date) "
-                + "from reservation "
-                + "where room_ID = ?)";
-        PreparedStatement statement = null;
-        try {
-            statement = con.prepareStatement(SQLString);
-            statement.setInt(1, ID);
-            statement.setInt(2, ID);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                date = rs.getDate(1);
-                departure_date = rs.getDate(2);
-            }
-        } catch (SQLException e) {
-            System.out.println("Fail in RoomMapper - getAllRooms");
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Fail in RoomMapper - getAllRooms");
-                System.out.println(e.getMessage());
-            }
-        }
-        if(departure_date == null)
-            return null;
-        Calendar availabilityDate = Calendar.getInstance();
-        availabilityDate.setTimeInMillis(departure_date.getTime());
-        departure_date.setTime(availabilityDate.getTimeInMillis());
-        return departure_date;
     }
 }

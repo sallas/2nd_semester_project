@@ -37,18 +37,15 @@ public class ReservationMapper implements ReservationMapperInterface {
                         rs.getDate(4),
                         rs.getDate(5));
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Fail in ReservationMapper - getReservation");
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (statement != null) {
                     statement.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 System.out.println("Fail in ReservationMapper - getReservation");
                 System.out.println(e.getMessage());
             }
@@ -84,17 +81,14 @@ public class ReservationMapper implements ReservationMapperInterface {
             statement.setDate(4, r.getCheckinDate());
             statement.setDate(5, r.getDepartureDate());
             rowsInserted = statement.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Fail in ReservationMapper - saveReservation");
             System.out.println(e.getMessage());
-        }
-        finally // must close statement
+        } finally // must close statement
         {
             try {
                 statement.close();
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 System.out.println("Fail in ReservationMapper - saveReservation");
                 System.out.println(e.getMessage());
             }
@@ -119,19 +113,16 @@ public class ReservationMapper implements ReservationMapperInterface {
                         new Reservation(rs.getInt(1), rs.getInt(2),
                                 rs.getInt(3), rs.getDate(4), rs.getDate(5)));
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Fail in ReservationMapper -"
                     + " getAllReservationsOfSpecificType");
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (statement != null) {
                     statement.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 System.out.println("Fail in ReservationMapper -"
                         + " getAllReservationsOfSpecificType");
                 System.out.println(e.getMessage());
@@ -139,7 +130,10 @@ public class ReservationMapper implements ReservationMapperInterface {
         }
         return allSpecificReservations;
     }
-    
+
+    /*
+     *   Returns a list of all reservations
+     */
     @Override
     public List<Reservation> getAllReservations() {
         List<Reservation> allReservations = new ArrayList();
@@ -152,7 +146,7 @@ public class ReservationMapper implements ReservationMapperInterface {
             while (rs.next()) {
                 allReservations.add(
                         new Reservation(rs.getInt(1), rs.getInt(2),
-                        rs.getInt(3), rs.getDate(4), rs.getDate(5)));
+                                rs.getInt(3), rs.getDate(4), rs.getDate(5)));
             }
         } catch (SQLException e) {
             System.out.println("Fail in ReservationMapper - getAllReservations");
@@ -169,4 +163,57 @@ public class ReservationMapper implements ReservationMapperInterface {
         }
         return allReservations;
     }
+
+    /*
+     * Returns true if no reservation conflicts with the reservation r
+     * Otherwise returns false
+     */
+    @Override
+    public boolean checkAvailableReservation(Reservation r) {
+        boolean unavailable = true;
+
+        // This select tries to get a reservation that would conflict with 
+        // the reservation we are trying to put into the database
+        String SQLString = "select * "
+                + "from reservation "
+                + "where room_id = ? AND "
+                + "(((? >= checkin_date AND "
+                + "? <= departure_date) OR "
+                + "(? >= checkin_date AND "
+                + "? <= departure_date)) OR "
+                + "(checkin_date  <= ? AND "
+                + "checkin_date >= ?))";
+        PreparedStatement statement = null;
+
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setInt(1, r.getRoomID());
+            statement.setDate(2, r.getCheckinDate());
+            statement.setDate(3, r.getCheckinDate());
+            statement.setDate(4, r.getDepartureDate());
+            statement.setDate(5, r.getDepartureDate());
+            statement.setDate(6, r.getDepartureDate());
+            statement.setDate(7, r.getCheckinDate());
+
+            ResultSet rs = statement.executeQuery();
+            
+            unavailable = rs.next();  // rs would return a conflicting reservation or nothing
+
+        } catch (SQLException e) {
+            System.out.println("Fail in ReservationMapper - checkAvailableReservation");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Fail in ReservationMapper - checkAvailableReservation");
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return !unavailable;  //returns the opposite of unavaiable
+    }
+
 }

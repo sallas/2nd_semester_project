@@ -59,10 +59,6 @@ public class DBFacade {
     public Customer getCustomer(int ID) {
         return customerMapper.getCustomer(ID);
     }
-
-    public Date getRoomAvailabilityDate(int ID) {
-        return roomMapper.getRoomAvailabilityDate(ID);
-    }
     
     public List<Reservation> getAllReservationsOfSpecificType(String type) {
         return reservationMapper.getAllReservationsOfSpecificType(type);
@@ -74,6 +70,10 @@ public class DBFacade {
     
     public List<Reservation> getAllReservations() {
         return reservationMapper.getAllReservations();
+    }
+    
+    public boolean checkAvailableReservation(Reservation r) {
+        return reservationMapper.checkAvailableReservation(r);
     }
     
 }
