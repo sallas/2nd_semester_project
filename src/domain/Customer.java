@@ -105,5 +105,6 @@ public class Customer {
         this.email = email;
         this.travel_agency = travel_agency;
     }
+    public Customer() {}
 
 }

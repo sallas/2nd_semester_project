@@ -4,6 +4,8 @@ public class Room {
 
     private int ID;
     private String type;
+    
+    public Room() {}
 
     public Room(int ID, String type) {
         this.ID = ID;
