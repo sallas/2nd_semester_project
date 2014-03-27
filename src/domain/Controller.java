@@ -200,5 +200,9 @@ public class Controller {
             f = facilityMap.get(name);
         return f;
     }
+    
+    public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
+        return facade.checkAvailableFacilityBooking(fb);
+    }
 
 }

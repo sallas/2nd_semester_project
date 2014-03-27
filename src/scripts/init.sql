@@ -3,6 +3,7 @@ DROP TABLE customer;
 DROP TABLE room;
 DROP TABLE room_cost;
 DROP TABLE facility;
+DROP TABLE facility_booking;
 
 
 CREATE TABLE room(
@@ -55,4 +56,11 @@ Capacity number NOT NULL,
 has_waiting_list number(1),
 has_booking number(1),
 has_instructor number(1)
+);
+
+CREATE TABLE facility_booking (
+ID number(5) NOT NULL,
+FACILITY_ID number(5) NOT NULL,
+BOOKING_DATE date NOT NULL,
+TIMESLOT number(5) NOT NULL
 );

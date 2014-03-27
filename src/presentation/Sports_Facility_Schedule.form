@@ -30,6 +30,19 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="facilityNameLabel" min="-2" pref="183" max="-2" attributes="0"/>
                   <Component id="facilitySpecsLabel" min="-2" pref="472" max="-2" attributes="0"/>
+                  <Component id="statusTextField" alignment="0" min="-2" pref="161" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dayComboBox" min="-2" pref="143" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <Component id="timeslotComboBox" min="-2" pref="145" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="checkActivtyBookingButton" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="101" max="32767" attributes="0"/>
           </Group>
@@ -43,9 +56,23 @@
                   <Component id="facilityChooser" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="facilityNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="facilitySpecsLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="356" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="dayComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="timeslotComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <Component id="checkActivtyBookingButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+              <Component id="statusTextField" min="-2" pref="18" max="-2" attributes="0"/>
+              <EmptySpace pref="149" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -74,6 +101,53 @@
     <Component class="javax.swing.JLabel" name="facilitySpecsLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Facility Specifications"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="dayComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="timeslotComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Day"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Timeslot"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="checkActivtyBookingButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Check"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkActivtyBookingButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="statusTextField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Status Text"/>
       </Properties>
     </Component>
   </SubComponents>

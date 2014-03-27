@@ -2,6 +2,7 @@ package dataSource;
 
 import domain.Customer;
 import domain.Facility;
+import domain.FacilityBooking;
 import domain.Reservation;
 import domain.Room;
 import java.sql.Connection;
@@ -16,6 +17,7 @@ public class DBFacade {
     private static DBFacade instance;
     private static CustomerMapperInterface customerMapper;
     private static FacilityMapperInterface facilityMapper;
+    private static FacilityBookingMapper facilityBookingMapper;
     private static Connection connection;
 
     private DBFacade() {
@@ -24,6 +26,7 @@ public class DBFacade {
         roomMapper = new RoomMapper(connection);
         customerMapper = new CustomerMapper(connection);
         facilityMapper = new FacilityMapper(connection);
+        facilityBookingMapper = new FacilityBookingMapper(connection);
     }
 
     public DBFacade(ReservationMapperInterface resMapper, CustomerMapperInterface cusMapper) {
@@ -85,5 +88,9 @@ public class DBFacade {
     
     public List<Facility> getAllFacilities() {
         return facilityMapper.getFacilities();
+    }
+    
+    public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
+        return facilityBookingMapper.checkAvailableFacilityBooking(fb);
     }
 }
