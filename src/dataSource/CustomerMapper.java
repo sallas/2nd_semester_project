@@ -8,57 +8,69 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerMapper implements CustomerMapperInterface {
+public class CustomerMapper extends AbstractMapper implements CustomerMapperInterface {
 
-    private final Connection con;
 
     public CustomerMapper(Connection con) {
-        this.con = con;
+        super(con);
     }
 
     @Override
     public Customer getCustomer(int ID) {
-        Customer o = null;
-        String SQLString1
-                = "select * "
-                + "from customer "
-                + "where ID = ?";
-
-        PreparedStatement statement = null;
-
-        try {
-            statement = con.prepareStatement(SQLString1);
-            statement.setInt(1, ID);     // primary key value
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                o = new Customer(ID,
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getString(7),
-                        rs.getString(8));
-            }
-
-        }
-        catch (SQLException e) {
-            System.out.println("Fail in CustomerMapper - getCustomer");
-            System.out.println(e.getMessage());
-        }
-        finally // must close statement
-        {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-            }
-            catch (SQLException e) {
-                System.out.println("Fail in CustomerMapper - getCustomer");
-                System.out.println(e.getMessage());
-            }
-        }
-        return o;
+        ArrayList<Customer> customer = executeQueryAndGatherResults(
+                Customer.class,
+                "SELECT * FROM customer WHERE ID = ?",
+                "Fail in CustomerMapper - getCustomer",
+                new String[]{"ID", "ADDRESS", "COUNTRY", "FIRST_NAME",
+                    "LAST_NAME", "PHONE", "EMAIL", "TRAVEL_AGENCY"},
+                new int[]{0, 1, 1, 1, 1, 1, 1, 1},
+                ID);
+        return customer.get(0);
+//        
+//        
+//        
+//        
+//        Customer o = null;
+//        String SQLString1
+//                = "select * "
+//                + "from customer "
+//                + "where ID = ?";
+//
+//        PreparedStatement statement = null;
+//
+//        try {
+//            statement = con.prepareStatement(SQLString1);
+//            statement.setInt(1, ID);     // primary key value
+//            ResultSet rs = statement.executeQuery();
+//            if (rs.next()) {
+//                o = new Customer(ID,
+//                        rs.getString(2),
+//                        rs.getString(3),
+//                        rs.getString(4),
+//                        rs.getString(5),
+//                        rs.getString(6),
+//                        rs.getString(7),
+//                        rs.getString(8));
+//            }
+//
+//        }
+//        catch (SQLException e) {
+//            System.out.println("Fail in CustomerMapper - getCustomer");
+//            System.out.println(e.getMessage());
+//        }
+//        finally // must close statement
+//        {
+//            try {
+//                if (statement != null) {
+//                    statement.close();
+//                }
+//            }
+//            catch (SQLException e) {
+//                System.out.println("Fail in CustomerMapper - getCustomer");
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//        return o;
     }
 
     @Override
