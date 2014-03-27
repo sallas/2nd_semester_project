@@ -2,6 +2,7 @@ DROP TABLE reservation;
 DROP TABLE customer;
 DROP TABLE room;
 DROP TABLE room_cost;
+DROP TABLE facility;
 
 
 CREATE TABLE room(
@@ -44,4 +45,14 @@ Departure_date date NOT NULL,
 PRIMARY KEY (ID),
 FOREIGN KEY (Room_ID) REFERENCES Room(ID),
 FOREIGN KEY (Customer_ID) REFERENCES Customer
+);
+
+CREATE TABLE facility (
+ID number(5) NOT NULL,
+Name varchar2(20) NOT NULL,
+Type varchar2(20) NOT NULL,
+Capacity number NOT NULL,
+has_waiting_list number(1),
+has_booking number(1),
+has_instructor number(1)
 );
