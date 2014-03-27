@@ -15,6 +15,7 @@ public class Controller {
     private EmailValidator emailValidator;
     private static Controller instance = null;
     private int currentRoomID;
+    private Map<String, Facility> facilityMap;
 
     public List<String> getRooms() {
          List<String> roomList = new ArrayList();
@@ -45,6 +46,7 @@ public class Controller {
     private Controller() {
         facade = DBFacade.getInstance();
         emailValidator = new EmailValidator();
+        facilityMap = new HashMap<>();
     }
 
     public static Controller getInstance() {
@@ -172,6 +174,19 @@ public class Controller {
 
         }
         return currentGuests;
+    }
+    
+    public List<String> getAllFacilityNames() {
+        List<Facility> facilities = facade.getAllFacilities();
+        List<String> facilityNames = new ArrayList<>();
+        for (Facility f : facilities) {
+            facilityNames.add(f.getName());
+        }
+        return facilityNames;
+    }
+    
+    public Facility getFacility(String name) {
+        return facilityMap.get(name);
     }
 
 }
