@@ -215,5 +215,29 @@ public class ReservationMapper implements ReservationMapperInterface {
 
         return !unavailable;  //returns the opposite of unavaiable
     }
+    
+    @Override
+    public void lockReservationTable() {
+        String SQLString = "LOCK TABLE reservation in exclusive mode";
+        PreparedStatement statement = null;
+
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.executeQuery();
+
+        } catch (SQLException e) {
+            System.out.println("Fail in ReservationMapper - lockReservationTable");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Fail in ReservationMapper - lockReservationTable");
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
 }

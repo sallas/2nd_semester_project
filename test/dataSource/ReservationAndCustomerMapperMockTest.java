@@ -104,32 +104,4 @@ public class ReservationAndCustomerMapperMockTest {
         Reservation result = dbf.getReservation(ID);
         assertTrue(result == null);
     }
-
-    /*
-     * Checks so the reservation is inserted when all needed info
-     * is correct and inside the database(mock objects)
-     */
-    @Test
-    public void testSaveReservationNoConflict() {
-        Reservation reservation
-                = new Reservation(IRRELEVANT, 101, IRRELEVANT, new Date(01, 01, 2014), new Date(01, 04, 2014));
-        Customer customer = new Customer(IRRELEVANT, "address3", "country3", "firstName3", "lastName3",
-                "333", "email3", "agency3");
-        boolean status = dbf.saveReservationInformation(reservation, customer);
-        assertTrue(status);
-    }
-
-    /*
-     * Checks so the reservation is not inserted when the room ID doesn't
-     * exist.
-     */
-    @Test
-    public void testSaveReservationWithConflict() {
-        Reservation reservation
-                = new Reservation(IRRELEVANT, 999, IRRELEVANT, new Date(01, 01, 2014), new Date(01, 04, 2014));
-        Customer customer = new Customer(IRRELEVANT, "address3", "country3", "firstName3", "lastName3",
-                "333", "email3", "agency3");
-        boolean status = dbf.saveReservationInformation(reservation, customer);
-        assertFalse(status);
-    }
 }

@@ -348,8 +348,9 @@ public class Reservation extends javax.swing.JFrame {
         }
         java.sql.Date arrival = java.sql.Date.valueOf("2000-01-01");
         arrival.setTime(currentBookingArrivalDate.getTime());
+        boolean reservationSaved = false;
         try {
-            control.createNewReservation(firstName, familyName, address,
+            reservationSaved = control.createNewReservation(firstName, familyName, address,
                     country, phone, email, travelAgency, arrival,
                     currentBookingNumNights, currentBookingRoomID);
         }
@@ -364,7 +365,12 @@ public class Reservation extends javax.swing.JFrame {
             statusText.setText("Someone already booked that reservation");
             return;
         } 
-        statusText.setText("Registered");
+        if(reservationSaved) {
+            statusText.setText("Registered");
+        }
+        else {
+            statusText.setText("Not Registered");
+        }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private String textFieldChecker(JTextField textField, String errorString) {

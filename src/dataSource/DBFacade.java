@@ -3,7 +3,9 @@ package dataSource;
 import domain.Customer;
 import domain.Reservation;
 import domain.Room;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 public class DBFacade {
@@ -12,11 +14,13 @@ public class DBFacade {
     private static RoomMapperInterface roomMapper;
     private static DBFacade instance;
     private static CustomerMapperInterface customerMapper;
+    private static Connection connection;
 
     private DBFacade() {
-        reservationMapper = new ReservationMapper(DBConnector.getConnection());
-        roomMapper = new RoomMapper(DBConnector.getConnection());
-        customerMapper = new CustomerMapper(DBConnector.getConnection());
+        connection = DBConnector.getConnection();
+        reservationMapper = new ReservationMapper(connection);
+        roomMapper = new RoomMapper(connection);
+        customerMapper = new CustomerMapper(connection);
     }
 
     public DBFacade(ReservationMapperInterface resMapper, CustomerMapperInterface cusMapper) {
@@ -48,32 +52,32 @@ public class DBFacade {
     }
 
     public boolean saveReservationInformation(Reservation r, Customer c) {
-        int customerID = customerMapper.saveNewCustomer(c);
-        if (customerID == -1) {
-            return false;
-        }
-        r.setCustomerID(customerID);
-        return reservationMapper.saveReservation(r);
+         return SaveRegistrationLogic.saveReservationInformation(
+                r, c, connection, reservationMapper, customerMapper);
     }
 
     public Customer getCustomer(int ID) {
         return customerMapper.getCustomer(ID);
     }
-    
+
     public List<Reservation> getAllReservationsOfSpecificType(String type) {
         return reservationMapper.getAllReservationsOfSpecificType(type);
     }
-    
+
     public List<Customer> getAllCustomers() {
         return customerMapper.getAllCustomers();
     }
-    
+
     public List<Reservation> getAllReservations() {
         return reservationMapper.getAllReservations();
     }
-    
+
     public boolean checkAvailableReservation(Reservation r) {
         return reservationMapper.checkAvailableReservation(r);
     }
-    
+
+    public void lockReservationTable() {
+        reservationMapper.lockReservationTable();
+    }
+
 }
