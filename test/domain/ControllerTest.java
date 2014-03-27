@@ -131,7 +131,6 @@ public class ControllerTest {
         Date arrivalDate = Date.valueOf("2020-03-02");
         Date departureDate = Date.valueOf("2020-03-04");
         int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("single", arrivalDate, departureDate);
-        System.out.println(roomID);
         assertTrue(roomID == 101);
     }
 
@@ -144,7 +143,6 @@ public class ControllerTest {
         Date arrivalDate = Date.valueOf("2020-03-02");
         Date departureDate = Date.valueOf("2020-03-04");
         int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("double", arrivalDate, departureDate);
-        System.out.println(roomID);
         assertTrue(roomID == 100);
     }
 
@@ -160,9 +158,44 @@ public class ControllerTest {
         assertTrue(roomID == -1);
     }
 
+    /*
+     *   Checks so getAllCurrentGuests returns the correct amount of customers
+     */
     @Test
-    public void getAllCurrentGuests() {
+    public void testGetAllCurrentGuests() {
         List<Customer> guests = controller.getAllCurrentGuests();
         assertTrue(guests.size() == 1);
     }
+
+    /*
+     *   Checks so getAllFacilityNames returns the correct amount of facility names
+     */
+    @Test
+    public void testGetAllFacilityNames() {
+        List<String> facilityNames = controller.getAllFacilityNames();
+        assertTrue(facilityNames.size() == 2);
+    }
+
+    /*
+     * Tests so getFacility returns the correct facility
+     */
+    @Test
+    public void testGetFacilityMatchingName() {
+        List<String> facilityNames = controller.getAllFacilityNames();
+        String expectedResult = facilityNames.get(0);
+        Facility f = controller.getFacility(facilityNames.get(0));
+        String result = f.getName();
+        assertEquals(expectedResult, result);
+    }
+
+    /*
+     *   Checks so getFacility method retursn null if bad name is given
+     */
+    @Test
+    public void testGetFacilityNotMatchingName() {
+        controller.getAllFacilityNames();
+        Facility f = controller.getFacility("Bullcrap Name");
+        assertNull(f);
+    }
+
 }

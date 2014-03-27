@@ -18,7 +18,7 @@ public class Controller {
     private Map<String, Facility> facilityMap;
 
     public List<String> getRooms() {
-         List<String> roomList = new ArrayList();
+        List<String> roomList = new ArrayList();
         List<Room> allRooms = facade.getAllRooms();
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date currentDate = new java.sql.Date(utilDate.getTime());
@@ -175,18 +175,30 @@ public class Controller {
         }
         return currentGuests;
     }
-    
+
+    /*
+     *   Returns a list of strings containing all sport facility names
+     * currently in the database
+     */
     public List<String> getAllFacilityNames() {
         List<Facility> facilities = facade.getAllFacilities();
         List<String> facilityNames = new ArrayList<>();
         for (Facility f : facilities) {
             facilityNames.add(f.getName());
+            facilityMap.put(f.getName(), f);
         }
+        
         return facilityNames;
     }
-    
+
+    /*
+     *   Returns a facility object of the correct name from our HashMap
+     */
     public Facility getFacility(String name) {
-        return facilityMap.get(name);
+        Facility f = null;
+        if(facilityMap.containsKey(name))
+            f = facilityMap.get(name);
+        return f;
     }
 
 }
