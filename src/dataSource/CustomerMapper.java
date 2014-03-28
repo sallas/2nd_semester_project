@@ -10,7 +10,6 @@ import java.util.List;
 
 public class CustomerMapper extends AbstractMapper implements CustomerMapperInterface {
 
-
     public CustomerMapper(Connection con) {
         super(con);
     }
@@ -25,7 +24,11 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
                     "LAST_NAME", "PHONE", "EMAIL", "TRAVEL_AGENCY"},
                 new int[]{0, 1, 1, 1, 1, 1, 1, 1},
                 ID);
-        return customer.get(0);
+        if (customer.isEmpty()) {
+            return null;
+        } else {
+            return customer.get(0);
+        }
 //        
 //        
 //        
@@ -103,17 +106,14 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
             statement.setString(8, c.getTravel_agency());
 
             rowsInserted = statement.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Fail in CustomerMapper - saveReservation");
             System.out.println(e.getMessage());
-        }
-        finally // must close statement
+        } finally // must close statement
         {
             try {
                 statement.close();
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 System.out.println("Fail in CustomerMapper - saveReservation");
                 System.out.println(e.getMessage());
             }
@@ -123,7 +123,7 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
         }
         return c.getID();
     }
-    
+
     @Override
     public List<Customer> getAllCustomers() {
         List<Customer> allCustomers = new ArrayList();
@@ -136,8 +136,8 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
             while (rs.next()) {
                 allCustomers.add(
                         new Customer(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), rs.getString(5),
-                        rs.getString(6), rs.getString(7), rs.getString(8)));
+                                rs.getString(3), rs.getString(4), rs.getString(5),
+                                rs.getString(6), rs.getString(7), rs.getString(8)));
             }
         } catch (SQLException e) {
             System.out.println("Fail in CustomerMapper - getAllCustomers");

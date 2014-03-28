@@ -72,6 +72,7 @@ public abstract class AbstractMapper {
         ResultSet rs = executeSQLQuery(statement,
                 exMessage, values);
         try {
+            System.out.println("<<<<<<<<<<<<<<<<<STRING>>>>>>>>>>>>>>>>>>" + rs.toString());
             while (rs.next()) {
                 //New T object instance
                 T object = objectType.newInstance();
