@@ -3,17 +3,18 @@ package dataSource;
 import domain.FacilityBooking;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class FacilityBookingMapper extends AbstractMapper {
+public class FacilityBookingMapper extends AbstractMapper implements FacilityBookingMapperInterface {
 
     public FacilityBookingMapper(Connection con) {
         super(con);
     }
 
+    @Override
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
         boolean unavailable = true;
 
@@ -35,10 +36,24 @@ public class FacilityBookingMapper extends AbstractMapper {
         return !unavailable;  //returns the opposite of unavaiable
     }
     
+    @Override
     public boolean saveFacilityBooking(FacilityBooking fb){
-        return true;
+        ArrayList<FacilityBooking> seq = executeQueryAndGatherResults(
+                FacilityBooking.class,
+                "SELECT facility_bookingseq.nextval"+
+                "FROM dual",
+                "Fail in FacilityBookingMapper - saveFacilityBooking",
+                new String[]{"ID"}, new int[]{0});
+        fb.setID(seq.get(0).getID());
+        int result = executeSQLInsert(
+                "INSERT INTO facility_mapper VALUES (?, ?, ?, ?)",
+                "Fail in FacilityBookingMapper - saveFacilityBooking",
+                fb.getID(), fb.getFacilityID(), fb.getBookingDate(),
+                fb.getTimeslot());
+        return result != 0;
     }
     
+    @Override
     public List<FacilityBooking> getAllBookings(){
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking", 
@@ -47,6 +62,7 @@ public class FacilityBookingMapper extends AbstractMapper {
                 new int[]{0, 0, 2, 0});
     }
     
+    @Override
     public List <FacilityBooking> getAllBookingsOfSpecificDate(Date date){
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking WHERE booking_date = ?", 
