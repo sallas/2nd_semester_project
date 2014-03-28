@@ -26,4 +26,8 @@ public class AbstractMapperDummy extends AbstractMapper{
             Object... values) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
         return executeQueryAndGatherResults(objectType, statement, exMessage, resultNames, resultArray, values);
     }
+    
+    public int executeSQLInsertPrivate(String statement, String exMessage, Object... values) {
+        return executeSQLInsert(statement, exMessage, values);
+    }
 }
