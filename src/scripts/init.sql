@@ -16,6 +16,10 @@ DROP SEQUENCE reservationSeq;
 CREATE SEQUENCE reservationSeq START WITH 1;
 DROP SEQUENCE customerSeq;
 CREATE SEQUENCE customerSeq START WITH 1;
+DROP SEQUENCE facilitySeq;
+CREATE SEQUENCE facilitySeq START WITH 1;
+DROP SEQUENCE facility_bookingSeq;
+CREATE SEQUENCE facility_bookingSeq START WITH 1;
 
 CREATE TABLE room_cost (
 Type varchar2(30) NOT NULL,
