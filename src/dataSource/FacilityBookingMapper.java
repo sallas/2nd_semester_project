@@ -14,6 +14,9 @@ public class FacilityBookingMapper {
         this.con = con;
     }
 
+    /*
+    *   Returns true if wanted booking is available
+    */
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
         boolean unavailable = true;
 
