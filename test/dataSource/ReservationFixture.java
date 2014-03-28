@@ -19,11 +19,14 @@ public class ReservationFixture {
             st.addBatch("delete from Room");
             st.addBatch("delete from Customer");
             st.addBatch("delete from Facility");
+            st.addBatch("delete from facility_booking");
             // reseting sequence
             st.addBatch("drop sequence reservationseq");
             st.addBatch("create sequence reservationseq start with 4");
             st.addBatch("drop sequence customerseq");
             st.addBatch("create sequence customerseq start with 3");
+            st.addBatch("drop sequence facility_bookingseq");
+            st.addBatch("create sequence facility_bookingseq start with 3");
             // insert data into rooms
             String insert = "insert into room values ";
             st.addBatch(insert + "(100,'double')");
@@ -43,8 +46,15 @@ public class ReservationFixture {
             st.addBatch(insert + "(3, 101, 1,to_date('01-02-2014', 'DD-MM-YYYY'),"
                     + "to_date('06-02-2014', 'DD-MM-YYYY'))");
             insert = "insert into facility values ";
+            //insert into facility
             st.addBatch(insert + "(1, 'Golden arena', 'volleyball', 20, 1, 1, 0)");
             st.addBatch(insert + "(2, 'Big tennis', 'tennis', 4, 1, 0, 1)");
+            //insert into facility_booking
+            insert = "insert into facility_booking values ";
+            st.addBatch(insert + "(1, 1, to_date('24-03-2014', 'DD-MM-YYYY'),"
+                    + "2)");
+            st.addBatch(insert + "(2, 2, to_date('24-03-2014', 'DD-MM-YYYY'),"
+                    + "4)");
             st.executeBatch();
             // end transaction
             con.commit();
