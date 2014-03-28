@@ -16,6 +16,10 @@ DROP SEQUENCE reservationSeq;
 CREATE SEQUENCE reservationSeq START WITH 1;
 DROP SEQUENCE customerSeq;
 CREATE SEQUENCE customerSeq START WITH 1;
+DROP SEQUENCE facilitySeq;
+CREATE SEQUENCE facilitySeq START WITH 1;
+DROP SEQUENCE facility_bookingSeq;
+CREATE SEQUENCE facility_bookingSeq START WITH 1;
 
 CREATE TABLE room_cost (
 Type varchar2(30) NOT NULL,
@@ -55,12 +59,15 @@ Type varchar2(20) NOT NULL,
 Capacity number NOT NULL,
 has_waiting_list number(1),
 has_booking number(1),
-has_instructor number(1)
+has_instructor number(1),
+PRIMARY KEY (ID)
 );
 
 CREATE TABLE facility_booking (
 ID number(5) NOT NULL,
 FACILITY_ID number(5) NOT NULL,
 BOOKING_DATE date NOT NULL,
-TIMESLOT number(5) NOT NULL
+TIMESLOT number(5) NOT NULL,
+PRIMARY KEY (ID),
+FOREIGN KEY (FACILITY_ID) REFERENCES facility(ID)
 );
