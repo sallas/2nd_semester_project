@@ -28,6 +28,7 @@ public class FacilityBookingTest {
 
     @After
     public void tearDown() {
+        connector.releaseConnection(con);
     }
 
     /*
@@ -42,14 +43,14 @@ public class FacilityBookingTest {
 
     @Test
     public void testCheckAvailableFacilityBookingAvailableBooking() {
-        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 1);
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 1, 999);
         boolean status = fbm.checkAvailableFacilityBooking(fb);
         assertTrue(status);
     }
 
     @Test
     public void testCheckAvailableFacilityBookingNotAvailableBooking() {
-        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2014-03-24"), 2);
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2014-03-24"), 2, 999);
         boolean status = fbm.checkAvailableFacilityBooking(fb);
         assertFalse(status);
     }
@@ -68,16 +69,34 @@ public class FacilityBookingTest {
     }
 
     @Test
-    public void testsaveFacilityBookingNoProblem() {
-        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2099-03-24"), 3);
-        boolean status = fbm.saveFacilityBooking(fb);
-        assertTrue(status);
+    public void testGetAllBookingsOfSpecificDateAndUserMatch() {
+        List<FacilityBooking> r
+                = fbm.getAllBookingsOfSpecificDateAndUser(
+                        Date.valueOf("2014-03-24"), 1);
+        assertTrue(r.size() == 2);
     }
     
     @Test
-    public void testsaveFacilityBookingConflictingBooking() {
-        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2014-03-24"), 2);
-        boolean status = fbm.saveFacilityBooking(fb);
-        assertFalse(status);
+    public void testGetAllBookingsOfSpecificDateTimeslotUserMatch() {
+        List<FacilityBooking> r
+                = fbm.getAllBookingsOfSpecificDateTimeslotUser(
+                        Date.valueOf("2014-03-24"), 1, 2);
+        assertTrue(r.size() == 1);
     }
+    
+    
+
+//    @Test
+//    public void testsaveFacilityBookingNoProblem() {
+//        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2099-03-24"), 3, 1);
+//        boolean status = fbm.saveFacilityBooking(fb);
+//        assertTrue(status);
+//    }
+//    
+//    @Test
+//    public void testsaveFacilityBookingConflictingBooking() {
+//        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2014-03-24"), 2, 1);
+//        boolean status = fbm.saveFacilityBooking(fb);
+//        assertFalse(status);
+//    }
 }

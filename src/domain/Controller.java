@@ -230,4 +230,23 @@ public class Controller {
         return facade.checkAvailableFacilityBooking(fb);
     }
 
+    public boolean saveFacilityBooking(FacilityBooking fb) {
+        return facade.saveFacilityBooking(fb);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDate(Date date) {
+        return facade.getAllFacilityBookingsOfSpecificDate(date);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDateAndUser(Date date, int id) {
+        return facade.getAllFacilityBookingsOfSpecificDateAndUser(date, id);
+    }
+
+    public boolean doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
+            Date date, int userID, int timeslot) {
+        List<FacilityBooking> bookings
+                = facade.getAllFacilityBookingsOfSpecificDateTimeslotUser(
+                        date, userID, timeslot);
+        return !bookings.isEmpty();
+    }
 }

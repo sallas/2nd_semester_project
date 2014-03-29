@@ -93,4 +93,21 @@ public class DBFacade {
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
         return facilityBookingMapper.checkAvailableFacilityBooking(fb);
     }
+    
+    public boolean saveFacilityBooking(FacilityBooking fb) {
+        return facilityBookingMapper.saveFacilityBooking(fb);
+    }
+    
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDate(Date date) {
+        return facilityBookingMapper.getAllBookingsOfSpecificDate(date);
+    }
+    
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDateAndUser(Date date, int id) {
+        return facilityBookingMapper.getAllBookingsOfSpecificDateAndUser(date, id);
+    }
+    
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDateTimeslotUser(
+            Date date, int userID, int timeslot) {
+        return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
+    }
 }

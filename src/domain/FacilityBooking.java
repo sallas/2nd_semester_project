@@ -7,19 +7,20 @@ public class FacilityBooking {
     private int facilityID;
     private Date bookingDate;
     private int timeslot;
+    private int userID;
 
-    public FacilityBooking(int ID, int facilityID, Date bookingDate, int timeslot) {
+    public FacilityBooking(int ID, int facilityID, Date bookingDate, int timeslot, int userID) {
         this.ID = ID;
         this.facilityID = facilityID;
         this.bookingDate = bookingDate;
         this.timeslot = timeslot;
+        this.userID = userID;
     }
     
     public FacilityBooking() {
         bookingDate = null;
     }
 
-    
     
     public int getID() {
         return ID;
@@ -52,6 +53,12 @@ public class FacilityBooking {
     public void setTimeslot(int timeslot) {
         this.timeslot = timeslot;
     }
-    
-    
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 }

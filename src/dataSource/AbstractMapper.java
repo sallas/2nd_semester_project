@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.lang.reflect.Field;
 
 public abstract class AbstractMapper {
+
     protected final Connection con;
 
     public AbstractMapper(Connection con) {
         this.con = con;
     }
-    
+
     /*
      * Utility function for executing SQL Queries with automatic mapping
      * and exception message. 
@@ -44,7 +45,7 @@ public abstract class AbstractMapper {
         }
         return result;
     }
-    
+
     /*
      * Execute the query, gather results in array list.
      * Automates mapping of query set and mapping of result set.
@@ -59,7 +60,7 @@ public abstract class AbstractMapper {
     protected <T> ArrayList<T> executeQueryAndGatherResults(
             Class<T> objectType,
             String statement,
-            String exMessage, 
+            String exMessage,
             String[] resultNames,
             int[] resultArray,
             Object... values) {
@@ -71,22 +72,22 @@ public abstract class AbstractMapper {
             while (rs.next()) {
                 //New T object instance
                 T object = objectType.newInstance();
-                for(i=0; i<resultArray.length; i++){
+                for (i = 0; i < resultArray.length; i++) {
                     //Set fields from result names with reflection.
                     Field field = objectType.getDeclaredField(resultNames[i]);
                     field.setAccessible(true);
-                    switch(resultArray[i]){
+                    switch (resultArray[i]) {
                         case 0:
-                            field.set(object, rs.getInt(i+1));
+                            field.set(object, rs.getInt(i + 1));
                             break;
                         case 1:
-                            field.set(object, rs.getString(i+1));
+                            field.set(object, rs.getString(i + 1));
                             break;
                         case 2:
-                            field.set(object, rs.getDate(i+1));
+                            field.set(object, rs.getDate(i + 1));
                             break;
                         case 3:
-                            field.set(object, rs.getBoolean(i+1));
+                            field.set(object, rs.getBoolean(i + 1));
                             break;
                     }
                     field.setAccessible(false);
@@ -113,7 +114,7 @@ public abstract class AbstractMapper {
         }
         return result;
     }
-    
+
     /*
      * Utility function for executing SQL Inserts with automatic mapping
      * and exception message.
@@ -137,6 +138,8 @@ public abstract class AbstractMapper {
             }
             result = st.executeUpdate();
         } catch (SQLException ex) {
+            System.out.println(ex.getErrorCode());
+            
             System.out.println(exMessage);
             System.out.println(ex.getMessage());
         } finally {
