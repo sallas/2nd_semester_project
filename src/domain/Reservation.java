@@ -17,6 +17,10 @@ public class Reservation {
         this.checkinDate = checkinDate;
         this.departureDate = departureDate;
     }
+    
+    public Reservation() {
+        
+    }
 
     public int getID() {
         return ID;

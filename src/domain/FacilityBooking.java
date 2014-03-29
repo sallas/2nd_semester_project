@@ -14,6 +14,10 @@ public class FacilityBooking {
         this.bookingDate = bookingDate;
         this.timeslot = timeslot;
     }
+    
+    public FacilityBooking() {
+        bookingDate = null;
+    }
 
     
     

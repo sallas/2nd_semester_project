@@ -18,8 +18,8 @@ public class ReservationFixture {
             st.addBatch("delete from Reservation");
             st.addBatch("delete from Room");
             st.addBatch("delete from Customer");
-            st.addBatch("delete from Facility");
             st.addBatch("delete from facility_booking");
+            st.addBatch("delete from Facility");
             // reseting sequence
             st.addBatch("drop sequence reservationseq");
             st.addBatch("create sequence reservationseq start with 4");

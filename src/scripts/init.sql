@@ -2,8 +2,8 @@ DROP TABLE reservation;
 DROP TABLE customer;
 DROP TABLE room;
 DROP TABLE room_cost;
-DROP TABLE facility;
 DROP TABLE facility_booking;
+DROP TABLE facility;
 
 
 CREATE TABLE room(

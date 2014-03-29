@@ -43,13 +43,13 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
     public boolean saveFacilityBooking(FacilityBooking fb){
         ArrayList<FacilityBooking> seq = executeQueryAndGatherResults(
                 FacilityBooking.class,
-                "SELECT facility_bookingseq.nextval"+
+                "SELECT facility_bookingseq.nextval "+
                 "FROM dual",
                 "Fail in FacilityBookingMapper - saveFacilityBooking",
                 new String[]{"ID"}, new int[]{0});
         fb.setID(seq.get(0).getID());
         int result = executeSQLInsert(
-                "INSERT INTO facility_mapper VALUES (?, ?, ?, ?)",
+                "INSERT INTO facility_booking VALUES (?, ?, ?, ?)",
                 "Fail in FacilityBookingMapper - saveFacilityBooking",
                 fb.getID(), fb.getFacilityID(), fb.getBookingDate(),
                 fb.getTimeslot());

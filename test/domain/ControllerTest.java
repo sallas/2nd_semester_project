@@ -51,7 +51,7 @@ public class ControllerTest {
     public void saveReservationInControllerProperFull()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", Date.valueOf("1995-01-01"), 30, 100);
+                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), 30, 100);
         assertTrue(res);
     }
 
@@ -63,7 +63,7 @@ public class ControllerTest {
     public void saveReservationInControllerProperNoAgency()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "", new Date(1994, 12, 31), 30, 100);
+                "00000", "igor@gmail.com", "", Date.valueOf("2099-01-01"), 30, 100);
         assertTrue(res);
     }
 
@@ -74,7 +74,7 @@ public class ControllerTest {
     public void saveReservationInControllerNegativeNumberOfNights()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", new Date(1994, 12, 31), -1, 101);
+                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), -1, 101);
         assertFalse(res);
     }
 
@@ -85,7 +85,7 @@ public class ControllerTest {
     public void saveReservationInControllerWrongEmail()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igorsdscom", "sunshine", new Date(1994, 12, 31), 2, 101);
+                "00000", "igorsdscom", "sunshine", Date.valueOf("2099-01-01"), 2, 101);
         assertFalse(res);
     }
 
@@ -95,7 +95,7 @@ public class ControllerTest {
     @Test
     public void saveReservationInControllerWrongRoomID() throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", new Date(1994, 12, 31), 2, 20);
+                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), 2, 20);
         assertFalse(res);
     }
 

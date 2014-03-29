@@ -39,7 +39,7 @@ public abstract class AbstractMapper {
             }
             result = st.executeQuery();
         } catch (SQLException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + "SQLException execute query");
             System.out.println(ex.getMessage());
         }
         return result;
@@ -96,19 +96,19 @@ public abstract class AbstractMapper {
             }
             rs.close();
         } catch (SQLException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " SQLException");
             System.out.println(ex.getMessage());
         } catch (InstantiationException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " InstantiationException");
             System.out.println(ex.getMessage());
         } catch (IllegalAccessException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " IllegalAccessException");
             System.out.println(ex.getMessage());
         } catch (NoSuchFieldException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " NoSuchFieldException");
             System.out.println(ex.getMessage());
         } catch (SecurityException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " SecurityException");
             System.out.println(ex.getMessage());
         }
         return result;
