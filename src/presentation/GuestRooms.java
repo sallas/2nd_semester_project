@@ -4,20 +4,24 @@ import domain.Controller;
 import domain.Customer;
 import java.util.List;
 
-public class guests_rooms extends javax.swing.JFrame
-{
-    Controller instance = Controller.getInstance();
-  
-    public guests_rooms()
-    {
+public class GuestRooms extends javax.swing.JFrame {
+
+    private Controller instance = Controller.getInstance();
+    private LandingPage landingPage;
+
+    public GuestRooms() {
         initComponents();
         refreshList();
     }
-    
+
+    public GuestRooms(LandingPage landingPage) {
+        initComponents();
+        refreshList();
+        this.landingPage = landingPage;
+    }
+
     private void refreshList() {
         List<Customer> customers = instance.getAllCurrentGuests();
-        System.out.println(customers.size());
-        System.out.println(customers.get(0));
         int counter = 0;
         Object[][] ob = new Object[customers.size()][8];
         for (Customer c : customers) {
@@ -58,8 +62,7 @@ public class guests_rooms extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabelGuests = new javax.swing.JLabel();
         jButtonBackToMenu = new javax.swing.JButton();
@@ -73,18 +76,15 @@ public class guests_rooms extends javax.swing.JFrame
         jLabelGuests.setText("Current Guests are : ");
 
         jButtonBackToMenu.setText("Back to Menu");
-        jButtonBackToMenu.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonBackToMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBackToMenuActionPerformed(evt);
             }
         });
 
         jTableGuests.setAutoCreateRowSorter(true);
         jTableGuests.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -110,19 +110,15 @@ public class guests_rooms extends javax.swing.JFrame
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "ID", "First Name", "Last Name", "Country", "Address", "Phone", "Travel Agency", "Email"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
+        ) {
+            Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
@@ -169,50 +165,41 @@ public class guests_rooms extends javax.swing.JFrame
 
     private void jButtonBackToMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonBackToMenuActionPerformed
     {//GEN-HEADEREND:event_jButtonBackToMenuActionPerformed
-        System.exit(0);
+        landingPage.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonBackToMenuActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex)
-        {
-            java.util.logging.Logger.getLogger(guests_rooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
-            java.util.logging.Logger.getLogger(guests_rooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
-            java.util.logging.Logger.getLogger(guests_rooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
-            java.util.logging.Logger.getLogger(guests_rooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GuestRooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GuestRooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GuestRooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GuestRooms.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new guests_rooms().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GuestRooms().setVisible(true);
             }
         });
     }

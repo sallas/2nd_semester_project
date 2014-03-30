@@ -3,13 +3,20 @@ package presentation;
 import domain.Controller;
 import java.util.List;
 
-public class room_other_info extends javax.swing.JFrame {
+public class RoomInfo extends javax.swing.JFrame {
 
-    Controller instance = Controller.getInstance();
+    private Controller instance = Controller.getInstance();
+    private LandingPage landingPage;
 
-    public room_other_info() {
+    public RoomInfo() {
         initComponents();
         refreshList();
+    }
+
+    RoomInfo(LandingPage landingPage) {
+        initComponents();
+        refreshList();
+        this.landingPage = landingPage;
     }
 
     private void refreshList() {
@@ -130,7 +137,8 @@ public class room_other_info extends javax.swing.JFrame {
 
     private void jButtonBackToMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonBackToMenuActionPerformed
     {//GEN-HEADEREND:event_jButtonBackToMenuActionPerformed
-        System.exit(0);
+        landingPage.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonBackToMenuActionPerformed
 
     /**
@@ -150,20 +158,20 @@ public class room_other_info extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RoomInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RoomInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RoomInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(room_other_info.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RoomInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new room_other_info().setVisible(true);
+                new RoomInfo().setVisible(true);
             }
         });
     }

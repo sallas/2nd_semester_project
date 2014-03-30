@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-public class Sports_Facility_Schedule extends javax.swing.JFrame {
+public class SportsFacilitySchedule extends javax.swing.JFrame {
 
     private Controller control = Controller.getInstance();
     private List<Date> dates = new ArrayList<>();
@@ -17,10 +17,20 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
     private List<String> timeslots;
     private int currentUserID;
     private int currentAmountOfBookingsOnSpecificDate;
+    private LandingPage landingPage;
 
     DefaultTableModel model;
 
-    public Sports_Facility_Schedule() {
+    public SportsFacilitySchedule() {
+        constructor();
+    }
+
+    public SportsFacilitySchedule(LandingPage landingPage) {
+        constructor();
+        this.landingPage = landingPage;
+    }
+
+    private void constructor() {
         initComponents();
         List<String> rooms = control.getAllFacilityNames();
         facilityChooser.setModel(new javax.swing.DefaultComboBoxModel(
@@ -109,6 +119,7 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         timeslotTable = new javax.swing.JTable();
         timeslotBookingButton = new javax.swing.JButton();
+        backToMenuButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -175,16 +186,17 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
             }
         });
 
+        backToMenuButton.setText("Back to menu");
+        backToMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backToMenuButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(facilityChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(facilityNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(158, 158, 158)
                 .addComponent(facilitySpecsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,6 +218,17 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(200, 200, 200))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(facilityChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(facilityNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(backToMenuButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,7 +256,9 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
                         .addGap(34, 34, 34)
                         .addComponent(statusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backToMenuButton)
+                .addContainerGap())
         );
 
         pack();
@@ -284,7 +309,7 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
         Calendar checkDateCalendar = Calendar.getInstance();
         checkDateCalendar.setTimeInMillis(checkDate.getTime());
         checkDateCalendar.add(Calendar.HOUR, 6 + timeslot);
-        if(rightNow.after(checkDateCalendar)) {
+        if (rightNow.after(checkDateCalendar)) {
             statusTextField.setText("You are to late to book this timeslot");
             return;
         }
@@ -303,6 +328,11 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
         fillUpAvailablityTable();
     }//GEN-LAST:event_timeslotBookingButtonActionPerformed
 
+    private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
+        landingPage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backToMenuButtonActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -316,23 +346,24 @@ public class Sports_Facility_Schedule extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Sports_Facility_Schedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SportsFacilitySchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Sports_Facility_Schedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SportsFacilitySchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Sports_Facility_Schedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SportsFacilitySchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Sports_Facility_Schedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SportsFacilitySchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Sports_Facility_Schedule().setVisible(true);
+                new SportsFacilitySchedule().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backToMenuButton;
     private javax.swing.JButton checkActivtyBookingButton;
     private javax.swing.JComboBox dayComboBox;
     private javax.swing.JComboBox facilityChooser;
