@@ -28,7 +28,7 @@ public class ControllerTest {
     @Before
     public void setUp() {
         con = connector.getConnection();
-        controller = Controller.getInstance();
+        controller = new Controller(con);
         ReservationFixture.setUp(con);
     }
 
@@ -196,6 +196,48 @@ public class ControllerTest {
         controller.getAllFacilityNames();
         Facility f = controller.getFacility("Bullcrap Name");
         assertNull(f);
+    }
+
+    /*
+     * Tests so true is returend if date+timeslot is not booked
+     */
+    @Test
+    public void testCheckAvailableFacilityBookingAvailable() {
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 1, 999);
+        boolean status = controller.checkAvailableFacilityBooking(fb);
+        assertTrue(status);
+    }
+
+    /*
+     * Tests so false is returend if date+timeslot is not booked
+     */
+    @Test
+    public void testCheckAvailableFacilityBookingUnavailable() {
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2014-03-24"), 2, 999);
+        boolean status = controller.checkAvailableFacilityBooking(fb);
+        assertFalse(status);
+    }
+
+    /*
+     * Tests so true is returned when the user has a booking on date+timeslot
+     */
+    @Test
+    public void testDoesUserHaveFacilityBookingOnSpecificDateAndTimeslotMatch() {
+        boolean status
+                = controller.doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
+                        Date.valueOf("2014-03-24"), 1, 2);
+        assertTrue(status);
+    }
+
+    /*
+     * Tests so false is returned when the user doesn't have booking on date+timeslot
+     */
+    @Test
+    public void testDoesUserHaveFacilityBookingOnSpecificDateAndTimeslotNoMatch() {
+        boolean status
+                = controller.doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
+                        Date.valueOf("2099-03-24"), 1, 2);
+        assertFalse(status);
     }
 
 }

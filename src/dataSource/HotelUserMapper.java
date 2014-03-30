@@ -10,6 +10,9 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
         super(con);
     }
     
+    /*
+    * Returns a list of all hotelUsers in the database
+    */
     @Override
     public List<HotelUser> getAllUsers(){
         return executeQueryAndGatherResults(HotelUser.class,
@@ -19,6 +22,9 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
                 new int[]{0, 1, 1, 1, 0, 0});
     }
     
+    /*
+    * Returns one hoteluser
+    */
     @Override
     public List<HotelUser> getUser(int id){
         return executeQueryAndGatherResults(HotelUser.class,

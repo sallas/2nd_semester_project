@@ -1,6 +1,7 @@
 package domain;
 
 import dataSource.DBFacade;
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +17,16 @@ public class Controller {
     private static Controller instance = null;
     private int currentRoomID;
     private Map<String, Facility> facilityMap;
+
+    /*
+     * Constructor only used for testing purposes
+     * NEEDS TO BE REMOVED BEFORE DEPLOYMENT
+     */
+    protected Controller(Connection con) {
+        facade = new DBFacade(con);
+        emailValidator = new EmailValidator();
+        facilityMap = new HashMap<>();
+    }
 
     /*
      *   Returns a List of Strings containing information about all rooms
@@ -242,6 +253,10 @@ public class Controller {
         return facade.getAllFacilityBookingsOfSpecificDateAndUser(date, id);
     }
 
+    /*
+     * Returns true if specified user already have a facility booking on
+     * given date and timeslot
+     */
     public boolean doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
             Date date, int userID, int timeslot) {
         List<FacilityBooking> bookings

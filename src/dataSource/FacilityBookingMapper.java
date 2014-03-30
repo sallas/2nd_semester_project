@@ -74,6 +74,10 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new int[]{0, 0, 2, 0, 0}, date);
     }
 
+    /*
+     * Returns all faciltiy bookings made by user with id userID and on the
+     * spefified date
+     */
     @Override
     public List<FacilityBooking> getAllBookingsOfSpecificDateAndUser(
             Date date, int userID) {
@@ -84,6 +88,10 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new int[]{0, 0, 2, 0, 0}, date, userID);
     }
 
+    /*
+     * Returns all faciltiy bookings made by user with id userID and on the
+     * spefified date and timeslot
+     */
     @Override
     public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotUser(
             Date date, int userID, int timeslot) {

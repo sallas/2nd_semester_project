@@ -15,15 +15,25 @@ public class EmptyDBFixture {
             con.setAutoCommit(false);
 
             // delete info in table
+            st.addBatch("delete from facility_booking");
+            st.addBatch("delete from Hotel_user");
+            st.addBatch("delete from Reservation");
+            st.addBatch("delete from Room");
+            st.addBatch("delete from Customer");
+            st.addBatch("delete from Facility");
             st.addBatch("delete from Reservation");
             st.addBatch("delete from Room");
             st.addBatch("delete from Customer");
             // reseting sequence
             st.addBatch("drop sequence reservationseq");
-            st.addBatch("create sequence reservationseq start with 4");
+            st.addBatch("create sequence reservationseq start with 1");
             st.addBatch("drop sequence customerseq");
-            st.addBatch("create sequence customerseq start with 3");
-            
+            st.addBatch("create sequence customerseq start with 1");
+            st.addBatch("drop sequence facility_bookingseq");
+            st.addBatch("create sequence facility_bookingseq start with 1");
+            st.addBatch("drop sequence hotel_userseq");
+            st.addBatch("create sequence hotel_userseq start with 1");
+
             st.executeBatch();
             // end transaction
             con.commit();

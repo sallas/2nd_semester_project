@@ -26,15 +26,30 @@ public class HotelUserMapperTest {
         connector.releaseConnection(con);
     }
 
+    /*
+     * Test so the mapper returns the correct amount of HotelUsers
+     */
     @Test
     public void testGetAllUsers() {
         List<HotelUser> users = hum.getAllUsers();
         assertTrue(users.size() == 2);
     }
 
+    /*
+     * Test so correct user is returend when using valid user ID
+     */
     @Test
-    public void testGetUser() {
+    public void testGetUserMatch() {
         List<HotelUser> users = hum.getUser(1);
         assertTrue(users.get(0).getUsername().equals("user1"));
+    }
+
+    /*
+     * Test so no user is returend when using invalid user ID
+     */
+    @Test
+    public void testGetUserNoMatch() {
+        List<HotelUser> users = hum.getUser(-1);
+        assertTrue(users.isEmpty());
     }
 }
