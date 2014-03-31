@@ -77,5 +77,9 @@ public class Facility {
     }
     public Facility(){
     }
- 
+
+    @Override
+    public String toString() {
+        return "Facility " + "name: " + name + " , type: " + type + " , capacity: " + capacity;
+    }
 }

@@ -305,6 +305,11 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
 //        return !unavailable;  //returns the opposite of unavaiable
     }
 
+    /*
+     * Locks the table reservation so no one else will be able to 
+     * write to it until we commit something
+     * Used to make sure we don't double book
+     */
     @Override
     public void lockReservationTable() {
         String SQLString = "LOCK TABLE reservation in exclusive mode";

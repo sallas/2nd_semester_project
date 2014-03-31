@@ -28,7 +28,7 @@ public class ControllerTest {
     @Before
     public void setUp() {
         con = connector.getConnection();
-        controller = Controller.getInstance();
+        controller = new Controller(con);
         ReservationFixture.setUp(con);
     }
 
@@ -51,7 +51,7 @@ public class ControllerTest {
     public void saveReservationInControllerProperFull()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", Date.valueOf("1995-01-01"), 30, 100);
+                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), 30, 100);
         assertTrue(res);
     }
 
@@ -63,7 +63,7 @@ public class ControllerTest {
     public void saveReservationInControllerProperNoAgency()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "", new Date(1994, 12, 31), 30, 100);
+                "00000", "igor@gmail.com", "", Date.valueOf("2099-01-01"), 30, 100);
         assertTrue(res);
     }
 
@@ -74,7 +74,7 @@ public class ControllerTest {
     public void saveReservationInControllerNegativeNumberOfNights()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", new Date(1994, 12, 31), -1, 101);
+                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), -1, 101);
         assertFalse(res);
     }
 
@@ -85,7 +85,7 @@ public class ControllerTest {
     public void saveReservationInControllerWrongEmail()
             throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igorsdscom", "sunshine", new Date(1994, 12, 31), 2, 101);
+                "00000", "igorsdscom", "sunshine", Date.valueOf("2099-01-01"), 2, 101);
         assertFalse(res);
     }
 
@@ -95,7 +95,7 @@ public class ControllerTest {
     @Test
     public void saveReservationInControllerWrongRoomID() throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
         boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", new Date(1994, 12, 31), 2, 20);
+                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), 2, 20);
         assertFalse(res);
     }
 
@@ -131,7 +131,6 @@ public class ControllerTest {
         Date arrivalDate = Date.valueOf("2020-03-02");
         Date departureDate = Date.valueOf("2020-03-04");
         int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("single", arrivalDate, departureDate);
-        System.out.println(roomID);
         assertTrue(roomID == 101);
     }
 
@@ -144,7 +143,6 @@ public class ControllerTest {
         Date arrivalDate = Date.valueOf("2020-03-02");
         Date departureDate = Date.valueOf("2020-03-04");
         int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("double", arrivalDate, departureDate);
-        System.out.println(roomID);
         assertTrue(roomID == 100);
     }
 
@@ -160,9 +158,86 @@ public class ControllerTest {
         assertTrue(roomID == -1);
     }
 
+    /*
+     *   Checks so getAllCurrentGuests returns the correct amount of customers
+     */
     @Test
-    public void getAllCurrentGuests() {
+    public void testGetAllCurrentGuests() {
         List<Customer> guests = controller.getAllCurrentGuests();
         assertTrue(guests.size() == 1);
     }
+
+    /*
+     *   Checks so getAllFacilityNames returns the correct amount of facility names
+     */
+    @Test
+    public void testGetAllFacilityNames() {
+        List<String> facilityNames = controller.getAllFacilityNames();
+        assertTrue(facilityNames.size() == 2);
+    }
+
+    /*
+     * Tests so getFacility returns the correct facility
+     */
+    @Test
+    public void testGetFacilityMatchingName() {
+        List<String> facilityNames = controller.getAllFacilityNames();
+        String expectedResult = facilityNames.get(0);
+        Facility f = controller.getFacility(facilityNames.get(0));
+        String result = f.getName();
+        assertEquals(expectedResult, result);
+    }
+
+    /*
+     *   Checks so getFacility method retursn null if bad name is given
+     */
+    @Test
+    public void testGetFacilityNotMatchingName() {
+        controller.getAllFacilityNames();
+        Facility f = controller.getFacility("Bullcrap Name");
+        assertNull(f);
+    }
+
+    /*
+     * Tests so true is returend if date+timeslot is not booked
+     */
+    @Test
+    public void testCheckAvailableFacilityBookingAvailable() {
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 1, 999);
+        boolean status = controller.checkAvailableFacilityBooking(fb);
+        assertTrue(status);
+    }
+
+    /*
+     * Tests so false is returend if date+timeslot is not booked
+     */
+    @Test
+    public void testCheckAvailableFacilityBookingUnavailable() {
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2014-03-24"), 2, 999);
+        boolean status = controller.checkAvailableFacilityBooking(fb);
+        assertFalse(status);
+    }
+
+    /*
+     * Tests so true is returned when the user has a booking on date+timeslot
+     */
+    @Test
+    public void testDoesUserHaveFacilityBookingOnSpecificDateAndTimeslotMatch() {
+        boolean status
+                = controller.doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
+                        Date.valueOf("2014-03-24"), 1, 2);
+        assertTrue(status);
+    }
+
+    /*
+     * Tests so false is returned when the user doesn't have booking on date+timeslot
+     */
+    @Test
+    public void testDoesUserHaveFacilityBookingOnSpecificDateAndTimeslotNoMatch() {
+        boolean status
+                = controller.doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
+                        Date.valueOf("2099-03-24"), 1, 2);
+        assertFalse(status);
+    }
+
 }

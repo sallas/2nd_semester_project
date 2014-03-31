@@ -12,12 +12,13 @@ import javax.swing.JTextField;
 
 public class Reservation extends javax.swing.JFrame {
 
-    Controller control = Controller.getInstance();
+    private Controller control = Controller.getInstance();
     private boolean status;
     private int currentBookingRoomID;
     private int currentBookingNumNights;
     private Date currentBookingArrivalDate = null;
     private String currentBookingType = null;
+    private LandingPage landingPage;
 
     /**
      * Creates new form Reservation
@@ -28,6 +29,14 @@ public class Reservation extends javax.swing.JFrame {
         typeField.addItem("double");
         typeField.addItem("family");
 
+    }
+
+    public Reservation(LandingPage landingPage) {
+                initComponents();
+        typeField.addItem("single");
+        typeField.addItem("double");
+        typeField.addItem("family");
+        this.landingPage = landingPage;
     }
 
     /**
@@ -65,6 +74,7 @@ public class Reservation extends javax.swing.JFrame {
         roomAvailability = new javax.swing.JButton();
         RoomNumLabel = new javax.swing.JLabel();
         statusText = new javax.swing.JLabel();
+        backToMenuButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registration of apartment");
@@ -142,55 +152,17 @@ public class Reservation extends javax.swing.JFrame {
         statusText.setMaximumSize(new java.awt.Dimension(150, 15));
         statusText.setMinimumSize(new java.awt.Dimension(150, 15));
 
+        backToMenuButton.setText("Back to menu");
+        backToMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backToMenuButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(phoneLabel)
-                    .addComponent(addressLabel)
-                    .addComponent(firstNameLabel)
-                    .addComponent(countryLabel)
-                    .addComponent(jLabel1)
-                    .addComponent(travelAgencyLabel)
-                    .addComponent(checkinLabel)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nightsLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nightsCounter, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(phoneField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(emailLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(emailField))
-                    .addComponent(addressField, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(countryField)
-                    .addComponent(travelAgencyField)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(roomAvailability, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(typeField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(RoomNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(familyNameLabel)
-                        .addGap(24, 24, 24)
-                        .addComponent(familyNameField)))
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addComponent(reservationTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -198,6 +170,56 @@ public class Reservation extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(statusText, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(phoneLabel)
+                            .addComponent(addressLabel)
+                            .addComponent(firstNameLabel)
+                            .addComponent(countryLabel)
+                            .addComponent(jLabel1)
+                            .addComponent(travelAgencyLabel)
+                            .addComponent(checkinLabel)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nightsLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nightsCounter, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(phoneField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(emailLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(emailField))
+                            .addComponent(addressField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(countryField)
+                            .addComponent(travelAgencyField)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(typeField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(roomAvailability, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(RoomNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(familyNameLabel)
+                                .addGap(24, 24, 24)
+                                .addComponent(familyNameField))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(backToMenuButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,7 +268,9 @@ public class Reservation extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(submitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(roomAvailability))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(roomAvailability)
+                        .addComponent(backToMenuButton)))
                 .addContainerGap())
         );
 
@@ -373,6 +397,11 @@ public class Reservation extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_submitButtonActionPerformed
 
+    private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
+        landingPage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backToMenuButtonActionPerformed
+
     private String textFieldChecker(JTextField textField, String errorString) {
         String returnString = null;
         if (textField.getText().equals("")) {
@@ -427,6 +456,7 @@ public class Reservation extends javax.swing.JFrame {
     private javax.swing.JLabel RoomNumLabel;
     private javax.swing.JTextField addressField;
     private javax.swing.JLabel addressLabel;
+    private javax.swing.JButton backToMenuButton;
     private org.jdesktop.swingx.JXDatePicker checkDatePicker;
     private javax.swing.JLabel checkinLabel;
     private javax.swing.JTextField countryField;

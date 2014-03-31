@@ -1,16 +1,12 @@
 package dataSource;
 
-import domain.Facility;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.lang.Object;
 import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class AbstractMapper {
 
@@ -52,7 +48,7 @@ public abstract class AbstractMapper {
             }
             result = st.executeQuery();
         } catch (SQLException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + "SQLException execute query");
             System.out.println(ex.getMessage());
         }
         return result;
@@ -109,20 +105,60 @@ public abstract class AbstractMapper {
             }
             rs.close();
         } catch (SQLException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " SQLException");
             System.out.println(ex.getMessage());
         } catch (InstantiationException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " InstantiationException");
             System.out.println(ex.getMessage());
         } catch (IllegalAccessException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " IllegalAccessException");
             System.out.println(ex.getMessage());
         } catch (NoSuchFieldException ex) {
-            System.out.println(exMessage);
+            System.out.println(exMessage + " NoSuchFieldException");
             System.out.println(ex.getMessage());
         } catch (SecurityException ex) {
+            System.out.println(exMessage + " SecurityException");
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+
+    /*
+     * Utility function for executing SQL Inserts with automatic mapping
+     * and exception message.
+     * Returns how many rows were inserted in db.
+     */
+    protected int executeSQLInsert(String statement, String exMessage, Object... values) {
+        int result = 0;
+        int counter = 1;
+        PreparedStatement st = null;
+        try {
+            st = con.prepareStatement(statement);
+            for (Object value : values) {
+                if (value instanceof Integer) {
+                    st.setInt(counter, (int) value);
+                } else if (value instanceof String) {
+                    st.setString(counter, (String) value);
+                } else if (value instanceof Date) {
+                    st.setDate(counter, (Date) value);
+                }
+                counter++;
+            }
+            result = st.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex.getErrorCode());
+            
             System.out.println(exMessage);
             System.out.println(ex.getMessage());
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(exMessage);
+                System.out.println(e.getMessage());
+            }
         }
         return result;
     }

@@ -1,6 +1,8 @@
 package dataSource;
 
 import domain.Customer;
+import domain.Facility;
+import domain.FacilityBooking;
 import domain.Reservation;
 import domain.Room;
 import java.sql.Connection;
@@ -14,18 +16,33 @@ public class DBFacade {
     private static RoomMapperInterface roomMapper;
     private static DBFacade instance;
     private static CustomerMapperInterface customerMapper;
+    private static FacilityMapperInterface facilityMapper;
+    private static FacilityBookingMapper facilityBookingMapper;
+    private static HotelUserMapperInterface hotelUserMapper;
     private static Connection connection;
 
     private DBFacade() {
         connection = DBConnector.getConnection();
-        reservationMapper = new ReservationMapper(connection);
-        roomMapper = new RoomMapper(connection);
-        customerMapper = new CustomerMapper(connection);
+        instantiateMappers(connection);
     }
 
     public DBFacade(ReservationMapperInterface resMapper, CustomerMapperInterface cusMapper) {
         reservationMapper = resMapper;
         customerMapper = cusMapper;
+    }
+
+    private void instantiateMappers(Connection con) {
+        reservationMapper = new ReservationMapper(con);
+        roomMapper = new RoomMapper(con);
+        customerMapper = new CustomerMapper(con);
+        facilityMapper = new FacilityMapper(con);
+        facilityBookingMapper = new FacilityBookingMapper(con);
+        hotelUserMapper = new HotelUserMapper(con);
+    }
+
+    public DBFacade(Connection con) {
+        connection = con;
+        instantiateMappers(con);
     }
 
     public DBFacade(RoomMapperInterface rmMapper) {
@@ -52,7 +69,7 @@ public class DBFacade {
     }
 
     public boolean saveReservationInformation(Reservation r, Customer c) {
-         return SaveRegistrationLogic.saveReservationInformation(
+        return SaveRegistrationLogic.saveReservationInformation(
                 r, c, connection, reservationMapper, customerMapper);
     }
 
@@ -80,4 +97,28 @@ public class DBFacade {
         reservationMapper.lockReservationTable();
     }
 
+    public List<Facility> getAllFacilities() {
+        return facilityMapper.getFacilities();
+    }
+
+    public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
+        return facilityBookingMapper.checkAvailableFacilityBooking(fb);
+    }
+
+    public boolean saveFacilityBooking(FacilityBooking fb) {
+        return facilityBookingMapper.saveFacilityBooking(fb);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDate(Date date) {
+        return facilityBookingMapper.getAllBookingsOfSpecificDate(date);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDateAndUser(Date date, int id) {
+        return facilityBookingMapper.getAllBookingsOfSpecificDateAndUser(date, id);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDateTimeslotUser(
+            Date date, int userID, int timeslot) {
+        return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
+    }
 }

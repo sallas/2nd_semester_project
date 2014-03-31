@@ -1,6 +1,7 @@
 package domain;
 
 import dataSource.DBFacade;
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,9 +16,24 @@ public class Controller {
     private EmailValidator emailValidator;
     private static Controller instance = null;
     private int currentRoomID;
+    private Map<String, Facility> facilityMap;
 
+    /*
+     * Constructor only used for testing purposes
+     * NEEDS TO BE REMOVED BEFORE DEPLOYMENT
+     */
+    protected Controller(Connection con) {
+        facade = new DBFacade(con);
+        emailValidator = new EmailValidator();
+        facilityMap = new HashMap<>();
+    }
+
+    /*
+     *   Returns a List of Strings containing information about all rooms
+     *   most specificly if they are available or not
+     */
     public List<String> getRooms() {
-         List<String> roomList = new ArrayList();
+        List<String> roomList = new ArrayList();
         List<Room> allRooms = facade.getAllRooms();
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date currentDate = new java.sql.Date(utilDate.getTime());
@@ -42,11 +58,14 @@ public class Controller {
         return roomList;
     }
 
+    // Private Constructor (No public constructor exists)
     private Controller() {
         facade = DBFacade.getInstance();
         emailValidator = new EmailValidator();
+        facilityMap = new HashMap<>();
     }
 
+    // Makes Controller into a singleton
     public static Controller getInstance() {
         if (instance == null) {
             instance = new Controller();
@@ -86,12 +105,14 @@ public class Controller {
     }
 
     /*
-     *   Returns a availableRooms of a avialable room during your specified time period
+     *   Returns a RoomID of a  random available room during your specified time period
      */
-    public int getAvailableRoomIDOfTypeBetweenDates(String type, Date arrivalDate, Date departureDate) {
+    public int getAvailableRoomIDOfTypeBetweenDates(
+            String type, Date arrivalDate, Date departureDate) {
 
         List<Integer> availableRoomIDs
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates(type, arrivalDate, departureDate);
+                = getAllAvailableRoomIDsOfTypeAndBetweenDates(
+                        type, arrivalDate, departureDate);
         if (availableRoomIDs.isEmpty()) {
             currentRoomID = -1;
             return -1;
@@ -101,13 +122,15 @@ public class Controller {
         return currentRoomID;
     }
 
-    private List<Integer> getAllAvailableRoomIDsOfTypeAndBetweenDates(String type, Date arrivalDate, Date departureDate) {
-        Date bookedArrivalDate;
-        Date bookedDepartureDate;
+    /*
+     *   Returns a list of all available Rooms IDs that are withing 2 specified dates 
+     *   and are of a certain type
+     */
+    private List<Integer> getAllAvailableRoomIDsOfTypeAndBetweenDates(
+            String type, Date arrivalDate, Date departureDate) {
 
-        List<Reservation> reservations
-                = facade.getAllReservationsOfSpecificType(type);
-
+        // Builds a Map containing all rooms and the boolean true
+        // representing available rooms
         Map<Integer, Boolean> roomAvailability = new HashMap<>();
         List<Room> rooms = facade.getAllRooms();
         for (Room room : rooms) {
@@ -117,6 +140,15 @@ public class Controller {
 
         }
 
+        List<Reservation> reservations
+                = facade.getAllReservationsOfSpecificType(type);
+        Date bookedArrivalDate;
+        Date bookedDepartureDate;
+
+        // Goes through all reservations trying to find conflicting booking 
+        // if a conflicting booking is found the roomIDs linked boolean gets 
+        // set to false representing it being a not available room
+        // becuase how maps work no room exists twice
         for (Reservation r : reservations) {
             bookedArrivalDate = r.getCheckinDate();
             bookedDepartureDate = r.getDepartureDate();
@@ -138,8 +170,9 @@ public class Controller {
             }
 
         }
-        List<Integer> availableRooms = new ArrayList<>();
 
+        // Goes through the map and picks out the available rooms
+        List<Integer> availableRooms = new ArrayList<>();
         for (Map.Entry<Integer, Boolean> entry : roomAvailability.entrySet()) {
             if (entry.getValue()) {
                 availableRooms.add(entry.getKey());
@@ -174,4 +207,61 @@ public class Controller {
         return currentGuests;
     }
 
+    /*
+     *  Returns a list of strings containing all sport facility names
+     *  currently in the database
+     */
+    public List<String> getAllFacilityNames() {
+        List<Facility> facilities = facade.getAllFacilities();
+        List<String> facilityNames = new ArrayList<>();
+        for (Facility f : facilities) {
+            facilityNames.add(f.getName());
+            facilityMap.put(f.getName(), f);
+        }
+
+        return facilityNames;
+    }
+
+    /*
+     *   Returns a facility object of the correct name from our HashMap
+     */
+    public Facility getFacility(String name) {
+        Facility f = null;
+        if (facilityMap.containsKey(name)) {
+            f = facilityMap.get(name);
+        }
+        return f;
+    }
+
+    /*
+     *   Returns true if the date and timeslot of the specified facility is 
+     * available
+     */
+    public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
+        return facade.checkAvailableFacilityBooking(fb);
+    }
+
+    public boolean saveFacilityBooking(FacilityBooking fb) {
+        return facade.saveFacilityBooking(fb);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDate(Date date) {
+        return facade.getAllFacilityBookingsOfSpecificDate(date);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingsOfSpecificDateAndUser(Date date, int id) {
+        return facade.getAllFacilityBookingsOfSpecificDateAndUser(date, id);
+    }
+
+    /*
+     * Returns true if specified user already have a facility booking on
+     * given date and timeslot
+     */
+    public boolean doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
+            Date date, int userID, int timeslot) {
+        List<FacilityBooking> bookings
+                = facade.getAllFacilityBookingsOfSpecificDateTimeslotUser(
+                        date, userID, timeslot);
+        return !bookings.isEmpty();
+    }
 }

@@ -91,4 +91,13 @@ public class AbstractMapperTest {
                  101, "country1");
         assertEquals(ar.size(), 0);
     }
+    
+    @Test
+    public void testExecuteInsertSimple(){
+        int r = am.executeSQLInsertPrivate(
+                "INSERT INTO facility values (?, 'Amazing place', ?, 100, 0, 0, 1)",
+                "Problem with simple insert",
+                3, "swimming");
+        assertEquals(r, 1);
+    }
 }
