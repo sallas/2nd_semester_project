@@ -54,7 +54,10 @@ public class CustomerMapperTest {
                 = new Customer(111, "address1", "country1", "firstName1", "lastName1",
                         "33", "email1", "agency1");
         int customerID = cm.saveNewCustomer(customerOne);
-        assertTrue(customerID == 3);
+        Customer c2 =cm.getCustomer(customerID);
+        
+            assertTrue(c2 != null);
+            //cm.
     }
     
          /*
@@ -63,7 +66,7 @@ public class CustomerMapperTest {
     @Test
     public void testGetAllReservations() {
         List<Customer> customers = cm.getAllCustomers();
-        assertEquals(2, customers.size());
+        assertEquals(3, customers.size());
     }
     
     /*

@@ -20,9 +20,8 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
                 Customer.class,
                 "SELECT * FROM customer WHERE ID = ?",
                 "Fail in CustomerMapper - getCustomer",
-                new String[]{"ID", "ADDRESS", "COUNTRY", "FIRST_NAME",
-                    "LAST_NAME", "PHONE", "EMAIL", "TRAVEL_AGENCY"},
-                new int[]{0, 1, 1, 1, 1, 1, 1, 1},
+                new String[]{"ID", "addres", "country", "first_name", "last_name", "phone", "email", "travel_agency"},
+                new int[]{DataType.INT, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING},
                 ID);
         if (customer.isEmpty()) {
             return null;
