@@ -1,4 +1,5 @@
 DROP TABLE facility_booking;
+DROP TABLE queue_facility;
 DROP TABLE HOTEL_USER;
 DROP TABLE reservation;
 DROP TABLE customer;
@@ -23,6 +24,8 @@ DROP SEQUENCE facility_bookingSeq;
 CREATE SEQUENCE facility_bookingSeq START WITH 1;
 DROP SEQUENCE hotel_userSeq;
 CREATE SEQUENCE hotel_userSeq START WITH 1;
+DROP SEQUENCE queue_facilitySeq;
+CREATE SEQUENCE queue_facilitySeq START WITH 1;
 
 CREATE TABLE room_cost (
 Type varchar2(30) NOT NULL,
@@ -85,4 +88,10 @@ User_id number(5) NOT NULL,
 PRIMARY KEY (ID),
 FOREIGN KEY (FACILITY_ID) REFERENCES facility(ID),
 FOREIGN KEY (User_id) REFERENCES HOTEL_USER(ID)
+);
+
+CREATE TABLE queue_facility(
+ID number(5) NOT NULL,
+USER_ID number(5) NOT NULL,
+FACILITY_BOOKING number(5) NOT NULL
 );
