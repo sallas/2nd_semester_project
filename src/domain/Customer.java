@@ -11,7 +11,7 @@ public class Customer {
     private String last_name;
     private String phone;
     private String email;
-    private String travel_agency;
+    private String travel_agency = "";
     private ArrayList<Reservation> reservation;
 
     public ArrayList<Reservation> getReservation() {

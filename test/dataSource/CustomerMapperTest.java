@@ -54,21 +54,19 @@ public class CustomerMapperTest {
                 = new Customer(111, "address1", "country1", "firstName1", "lastName1",
                         "33", "email1", "agency1");
         int customerID = cm.saveNewCustomer(customerOne);
-        Customer c2 =cm.getCustomer(customerID);
-        
-            assertTrue(c2 != null);
-            //cm.
+        Customer c2 = cm.getCustomer(customerID);
+        assertTrue(c2 != null);
     }
-    
-         /*
+
+    /*
      * Checks so the correct amount of rooms are returned
      */
     @Test
     public void testGetAllReservations() {
         List<Customer> customers = cm.getAllCustomers();
-        assertEquals(3, customers.size());
+        assertEquals(2, customers.size());
     }
-    
+
     /*
      * Checks so the customer is not inserted when address is null
      */
@@ -80,8 +78,8 @@ public class CustomerMapperTest {
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == -1);
     }
-    
-     /*
+
+    /*
      * Checks so the customer is not inserted when firstName is null
      */
     @Test
@@ -92,8 +90,8 @@ public class CustomerMapperTest {
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == -1);
     }
-    
-     /*
+
+    /*
      * Checks so the customer is not inserted when last name is null
      */
     @Test
@@ -104,8 +102,8 @@ public class CustomerMapperTest {
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == -1);
     }
-    
-     /*
+
+    /*
      * Checks so the customer is not inserted when country is null
      */
     @Test
@@ -116,8 +114,8 @@ public class CustomerMapperTest {
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == -1);
     }
-    
-     /*
+
+    /*
      * Checks so the customer is not inserted when email is null
      */
     @Test
@@ -128,8 +126,8 @@ public class CustomerMapperTest {
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == -1);
     }
-    
-     /*
+
+    /*
      * Checks so the customer is not inserted when phone number is null
      */
     @Test
@@ -140,8 +138,8 @@ public class CustomerMapperTest {
         int customerID = cm.saveNewCustomer(customerOne);
         assertTrue(customerID == -1);
     }
-    
-     /*
+
+    /*
      * Checks so the customer is inserted when agency is null
      */
     @Test

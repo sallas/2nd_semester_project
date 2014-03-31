@@ -64,7 +64,7 @@ public class RoomMapperTest {
     public void testGetAllRoomsNoRoomsInDB() {
         EmptyDBFixture.setUp(con);
         List<Room> rooms = rm.getAllRooms();
-        assertEquals(0, rooms.size());
+        assertTrue(rooms.isEmpty());
     }
 
 }
