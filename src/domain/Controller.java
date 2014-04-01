@@ -294,4 +294,8 @@ public class Controller {
         }
         return "";
     }
+    
+    public List<Reservation> getAllReservations() {
+        return facade.getAllReservations();
+    }
 }
