@@ -59,7 +59,7 @@ public class Controller {
     }
 
     // Private Constructor (No public constructor exists)
-    private Controller() {
+    public Controller() {
         facade = DBFacade.getInstance();
         emailValidator = new EmailValidator();
         facilityMap = new HashMap<>();
@@ -264,4 +264,18 @@ public class Controller {
                         date, userID, timeslot);
         return !bookings.isEmpty();
     }
+
+    public boolean checkCredentials(String username, String password) {
+        boolean res = true;
+        HotelUser user = facade.checkCredentials(username, password);
+
+        if (null == user) {
+            res = false;
+        } else if (!user.getUsername().equals(username) && !user.getPsw().equals(password)) {
+            res = true;
+        }
+        System.out.println(res);
+        return res;
+    }
+
 }

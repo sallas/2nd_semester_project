@@ -3,6 +3,7 @@ package dataSource;
 import domain.Customer;
 import domain.Facility;
 import domain.FacilityBooking;
+import domain.HotelUser;
 import domain.Reservation;
 import domain.Room;
 import java.sql.Connection;
@@ -19,6 +20,7 @@ public class DBFacade {
     private static FacilityMapperInterface facilityMapper;
     private static FacilityBookingMapper facilityBookingMapper;
     private static HotelUserMapperInterface hotelUserMapper;
+    private static LoginMapper loginMapper;
     private static Connection connection;
 
     private DBFacade() {
@@ -38,6 +40,7 @@ public class DBFacade {
         facilityMapper = new FacilityMapper(con);
         facilityBookingMapper = new FacilityBookingMapper(con);
         hotelUserMapper = new HotelUserMapper(con);
+        loginMapper = new LoginMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -121,4 +124,10 @@ public class DBFacade {
             Date date, int userID, int timeslot) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
     }
+    
+public HotelUser checkCredentials(String username, String password ) {
+    System.out.println(loginMapper);
+    return  loginMapper.getUsernameAndPassword( username,password ) ;
+}
+
 }
