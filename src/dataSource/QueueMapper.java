@@ -17,7 +17,7 @@ public class QueueMapper extends AbstractMapper{
      */
     public List<QueueEntry> getQueueForSpecificBooking(int booking_id){
         return executeQueryAndGatherResults(QueueEntry.class,
-                "SELECT * FROM queue_facility WHERE booking_id = ?",
+                "SELECT * FROM queue_facility WHERE facility_booking_id = ?",
                 "Fail in QueueMapper - getQueueForSpecificBooking",
                 new String[]{"ID", "userID", "facilityBookingID"},
                 new int[]{0, 0, 0}, booking_id);
@@ -26,12 +26,12 @@ public class QueueMapper extends AbstractMapper{
     /*
      * Get all queue etries for specific user.
      */
-    public List<QueueEntry> getQueueForSpecificUser(int user_id){
+    public List<QueueEntry> getQueueForSpecificUser(int userID){
         return executeQueryAndGatherResults(QueueEntry.class,
                 "SELECT * FROM queue_facility WHERE user_id = ?",
                 "Fail in QueueMapper - getQueueForSpecificUser",
                 new String[]{"ID", "userID", "facilityBookingID"},
-                new int[]{0, 0, 0}, user_id);
+                new int[]{0, 0, 0}, userID);
     }
     
     /*
@@ -49,6 +49,18 @@ public class QueueMapper extends AbstractMapper{
                 "INSERT INTO queue_facility VALUES (?, ?, ?)",
                 "Fail in QueueMapper - saveQueueEntry",
                 entry.getID(), entry.getUserID(), entry.getFacilityBookingID());
+        return result != 0;
+    }
+    
+    /*
+     * Delete entry from queue by ids of booking and user.
+     */
+    public boolean deleteQueueEntryForSpecificID(int bookingID, int userID){
+        int result = executeSQLInsert(
+                "DELETE FROM queue_facility" +
+                " WHERE facility_booking_id = ? AND user_id = ?",
+                "Fail in QueueMapper - deleteQueueEntryForSpecificID",
+                bookingID, userID);
         return result != 0;
     }
 }
