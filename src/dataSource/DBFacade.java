@@ -121,4 +121,12 @@ public class DBFacade {
             Date date, int userID, int timeslot) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
     }
+
+    public boolean removeFacilityBooking(int ID) {
+        return facilityBookingMapper.removeFacilityBooking(ID);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
+        return facilityBookingMapper.getAllFacilityBookingOfSpecificUser(ID);
+    }
 }

@@ -245,6 +245,14 @@ public class Controller {
         return facade.saveFacilityBooking(fb);
     }
 
+    public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
+        return facade.getAllFacilityBookingOfSpecificUser(ID);
+    }
+
+    public boolean removeFacilityBooking(int ID) {
+        return facade.removeFacilityBooking(ID);
+    }
+
     public List<FacilityBooking> getAllFacilityBookingsOfSpecificDate(Date date) {
         return facade.getAllFacilityBookingsOfSpecificDate(date);
     }
@@ -263,5 +271,20 @@ public class Controller {
                 = facade.getAllFacilityBookingsOfSpecificDateTimeslotUser(
                         date, userID, timeslot);
         return !bookings.isEmpty();
+    }
+
+    public int getCurrentUserID() {
+        return 1;
+    }
+
+    public String getFacilityName(int facilityID) {
+        for (Map.Entry<String, Facility> entry : facilityMap.entrySet()) {
+            String string = entry.getKey();
+            Facility facility = entry.getValue();
+            if (facility.getID() == facilityID) {
+                return string;
+            }
+        }
+        return "";
     }
 }

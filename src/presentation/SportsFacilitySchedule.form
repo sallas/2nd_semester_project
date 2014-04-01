@@ -39,9 +39,10 @@
                       </Group>
                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="timeslotBookingButton" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <Component id="timeslotComboBox" min="-2" pref="145" max="-2" attributes="0"/>
+                          <Component id="timeslotBookingButton" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
+                          <Component id="viewOwnBookingButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="statusTextField" max="32767" attributes="0"/>
@@ -94,7 +95,9 @@
                           <Component id="checkActivtyBookingButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="timeslotBookingButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Component id="viewOwnBookingButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="statusTextField" min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane2" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
@@ -158,6 +161,9 @@
           </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="timeslotComboBoxActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -232,6 +238,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backToMenuButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="viewOwnBookingButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="View Own Bookings"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewOwnBookingButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

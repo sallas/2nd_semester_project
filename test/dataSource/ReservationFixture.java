@@ -60,6 +60,8 @@ public class ReservationFixture {
             insert = "insert into facility_booking values ";
             st.addBatch(insert + "(1, 1, to_date('24-03-2014', 'DD-MM-YYYY'),"
                     + "2, 1)");
+            st.addBatch(insert + "(3, 1, to_date('26-03-2014', 'DD-MM-YYYY'),"
+                    + "4, 1)");
             st.addBatch(insert + "(2, 2, to_date('24-03-2014', 'DD-MM-YYYY'),"
                     + "4, 1)");
             st.executeBatch();

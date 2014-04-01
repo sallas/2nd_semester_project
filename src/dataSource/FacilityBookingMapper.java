@@ -102,4 +102,22 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
                 new int[]{0, 0, 2, 0, 0}, date, userID, timeslot);
     }
+    
+    @Override
+    public boolean removeFacilityBooking(int ID){
+        return executeSQLInsert(
+                "DELETE FROM facility_booking WHERE id = ?", 
+                "Fail in FacilityBookingMapper - removeFacilityBooking", 
+                ID) == 1;
+    }
+
+    @Override
+    public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
+        return executeQueryAndGatherResults(FacilityBooking.class,
+                "SELECT * FROM facility_booking WHERE user_id = ?",
+                "Fail in FacilityBookingMapper - getAllBookings", 
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"}, 
+                new int[] {DataType.INT, DataType.INT, DataType.DATE, DataType.INT, DataType.INT}, 
+                ID);
+    }
 }

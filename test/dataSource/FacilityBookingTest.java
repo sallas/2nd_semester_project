@@ -160,5 +160,16 @@ public class FacilityBookingTest {
         boolean status = fbm.saveFacilityBooking(fb);
         assertFalse(status);
     }
+    
+    //Tests if the remove method works when there is a match
+    @Test
+    public void testRemoveFacilityBookingMatch(){
+        assertTrue(fbm.removeFacilityBooking(3));
+    }
+    
+    @Test
+    public void testRemoveFacilityBookingNoMatch(){
+        assertFalse(fbm.removeFacilityBooking(999999));
+    }
 
 }

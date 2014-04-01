@@ -120,6 +120,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         timeslotTable = new javax.swing.JTable();
         timeslotBookingButton = new javax.swing.JButton();
         backToMenuButton = new javax.swing.JButton();
+        viewOwnBookingButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,6 +143,11 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         });
 
         timeslotComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        timeslotComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeslotComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Day");
 
@@ -193,6 +199,13 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
             }
         });
 
+        viewOwnBookingButton.setText("View Own Bookings");
+        viewOwnBookingButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewOwnBookingButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -211,9 +224,10 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                             .addComponent(checkActivtyBookingButton))
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(timeslotBookingButton)
                             .addComponent(jLabel2)
-                            .addComponent(timeslotComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(timeslotComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timeslotBookingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(viewOwnBookingButton)))
                     .addComponent(statusTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(52, 52, 52)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,7 +267,9 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(checkActivtyBookingButton)
                             .addComponent(timeslotBookingButton))
-                        .addGap(34, 34, 34)
+                        .addGap(5, 5, 5)
+                        .addComponent(viewOwnBookingButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(statusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -333,6 +349,15 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 
+    private void timeslotComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeslotComboBoxActionPerformed
+    }//GEN-LAST:event_timeslotComboBoxActionPerformed
+
+    private void viewOwnBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOwnBookingButtonActionPerformed
+        OwnBookings ownBooking = new OwnBookings(this);
+        ownBooking.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_viewOwnBookingButtonActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -376,6 +401,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     private javax.swing.JButton timeslotBookingButton;
     private javax.swing.JComboBox timeslotComboBox;
     private javax.swing.JTable timeslotTable;
+    private javax.swing.JButton viewOwnBookingButton;
     // End of variables declaration//GEN-END:variables
 
 }
