@@ -148,9 +148,18 @@ public class ReservationMapperTest {
     }
 
     @Test
-    public void testCheckAvailableReservationAvailable() {
+    public void testCheckAvailableReservationAvailableAfterBooking() {
         Date arrivalDate = Date.valueOf("2015-03-10");
         Date departureDate = Date.valueOf("2015-03-13");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertTrue(status);
+    }
+
+    @Test
+    public void testCheckAvailableReservationAvailableBeforeBooking() {
+        Date arrivalDate = Date.valueOf("1999-03-10");
+        Date departureDate = Date.valueOf("1999-03-13");
         Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
         boolean status = rm.checkAvailableReservation(r);
         assertTrue(status);
@@ -190,5 +199,23 @@ public class ReservationMapperTest {
         Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
         boolean status = rm.checkAvailableReservation(r);
         assertFalse(status);
+    }
+
+    @Test
+    public void testCheckAvailableReservationAvailableDateClashArrival() {
+        Date arrivalDate = Date.valueOf("2014-01-27");
+        Date departureDate = Date.valueOf("2014-01-30");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertTrue(status);
+    }
+
+    @Test
+    public void testCheckAvailableReservationAvailableDateClashDeparture() {
+        Date arrivalDate = Date.valueOf("2014-01-20");
+        Date departureDate = Date.valueOf("2014-01-23");
+        Reservation r = new Reservation(99, 101, 1, arrivalDate, departureDate);
+        boolean status = rm.checkAvailableReservation(r);
+        assertTrue(status);
     }
 }

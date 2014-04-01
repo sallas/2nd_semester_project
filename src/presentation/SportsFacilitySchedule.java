@@ -18,8 +18,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     private int currentUserID;
     private int currentAmountOfBookingsOnSpecificDate;
     private LandingPage landingPage;
-
-    DefaultTableModel model;
+    private DefaultTableModel model;
 
     public SportsFacilitySchedule() {
         constructor();
@@ -59,11 +58,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
             timeslots.add((8 + i) + " - " + (9 + i));
         }
         Calendar rightNow = Calendar.getInstance();
-        int year = rightNow.get(Calendar.YEAR);
-        int month = rightNow.get(Calendar.MONTH);
-        int date = rightNow.get(Calendar.DATE);
-        rightNow.clear();
-        rightNow.set(year, month, date);
+        rightNow.clear(Calendar.HOUR_OF_DAY);
         String[] dateStrings = new String[8];
         for (int i = 0; i < 8; i++) {
             dates.add(new Date(rightNow.getTimeInMillis()));
@@ -172,6 +167,8 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        timeslotTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        timeslotTable.setRowSelectionAllowed(false);
         timeslotTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(timeslotTable);
         if (timeslotTable.getColumnModel().getColumnCount() > 0) {

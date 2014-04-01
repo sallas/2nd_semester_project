@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -107,19 +108,16 @@ public class Controller {
     /*
      *   Returns a RoomID of a  random available room during your specified time period
      */
-    public int getAvailableRoomIDOfTypeBetweenDates(
+    public List<Integer> getAvailableRoomIDsOfTypeBetweenDates(
             String type, Date arrivalDate, Date departureDate) {
 
         List<Integer> availableRoomIDs
                 = getAllAvailableRoomIDsOfTypeAndBetweenDates(
                         type, arrivalDate, departureDate);
         if (availableRoomIDs.isEmpty()) {
-            currentRoomID = -1;
-            return -1;
+            return null;
         }
-        Random rand = new Random();
-        currentRoomID = availableRoomIDs.get(rand.nextInt(availableRoomIDs.size()));
-        return currentRoomID;
+        return availableRoomIDs;
     }
 
     /*
@@ -160,9 +158,9 @@ public class Controller {
             }
             if (status) {
                 if (arrivalDate.before(bookedArrivalDate)
-                        && departureDate.before(bookedArrivalDate)) {
+                        && departureDate.compareTo(bookedArrivalDate) <= 0) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
-                } else if (arrivalDate.after(bookedDepartureDate)) {
+                } else if (arrivalDate.compareTo(bookedDepartureDate) >= 0) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
                 } else {
                     roomAvailability.put(r.getRoomID(), Boolean.FALSE);
@@ -184,27 +182,36 @@ public class Controller {
     /*
      *   Returns a list of a customers currently in the hotel
      */
-    public List<Customer> getAllCurrentGuests() {
+    public Map<Customer, Integer> getAllCurrentGuests() {
         List<Customer> allCustomers = facade.getAllCustomers();
         Map<Integer, Customer> customerMap = new HashMap<>();
         for (Customer c : allCustomers) {
             customerMap.put(c.getID(), c);
         }
         List<Reservation> allReservations = facade.getAllReservations();
-        List<Customer> currentGuests = new ArrayList<>();
-        Date rightNow = new Date(Calendar.getInstance().getTimeInMillis());
-        Date arrivalDate;
+        Calendar rightNow = Calendar.getInstance();
+        Date today = new Date(rightNow.getTimeInMillis());
+        today = Date.valueOf(today.toString());
+        Date arrivalDate; 
         Date departureDate;
-
+        
+        Map<Customer, Integer> currentCustomerStatus = new HashMap<>();
         for (Reservation r : allReservations) {
             arrivalDate = r.getCheckinDate();
             departureDate = r.getDepartureDate();
-            if (rightNow.after(arrivalDate) && rightNow.before(departureDate)) {
-                currentGuests.add(customerMap.get(r.getCustomerID()));
+            System.out.println("");
+            System.out.println("arrival =" + arrivalDate);
+            System.out.println("departure = " + departureDate);
+            if(today.compareTo(arrivalDate) == 0) {
+                currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 2);
+            } else if(today.compareTo(departureDate) == 0) {
+                currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 3);
+            } else if (today.after(arrivalDate) && today.before(departureDate)) {
+                currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 1);
             }
 
         }
-        return currentGuests;
+        return currentCustomerStatus;
     }
 
     /*

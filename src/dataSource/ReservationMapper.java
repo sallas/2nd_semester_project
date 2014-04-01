@@ -178,10 +178,10 @@ public class ReservationMapper implements ReservationMapperInterface {
                 + "from reservation "
                 + "where room_id = ? AND "
                 + "(((? >= checkin_date AND "
-                + "? <= departure_date) OR "
-                + "(? >= checkin_date AND "
+                + "? < departure_date) OR "
+                + "(? > checkin_date AND "
                 + "? <= departure_date)) OR "
-                + "(checkin_date  <= ? AND "
+                + "(checkin_date  < ? AND "
                 + "checkin_date >= ?))";
         PreparedStatement statement = null;
 
