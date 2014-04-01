@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -118,8 +119,8 @@ public class ControllerTest {
     public void testGetAvailableRoomOfSpecificTypeNoRoomAvailable() {
         Date arrivalDate = Date.valueOf("2014-03-25");
         Date departureDate = Date.valueOf("2014-03-29");
-        int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("double", arrivalDate, departureDate);
-        assertTrue(roomID == -1);
+        List<Integer> IDs = controller.getAvailableRoomIDsOfTypeBetweenDates("double", arrivalDate, departureDate);
+        assertTrue(IDs == null);
     }
 
     /*
@@ -128,10 +129,10 @@ public class ControllerTest {
      */
     @Test
     public void testGetAvailableRoomOfSpecificTypeSingleWorking() {
-        Date arrivalDate = Date.valueOf("2020-03-02");
-        Date departureDate = Date.valueOf("2020-03-04");
-        int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("single", arrivalDate, departureDate);
-        assertTrue(roomID == 101);
+        Date arrivalDate = Date.valueOf("2014-01-27");
+        Date departureDate = Date.valueOf("2014-01-29");
+        List<Integer> IDs = controller.getAvailableRoomIDsOfTypeBetweenDates("single", arrivalDate, departureDate);
+        assertTrue(IDs.get(0) == 101);
     }
 
     /*
@@ -142,8 +143,8 @@ public class ControllerTest {
     public void testGetAvailableRoomOfSpecificTypeDoubleRoomWorking() {
         Date arrivalDate = Date.valueOf("2020-03-02");
         Date departureDate = Date.valueOf("2020-03-04");
-        int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("double", arrivalDate, departureDate);
-        assertTrue(roomID == 100);
+        List<Integer> IDs = controller.getAvailableRoomIDsOfTypeBetweenDates("double", arrivalDate, departureDate);
+        assertTrue(IDs.get(0) == 100);
     }
 
     /*
@@ -154,8 +155,8 @@ public class ControllerTest {
         EmptyDBFixture.setUp(con);
         Date arrivalDate = Date.valueOf("2015-03-02");
         Date departureDate = Date.valueOf("2015-03-04");
-        int roomID = controller.getAvailableRoomIDOfTypeBetweenDates("double", arrivalDate, departureDate);
-        assertTrue(roomID == -1);
+        List<Integer> IDs = controller.getAvailableRoomIDsOfTypeBetweenDates("double", arrivalDate, departureDate);
+        assertTrue(IDs == null);
     }
 
     /*
@@ -163,7 +164,7 @@ public class ControllerTest {
      */
     @Test
     public void testGetAllCurrentGuests() {
-        List<Customer> guests = controller.getAllCurrentGuests();
+        Map<Customer, Integer> guests = controller.getAllCurrentGuests();
         assertTrue(guests.size() == 1);
     }
 

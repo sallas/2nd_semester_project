@@ -99,10 +99,10 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 "SELECT * FROM reservation "
                 + "WHERE room_id = ? AND "
                 + "(((? >= checkin_date AND "
-                + "? <= departure_date) OR "
-                + "(? >= checkin_date AND "
+                + "? < departure_date) OR "
+                + "(? > checkin_date AND "
                 + "? <= departure_date)) OR "
-                + "(checkin_date  <= ? AND "
+                + "(checkin_date  < ? AND "
                 + "checkin_date >= ?))",
                 "Fail in RoomMapper - getRoom",
                 new String[]{"ID", "roomID", "customerID", "checkinDate"},
