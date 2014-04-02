@@ -3,6 +3,7 @@ package dataSource;
 import domain.Customer;
 import domain.Facility;
 import domain.FacilityBooking;
+import domain.HotelUser;
 import domain.Reservation;
 import domain.Room;
 import java.sql.Connection;
@@ -129,4 +130,8 @@ public class DBFacade {
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
         return facilityBookingMapper.getAllFacilityBookingOfSpecificUser(ID);
     }
+    
+    public List<HotelUser> getAllUsers() {
+        return hotelUserMapper.getAllUsers();
+    } 
 }
