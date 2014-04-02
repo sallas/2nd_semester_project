@@ -68,4 +68,10 @@ public class Reservation {
                 + ", customerID = " + customerID + ", checkinDate = "
                 + checkinDate + ", numberNights = " + departureDate + '.';
     }
+    
+    public String toJListString() {
+        return "ID= " + ID + " | Room number= " +roomID+ " | Customer ID= "
+                + customerID + " | Arrival Date= " + checkinDate + 
+                " | Departure Date= " + departureDate;
+    }
 }
