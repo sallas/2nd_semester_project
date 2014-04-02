@@ -134,7 +134,7 @@ public class FacilityBookingTest {
      */
     @Test
     public void testsaveFacilityBookingNoProblem() {
-        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2099-03-24"), 3, 1);
+        FacilityBooking fb = new FacilityBooking(4, 1, Date.valueOf("2099-03-24"), 3, 1);
         boolean status = fbm.saveFacilityBooking(fb);
         assertTrue(status);
     }

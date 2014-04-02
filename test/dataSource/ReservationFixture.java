@@ -27,7 +27,7 @@ public class ReservationFixture {
             st.addBatch("drop sequence customerseq");
             st.addBatch("create sequence customerseq start with 3");
             st.addBatch("drop sequence facility_bookingseq");
-            st.addBatch("create sequence facility_bookingseq start with 3");
+            st.addBatch("create sequence facility_bookingseq start with 4");
             st.addBatch("drop sequence hotel_userseq");
             st.addBatch("create sequence hotel_userseq start with 3");
             // insert data into rooms
@@ -60,9 +60,9 @@ public class ReservationFixture {
             insert = "insert into facility_booking values ";
             st.addBatch(insert + "(1, 1, to_date('24-03-2014', 'DD-MM-YYYY'),"
                     + "2, 1)");
-            st.addBatch(insert + "(3, 1, to_date('26-03-2014', 'DD-MM-YYYY'),"
-                    + "4, 1)");
             st.addBatch(insert + "(2, 2, to_date('24-03-2014', 'DD-MM-YYYY'),"
+                    + "4, 1)");
+            st.addBatch(insert + "(3, 1, to_date('26-03-2014', 'DD-MM-YYYY'),"
                     + "4, 1)");
             st.executeBatch();
             // end transaction
