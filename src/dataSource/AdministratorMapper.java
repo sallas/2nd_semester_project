@@ -27,17 +27,15 @@ public class AdministratorMapper {
     }
 
     public boolean addSportFacilities(Facility f) {
-     
+
         int rowsInserted = 0;
         String SQLString1
                 = "insert into facility "
                 + "values (?,?,?,?,?,?,?)";
         PreparedStatement statement = null;
         try {
-            
+
             statement = con.prepareStatement(SQLString1);
-           
-          
 
             //== insert tuple
             statement = con.prepareStatement(SQLString1);
@@ -48,7 +46,7 @@ public class AdministratorMapper {
             statement.setBoolean(5, f.isHasWaitingList());
             statement.setBoolean(6, f.isHasBooking());
             statement.setBoolean(7, f.isHasInstructor());
-            rowsInserted = statement.executeUpdate(); 
+            rowsInserted = statement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
             try {
@@ -70,27 +68,20 @@ public class AdministratorMapper {
         return rowsInserted == 1;
     }
 
-
-
-
-
-
-
- public boolean deleteSportFacilities(Facility f) {
+    public boolean deleteSportFacilities(Facility f) {
         int rowsDeleted = 0;
         String SQLString1
                 = "delete from facility "
                 + "where ID =?";
         PreparedStatement statement = null;
         try {
-            
+
             statement = con.prepareStatement(SQLString1);
-                        
 
             //== insert tuple
             statement = con.prepareStatement(SQLString1);
             statement.setInt(1, f.getID());
-            rowsDeleted = statement.executeUpdate(); 
+            rowsDeleted = statement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
             try {
@@ -112,19 +103,15 @@ public class AdministratorMapper {
         return rowsDeleted == 1;
     }
 
-
-
-
-public boolean addAccount(HotelUser a) {
+    public boolean addAccount(HotelUser a) {
         int rowsInserted = 0;
         String SQLString1
                 = "insert into HotelUser "
                 + "values (?,?,?,?,?,?)";
         PreparedStatement statement = null;
         try {
-            
+
             statement = con.prepareStatement(SQLString1);
-            
 
             //== insert tuple
             statement = con.prepareStatement(SQLString1);
@@ -134,7 +121,7 @@ public boolean addAccount(HotelUser a) {
             statement.setString(4, a.getStatus());
             statement.setInt(5, a.getReservation_id());
             statement.setInt(6, a.getSpent());
-            rowsInserted = statement.executeUpdate(); 
+            rowsInserted = statement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
             try {
@@ -156,23 +143,20 @@ public boolean addAccount(HotelUser a) {
         return rowsInserted == 1;
     }
 
-
-
-
-public boolean deleteAccount(HotelUser a ) {
+    public boolean deleteAccount(HotelUser a) {
         int rowsInserted = 0;
         String SQLString1
                 = "delete from HotelUser "
                 + "where ID =?";
         PreparedStatement statement = null;
         try {
-            
+
             statement = con.prepareStatement(SQLString1);
 
             //== insert tuple
             statement = con.prepareStatement(SQLString1);
             statement.setInt(1, a.getId());
-            rowsInserted = statement.executeUpdate(); 
+            rowsInserted = statement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
             try {
@@ -193,14 +177,4 @@ public boolean deleteAccount(HotelUser a ) {
         }
         return rowsInserted == 1;
     }
-
-
-
-
-
-
-
-
-
-
 }
