@@ -53,8 +53,8 @@ public class ReservationFixture {
                     + "to_date('06-02-2014', 'DD-MM-YYYY'))");
             //insert into facility
             insert = "insert into facility values ";
-            st.addBatch(insert + "(1, 'Golden arena', 'volleyball', 20, 1, 1, 0)");
-            st.addBatch(insert + "(2, 'Big tennis', 'tennis', 4, 1, 0, 1)");
+            st.addBatch(insert + "(1, 'Golden gym', 'gym', 20, 1, 1, 0)");
+            st.addBatch(insert + "(2, 'Big tennis', 'tennis', 1, 1, 0, 1)");
             //insert into hotel_user
             insert = "insert into hotel_user values ";
             st.addBatch(insert + "(1, 'user1', 'password1', 'guest', 1, 0)");

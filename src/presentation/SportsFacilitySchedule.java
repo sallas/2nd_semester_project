@@ -372,6 +372,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         String facility = (String) facilityChooser.getSelectedItem();
         facilityNameLabel.setText(facility);
         currentFacility = control.getFacility(facility);
+        facilitySpecsLabel.setText(currentFacility.toString());
         removeRows();
         fillUpAvailablityTable();
         updateBookedLabel();

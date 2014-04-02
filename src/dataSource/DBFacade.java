@@ -157,4 +157,8 @@ public class DBFacade {
     public List<HotelUser> getAllUsers() {
         return hotelUserMapper.getAllUsers();
     } 
+    
+    public List<Facility> getFacilityByID(int ID) {
+        return facilityMapper.getFacilityByID(ID);
+    }
 }

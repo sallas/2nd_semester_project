@@ -6,6 +6,7 @@ package dataSource;
 
 import domain.Facility;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,5 +23,7 @@ public interface FacilityMapperInterface {
      * Get all facilities.
      */
     ArrayList<Facility> getFacilities();
+    
+    List<Facility> getFacilityByID(int ID);
     
 }

@@ -187,9 +187,9 @@ public class Controller {
         Calendar rightNow = Calendar.getInstance();
         Date today = new Date(rightNow.getTimeInMillis());
         today = Date.valueOf(today.toString());
-        Date arrivalDate; 
+        Date arrivalDate;
         Date departureDate;
-        
+
         Map<Customer, Integer> currentCustomerStatus = new HashMap<>();
         for (Reservation r : allReservations) {
             arrivalDate = r.getCheckinDate();
@@ -197,9 +197,9 @@ public class Controller {
             System.out.println("");
             System.out.println("arrival =" + arrivalDate);
             System.out.println("departure = " + departureDate);
-            if(today.compareTo(arrivalDate) == 0) {
+            if (today.compareTo(arrivalDate) == 0) {
                 currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 2);
-            } else if(today.compareTo(departureDate) == 0) {
+            } else if (today.compareTo(departureDate) == 0) {
                 currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 3);
             } else if (today.after(arrivalDate) && today.before(departureDate)) {
                 currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 1);
@@ -240,9 +240,11 @@ public class Controller {
      * available
      */
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
-        facade.getAllBookingsOfSpecificDateTimeslotFacility(
-                fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
-        return facade.checkAvailableFacilityBooking(fb);
+        List<FacilityBooking> bookings
+                = facade.getAllBookingsOfSpecificDateTimeslotFacility(
+                  fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
+        List<Facility> facility = facade.getFacilityByID(fb.getFacilityID());
+        return bookings.size() < facility.get(0).getCapacity();
     }
 
     public boolean saveFacilityBooking(FacilityBooking fb) {
@@ -291,6 +293,7 @@ public class Controller {
     public List<QueueEntry> getQueueEntriesOfSpecificBooking(int id) {
         return facade.getQueueEntriesOfSpecificBooking(id);
     }
+
     public int getCurrentUserID() {
         return 1;
     }
@@ -305,11 +308,11 @@ public class Controller {
         }
         return "";
     }
-    
+
     public List<Reservation> getAllReservations() {
         return facade.getAllReservations();
     }
-    
+
     public List<Integer> getAllUserIDs() {
         List<Integer> userIDs = new ArrayList<>();
         List<HotelUser> users = facade.getAllUsers();
