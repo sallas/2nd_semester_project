@@ -126,7 +126,6 @@ public class DBFacade {
     }
     
 public HotelUser checkCredentials(String username, String password ) {
-    System.out.println(loginMapper);
     return  loginMapper.getUsernameAndPassword( username,password ) ;
 }
 

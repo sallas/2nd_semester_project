@@ -271,10 +271,11 @@ public class Controller {
 
         if (null == user) {
             res = false;
-        } else if (!user.getUsername().equals(username) && !user.getPsw().equals(password)) {
+         } else {
+ // else if (!user.getUsername().equals(username) && !user.getPsw().equals(password)) {
             res = true;
         }
-        System.out.println(res);
+       
         return res;
     }
 

@@ -96,7 +96,7 @@ public Controller control;
        String passString = new String(pass);
         
        boolean passedTheTest = control.checkCredentials(jTextFieldUsername.getText(), passString);
-        if (passedTheTest = false) {
+        if (passedTheTest == false) {
             System.out.println("error loggin in "); 
             
         } else System.out.println("you can enter now");
