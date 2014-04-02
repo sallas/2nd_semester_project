@@ -43,9 +43,9 @@ public class FacilityMapperTest {
     
     @Test
     public void testGetFacilityByType() throws SQLException {
-        ArrayList<Facility> res = fm.getFacilities("tennis");
+        ArrayList<Facility> res = fm.getFacilities("gym");
         assertEquals(res.size(), 1);
-        assertEquals(res.get(0).getCapacity(), 4);
+        assertEquals(res.get(0).getCapacity(), 20);
     }
     
     @Test
