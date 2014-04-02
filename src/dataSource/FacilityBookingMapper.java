@@ -102,4 +102,19 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
                 new int[]{0, 0, 2, 0, 0}, date, userID, timeslot);
     }
+    
+    /*
+     * Returns all faciltiy bookings made for a f id userID and on the
+     
+     */
+    @Override
+    public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
+            Date date, int timeslot, int facilityID) {
+        return executeQueryAndGatherResults(FacilityBooking.class,
+                "SELECT * FROM facility_booking WHERE booking_date = ?"
+                + " AND timeslot = ? AND facility_id = ?",
+                "Fail in FacilityBookingMapper - getAllBookings",
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
+                new int[]{0, 0, 2, 0, 0}, date, timeslot, facilityID);
+    }
 }

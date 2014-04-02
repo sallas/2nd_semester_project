@@ -1,12 +1,11 @@
 package dataSource;
 
-import domain.FacilityBooking;
 import domain.QueueEntry;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueueMapper extends AbstractMapper{
+public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
 
     public QueueMapper(Connection con) {
         super(con);
@@ -15,6 +14,7 @@ public class QueueMapper extends AbstractMapper{
     /*
      * Get all queue entries for specific booking.
      */
+    @Override
     public List<QueueEntry> getQueueForSpecificBooking(int booking_id){
         return executeQueryAndGatherResults(QueueEntry.class,
                 "SELECT * FROM queue_facility WHERE facility_booking_id = ?",
@@ -26,6 +26,7 @@ public class QueueMapper extends AbstractMapper{
     /*
      * Get all queue etries for specific user.
      */
+    @Override
     public List<QueueEntry> getQueueForSpecificUser(int userID){
         return executeQueryAndGatherResults(QueueEntry.class,
                 "SELECT * FROM queue_facility WHERE user_id = ?",
@@ -37,7 +38,8 @@ public class QueueMapper extends AbstractMapper{
     /*
      * Save a queue entry to db.
      */
-    public boolean saveQueueEntry(QueueEntry entry){
+    @Override
+    public boolean saveQueueEntry(QueueEntry entry) {
         ArrayList<QueueEntry> seq = executeQueryAndGatherResults(
                 QueueEntry.class,
                 "SELECT queue_facilityseq.nextval "
@@ -55,7 +57,8 @@ public class QueueMapper extends AbstractMapper{
     /*
      * Delete entry from queue by ids of booking and user.
      */
-    public boolean deleteQueueEntryForSpecificID(int bookingID, int userID){
+    @Override
+    public boolean deleteQueueEntryForSpecificID(int bookingID, int userID) {
         int result = executeSQLInsert(
                 "DELETE FROM queue_facility" +
                 " WHERE facility_booking_id = ? AND user_id = ?",

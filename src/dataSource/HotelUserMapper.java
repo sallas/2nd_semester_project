@@ -2,6 +2,7 @@ package dataSource;
 
 import domain.HotelUser;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HotelUserMapper extends AbstractMapper implements HotelUserMapperInterface{

@@ -3,6 +3,8 @@ package dataSource;
 import domain.Customer;
 import domain.Facility;
 import domain.FacilityBooking;
+import domain.HotelUser;
+import domain.QueueEntry;
 import domain.Reservation;
 import domain.Room;
 import java.sql.Connection;
@@ -19,6 +21,7 @@ public class DBFacade {
     private static FacilityMapperInterface facilityMapper;
     private static FacilityBookingMapper facilityBookingMapper;
     private static HotelUserMapperInterface hotelUserMapper;
+    private static QueueMapperInterface queueMapper;
     private static Connection connection;
 
     private DBFacade() {
@@ -38,6 +41,7 @@ public class DBFacade {
         facilityMapper = new FacilityMapper(con);
         facilityBookingMapper = new FacilityBookingMapper(con);
         hotelUserMapper = new HotelUserMapper(con);
+        queueMapper = new QueueMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -120,5 +124,24 @@ public class DBFacade {
     public List<FacilityBooking> getAllFacilityBookingsOfSpecificDateTimeslotUser(
             Date date, int userID, int timeslot) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
+    }
+    
+    public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
+            Date date, int timeslot, int facilityID){
+        return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotFacility(
+                date, timeslot, facilityID);
+    }
+
+    public HotelUser getUser(int userID) {
+        List<HotelUser> hul = hotelUserMapper.getUser(userID);
+        if (hul.isEmpty()){
+            return null;
+        } else {
+            return hul.get(0);
+        }
+    }
+
+    public List<QueueEntry> getQueueEntriesOfSpecificBooking(int id) {
+        return queueMapper.getQueueForSpecificBooking(id);
     }
 }

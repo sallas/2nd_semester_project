@@ -37,12 +37,9 @@ public class Controller {
         List<Room> allRooms = facade.getAllRooms();
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date currentDate = new java.sql.Date(utilDate.getTime());
-        List<Integer> availableSingleRooms
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates("single", currentDate, currentDate);
-        List<Integer> availableDoubleRooms
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates("double", currentDate, currentDate);
-        List<Integer> availableFamilyRooms
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates("family", currentDate, currentDate);
+        List<Integer> availableSingleRooms = getAllAvailableRoomIDsOfTypeAndBetweenDates("single", currentDate, currentDate);
+        List<Integer> availableDoubleRooms = getAllAvailableRoomIDsOfTypeAndBetweenDates("double", currentDate, currentDate);
+        List<Integer> availableFamilyRooms = getAllAvailableRoomIDsOfTypeAndBetweenDates("family", currentDate, currentDate);
         for (Room r : allRooms) {
             String s;
             if (availableSingleRooms.contains(r.getID())
@@ -110,9 +107,8 @@ public class Controller {
     public int getAvailableRoomIDOfTypeBetweenDates(
             String type, Date arrivalDate, Date departureDate) {
 
-        List<Integer> availableRoomIDs
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates(
-                        type, arrivalDate, departureDate);
+        List<Integer> availableRoomIDs = getAllAvailableRoomIDsOfTypeAndBetweenDates(
+                type, arrivalDate, departureDate);
         if (availableRoomIDs.isEmpty()) {
             currentRoomID = -1;
             return -1;
@@ -140,8 +136,7 @@ public class Controller {
 
         }
 
-        List<Reservation> reservations
-                = facade.getAllReservationsOfSpecificType(type);
+        List<Reservation> reservations = facade.getAllReservationsOfSpecificType(type);
         Date bookedArrivalDate;
         Date bookedDepartureDate;
 
@@ -253,15 +248,30 @@ public class Controller {
         return facade.getAllFacilityBookingsOfSpecificDateAndUser(date, id);
     }
 
+    public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
+            Date date, int timeslot, Facility facility) {
+        return facade.getAllBookingsOfSpecificDateTimeslotFacility(date, timeslot, facility.getID());
+    }
+
     /*
      * Returns true if specified user already have a facility booking on
      * given date and timeslot
      */
     public boolean doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
             Date date, int userID, int timeslot) {
-        List<FacilityBooking> bookings
-                = facade.getAllFacilityBookingsOfSpecificDateTimeslotUser(
-                        date, userID, timeslot);
+        List<FacilityBooking> bookings = facade.getAllFacilityBookingsOfSpecificDateTimeslotUser(
+                date, userID, timeslot);
         return !bookings.isEmpty();
+    }
+
+    /*
+     * Get specific user by id.
+     */
+    public HotelUser getUserForSpecificUserID(int userID) {
+        return facade.getUser(userID);
+    }
+
+    public List<QueueEntry> getQueueEntriesOfSpecificBooking(int id) {
+        return facade.getQueueEntriesOfSpecificBooking(id);
     }
 }
