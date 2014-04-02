@@ -241,4 +241,12 @@ public class ControllerTest {
         assertFalse(status);
     }
 
+    /*
+     *   Checks so GetAllUserIDs returns the correct amount of IDs
+     */
+    @Test
+    public void testGetAllUserIDs() {
+        List<Integer> userIDs = controller.getAllUserIDs();
+        assertTrue(userIDs.size() == 2);
+    }
 }
