@@ -307,4 +307,13 @@ public class Controller {
     public List<Reservation> getAllReservations() {
         return facade.getAllReservations();
     }
+    
+    public List<Integer> getAllUserIDs() {
+        List<Integer> userIDs = new ArrayList<>();
+        List<HotelUser> users = facade.getAllUsers();
+        for (HotelUser u : users) {
+            userIDs.add(u.getId());
+        }
+        return userIDs;
+    }
 }

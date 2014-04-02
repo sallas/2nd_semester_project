@@ -4,7 +4,10 @@ import domain.Customer;
 import domain.Facility;
 import domain.FacilityBooking;
 import domain.HotelUser;
+<<<<<<< HEAD
 import domain.QueueEntry;
+=======
+>>>>>>> b84ba4fb1fe1bfd283275292fe2eff3490d0a73f
 import domain.Reservation;
 import domain.Room;
 import java.sql.Connection;
@@ -152,4 +155,8 @@ public class DBFacade {
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
         return facilityBookingMapper.getAllFacilityBookingOfSpecificUser(ID);
     }
+    
+    public List<HotelUser> getAllUsers() {
+        return hotelUserMapper.getAllUsers();
+    } 
 }
