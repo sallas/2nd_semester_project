@@ -15,6 +15,7 @@ public class ReservationFixture {
             con.setAutoCommit(false);
 
             // delete info in table
+            st.addBatch("delete from queue_facility");
             st.addBatch("delete from facility_booking");
             st.addBatch("delete from Hotel_user");
             st.addBatch("delete from Reservation");
@@ -30,6 +31,8 @@ public class ReservationFixture {
             st.addBatch("create sequence facility_bookingseq start with 4");
             st.addBatch("drop sequence hotel_userseq");
             st.addBatch("create sequence hotel_userseq start with 3");
+            st.addBatch("drop sequence queue_facilityseq");
+            st.addBatch("create sequence queue_facilityseq start with 2");
             // insert data into rooms
             String insert = "insert into room values ";
             st.addBatch(insert + "(100,'double')");
@@ -64,6 +67,8 @@ public class ReservationFixture {
                     + "4, 1)");
             st.addBatch(insert + "(3, 1, to_date('26-03-2014', 'DD-MM-YYYY'),"
                     + "4, 1)");
+            insert = "insert into queue_facility values ";
+            st.addBatch(insert + "(1, 2, 1)");
             st.executeBatch();
             // end transaction
             con.commit();
