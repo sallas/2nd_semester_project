@@ -26,6 +26,7 @@ public class QueueMapperTest {
     
     @After
     public void tearDown() {
+        connector.releaseConnection(con);
     }
     
     @Test
