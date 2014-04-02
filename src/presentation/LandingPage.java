@@ -1,9 +1,15 @@
 package presentation;
 
+import domain.GuiLogic;
+
 public class LandingPage extends javax.swing.JFrame {
+    
+    private GuiLogic logic;
 
     public LandingPage() {
         initComponents();
+        logic = GuiLogic.getInstance();
+        logic.setCurrentUserID(1);
     }
 
     @SuppressWarnings("unchecked")

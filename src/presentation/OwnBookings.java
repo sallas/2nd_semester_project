@@ -1,28 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package presentation;
 
 import domain.Controller;
 import domain.FacilityBooking;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import domain.GuiLogic;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Teo
- */
+
 public class OwnBookings extends javax.swing.JFrame {
 
     private Controller control = Controller.getInstance();
-    DefaultTableModel model;
-    List<FacilityBooking> listOfBookings = control.getAllFacilityBookingOfSpecificUser(1);
-    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    private DefaultTableModel model;
+    private List<FacilityBooking> listOfBookings;
     private SportsFacilitySchedule sportsFacilitySchedule;
+    private GuiLogic logic;
 
     /**
      * Creates new form OwnBookings
@@ -38,19 +29,13 @@ public class OwnBookings extends javax.swing.JFrame {
 
     private void constructor(){
         initComponents();
+        logic = GuiLogic.getInstance();
         model = (DefaultTableModel) bookingsTable.getModel();
         initTable();
     }
+    
     private void initTable() {
-        listOfBookings = control.getAllFacilityBookingOfSpecificUser(1);
-        control.getAllFacilityNames();
-        for (int i = model.getRowCount() - 1; i >= 0; i--) {
-            model.removeRow(i);
-        }
-        for (FacilityBooking i : listOfBookings) {
-            model.addRow(new Object[]{control.getFacilityName(i.getFacilityID()),
-                df.format(i.getBookingDate()), (i.getTimeslot() + 7) + " - " + (i.getTimeslot() + 8)});
-        }
+        logic.initOwnBookingTable(model, listOfBookings);
     }
 
     /**

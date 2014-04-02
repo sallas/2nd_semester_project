@@ -1,39 +1,27 @@
 package presentation;
 
-import domain.Controller;
-import java.util.List;
+import domain.GuiLogic;
 import javax.swing.table.DefaultTableModel;
 
 public class ReservationList extends javax.swing.JFrame {
 
-    private DefaultTableModel model;
-    private Controller controller;
     private LandingPage landingPage;
+    private GuiLogic logic;
 
     public ReservationList() {
-        initComponents();
         constructor();
     }
 
     public ReservationList(LandingPage landingPage) {
-        initComponents();
-        this.landingPage = landingPage;
         constructor();
+        this.landingPage = landingPage;
     }
 
     private void constructor() {
-        controller = Controller.getInstance();
-        model = (DefaultTableModel) reservationTable.getModel();
-        List<domain.Reservation> reservations = controller.getAllReservations();
-        for (domain.Reservation r : reservations) {
-            Object[] ob = new Object[5];
-            ob[0] = r.getID();
-            ob[1] = r.getRoomID();
-            ob[2] = r.getCustomerID();
-            ob[3] = r.getCheckinDate();
-            ob[4] = r.getDepartureDate();
-            model.addRow(ob);
-        }
+        initComponents();
+        logic = GuiLogic.getInstance();
+        DefaultTableModel model = (DefaultTableModel) reservationTable.getModel();
+        logic.refreshReservationTable(model);
     }
 
     /**

@@ -3,6 +3,7 @@ package presentation;
 import domain.Controller;
 import domain.Facility;
 import domain.FacilityBooking;
+import domain.GuiLogic;
 import domain.HotelUser;
 import domain.QueueEntry;
 import java.sql.Date;
@@ -11,18 +12,18 @@ import java.util.Calendar;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
+import utility.DateLogic;
 
 public class SportsFacilitySchedule extends javax.swing.JFrame {
 
     private Controller control = Controller.getInstance();
     private List<Date> dates = new ArrayList<>();
     private Facility currentFacility;
-    private List<String> timeslots;
-    private int currentUserID;
     private int currentAmountOfBookingsOnSpecificDate;
     private LandingPage landingPage;
     private DefaultTableModel model;
     DefaultListModel<Object> queueModel = new DefaultListModel<>();
+    private GuiLogic logic;
 
     public SportsFacilitySchedule() {
         constructor();
@@ -35,6 +36,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
 
     private void constructor() {
         initComponents();
+        logic = GuiLogic.getInstance();
         List<String> rooms = control.getAllFacilityNames();
         facilityChooser.setModel(new javax.swing.DefaultComboBoxModel(
                 rooms.toArray()));
@@ -47,44 +49,42 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         model = (DefaultTableModel) timeslotTable.getModel();
         queueJList.setModel(queueModel);
         fillUpAvailablityTable();
-        currentUserID = 1;
         updateBookedLabel();
         updateQueueList();
     }
-    
+
     private void updateQueueList() {
         queueModel.clear();
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
-        List<FacilityBooking> currentBookings =
-                control.getAllBookingsOfSpecificDateTimeslotFacility(
-                checkDate, timeslot, currentFacility);
-        if(!currentBookings.isEmpty()) {
-            List<QueueEntry> queueEntries =
-                    control.getQueueEntriesOfSpecificBooking(currentBookings.get(0).getID());
-            for (int i = 0; i < queueEntries.size(); i++){
+        List<FacilityBooking> currentBookings
+                = control.getAllBookingsOfSpecificDateTimeslotFacility(
+                        checkDate, timeslot, currentFacility);
+        if (!currentBookings.isEmpty()) {
+            List<QueueEntry> queueEntries
+                    = control.getQueueEntriesOfSpecificBooking(currentBookings.get(0).getID());
+            for (int i = 0; i < queueEntries.size(); i++) {
                 queueModel.add(i, control.getUserForSpecificUserID(queueEntries.get(i).getUserID()).getUsername());
             }
         }
     }
-    
-    private void updateBookedLabel(){
+
+    private void updateBookedLabel() {
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
-        List<FacilityBooking> currentBookings = 
-                control.getAllBookingsOfSpecificDateTimeslotFacility(
-                checkDate, timeslot, currentFacility);
-        if (currentBookings.isEmpty()){
+        List<FacilityBooking> currentBookings
+                = control.getAllBookingsOfSpecificDateTimeslotFacility(
+                        checkDate, timeslot, currentFacility);
+        if (currentBookings.isEmpty()) {
             bookedLabel.setText("free");
         } else {
             HotelUser hu = control.getUserForSpecificUserID(
                     currentBookings.get(0).getUserID());
             bookedLabel.setText(hu.getUsername());
         }
-        
-        
+
     }
 
     private void fillComboBoxes() {
@@ -95,45 +95,19 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }
 
     private void setUpDates() {
-        timeslots = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            timeslots.add((8 + i) + " - " + (9 + i));
-        }
-        Calendar rightNow = Calendar.getInstance();
-        rightNow.clear(Calendar.HOUR_OF_DAY);
-        String[] dateStrings = new String[8];
-        for (int i = 0; i < 8; i++) {
-            dates.add(new Date(rightNow.getTimeInMillis()));
-            dateStrings[i] = dates.get(i).toString();
-            rightNow.add(Calendar.DATE, 1);
-        }
+        logic.setUpTimeslots();
+        String[] dateStrings = logic.setUpDates(dates);
         dayComboBox.setModel(new javax.swing.DefaultComboBoxModel(dateStrings));
-
     }
 
     private void fillUpAvailablityTable() {
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
-        FacilityBooking fb;
-        for (int i = 0; i < 12; i++) {
-            fb = new FacilityBooking(99, currentFacility.getID(), checkDate, i + 1, currentUserID);
-            if (control.checkAvailableFacilityBooking(fb)) {
-                String s = timeslots.get(i);
-                model.addRow(new Object[]{s, "Available"});
-            } else {
-                model.addRow(new Object[]{timeslots.get(i), "Unavailable"});
-            }
-
-        }
-        checkAmountOfBookingForCurrentUser(checkDate);
+        logic.fillAvailabilityTable(currentFacility.getID(), checkDate, model);
+        currentAmountOfBookingsOnSpecificDate
+                = logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
     }
-
-    private void checkAmountOfBookingForCurrentUser(Date date) {
-        List<FacilityBooking> bookings
-                = control.getAllFacilityBookingsOfSpecificDateAndUser(date, currentUserID);
-        currentAmountOfBookingsOnSpecificDate = bookings.size();
-    }
-
+    
     private void removeRows() {
         for (int i = 11; i >= 0; i--) {
             model.removeRow(i);
@@ -225,8 +199,6 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         timeslotTable.setRowSelectionAllowed(false);
         timeslotTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(timeslotTable);
-        timeslotTable.getColumnModel().getColumn(0).setResizable(false);
-        timeslotTable.getColumnModel().getColumn(1).setResizable(false);
         if (timeslotTable.getColumnModel().getColumnCount() > 0) {
             timeslotTable.getColumnModel().getColumn(0).setResizable(false);
             timeslotTable.getColumnModel().getColumn(1).setResizable(false);
@@ -252,6 +224,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                 viewOwnBookingButtonActionPerformed(evt);
             }
         });
+
         jLabel3.setText("Booked by:");
 
         jLabel4.setText("Queue:");
@@ -284,9 +257,8 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(timeslotBookingButton)
                                     .addComponent(jLabel2)
-                            .addComponent(timeslotComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(timeslotBookingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(viewOwnBookingButton)))
+                                    .addComponent(timeslotComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(viewOwnBookingButton)))
                             .addComponent(statusTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(52, 52, 52)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -355,9 +327,9 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(checkActivtyBookingButton)
                                     .addComponent(timeslotBookingButton))
-                        .addGap(5, 5, 5)
-                        .addComponent(viewOwnBookingButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(5, 5, 5)
+                                .addComponent(viewOwnBookingButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(statusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
@@ -383,8 +355,9 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
-        FacilityBooking fb = new FacilityBooking(99, currentFacility.getID(), checkDate, timeslot, currentUserID);
-        if (!control.checkAvailableFacilityBooking(fb)) {
+        logic.setCurrentFacilityBooking(currentFacility.getID(), checkDate, timeslot);
+        boolean status = logic.checkAvailableCurrentFacilityBooking();
+        if (!status) {
             statusTextField.setText("That timeslot is unavialable");
         } else {
             statusTextField.setText("That timeslot is avialable");
@@ -402,33 +375,31 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
 
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
-        checkAmountOfBookingForCurrentUser(checkDate);
+        currentAmountOfBookingsOnSpecificDate =
+                logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
         if (currentAmountOfBookingsOnSpecificDate >= 4) {
             statusTextField.setText("You can't book anything more on this date");
             return;
         }
 
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
-        if (control.doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
-                checkDate, currentUserID, timeslot)) {
+        if (logic.userHasBookingOnDateTimeslot(checkDate, timeslot)) {
             statusTextField.setText("You already have a booking on this timeslot");
             return;
         }
         Calendar rightNow = Calendar.getInstance();
-        Calendar checkDateCalendar = Calendar.getInstance();
-        checkDateCalendar.setTimeInMillis(checkDate.getTime());
+        Calendar checkDateCalendar = DateLogic.sqlDateToCalendarDate(checkDate);
         checkDateCalendar.add(Calendar.HOUR, 6 + timeslot);
         if (rightNow.after(checkDateCalendar)) {
             statusTextField.setText("You are to late to book this timeslot");
             return;
         }
-        FacilityBooking fb
-                = new FacilityBooking(-1, currentFacility.getID(), checkDate, timeslot, currentUserID);
-//        if (!control.checkAvailableFacilityBooking(fb)) {
-//            statusTextField.setText("Sorry that timeslot has already been booked");
-//            return;
-//        }
-        if (control.saveFacilityBooking(fb)) {
+        logic.setCurrentFacilityBooking(currentFacility.getID(), checkDate, timeslot);
+        if (!logic.checkAvailableCurrentFacilityBooking()) {
+            statusTextField.setText("Sorry that timeslot has already been booked");
+            return;
+        }
+        if (logic.saveCurrentFacilityBooking()) {
             statusTextField.setText("Your booking has been saved");
         } else {
             statusTextField.setText("Your booking wasn't saved");
@@ -506,6 +477,5 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     private javax.swing.JTable timeslotTable;
     private javax.swing.JButton viewOwnBookingButton;
     // End of variables declaration//GEN-END:variables
-
 
 }

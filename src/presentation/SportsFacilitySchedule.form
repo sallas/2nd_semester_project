@@ -44,8 +44,7 @@
                                   <Component id="timeslotBookingButton" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <Component id="timeslotComboBox" min="-2" pref="145" max="-2" attributes="0"/>
-                          <Component id="timeslotBookingButton" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
-                          <Component id="viewOwnBookingButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="viewOwnBookingButton" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="statusTextField" max="32767" attributes="0"/>
@@ -138,9 +137,9 @@
                                   <Component id="checkActivtyBookingButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="timeslotBookingButton" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Component id="viewOwnBookingButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                              <Component id="viewOwnBookingButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="statusTextField" min="-2" pref="18" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane2" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>

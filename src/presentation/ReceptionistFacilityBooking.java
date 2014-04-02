@@ -2,10 +2,9 @@ package presentation;
 
 import domain.Controller;
 import domain.Facility;
-import domain.FacilityBooking;
+import domain.GuiLogic;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class ReceptionistFacilityBooking extends javax.swing.JFrame {
@@ -13,8 +12,8 @@ public class ReceptionistFacilityBooking extends javax.swing.JFrame {
     private Controller control = Controller.getInstance();
     private List<Date> dates = new ArrayList<>();
     private Facility currentFacility;
-    private List<String> timeslots;
     private LandingPage landingPage;
+    private GuiLogic logic;
 
     public ReceptionistFacilityBooking() {
         constructor();
@@ -27,6 +26,7 @@ public class ReceptionistFacilityBooking extends javax.swing.JFrame {
 
     private void constructor() {
         initComponents();
+        logic = GuiLogic.getInstance();
         List<String> rooms = control.getAllFacilityNames();
         facilityChooser.setModel(new javax.swing.DefaultComboBoxModel(
                 rooms.toArray()));
@@ -46,33 +46,8 @@ public class ReceptionistFacilityBooking extends javax.swing.JFrame {
     }
 
     private void setUpDates() {
-        timeslots = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            timeslots.add((8 + i) + " - " + (9 + i));
-        }
-        Calendar rightNow = Calendar.getInstance();
-        rightNow.clear(Calendar.HOUR_OF_DAY);
-        String[] dateStrings = new String[8];
-        for (int i = 0; i < 8; i++) {
-            dates.add(new Date(rightNow.getTimeInMillis()));
-            dateStrings[i] = dates.get(i).toString();
-            rightNow.add(Calendar.DATE, 1);
-        }
+        String[] dateStrings = logic.setUpDates(dates);
         dayComboBox.setModel(new javax.swing.DefaultComboBoxModel(dateStrings));
-    }
-
-    private int getUserID() {
-        int userID;
-        try {
-            userID = Integer.parseInt(userIDField.getText());
-        } catch (NumberFormatException ex) {
-            return -1;
-        }
-        List<Integer> userIDs = control.getAllUserIDs();
-        if (userIDs.contains(userID)) {
-            return userID;
-        }
-        return -1;
     }
 
     @SuppressWarnings("unchecked")
@@ -232,13 +207,13 @@ public class ReceptionistFacilityBooking extends javax.swing.JFrame {
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
-        int userID = getUserID();
+        int userID = logic.getUserID(userIDField.getText());
         if (userID == -1) {
             statusTextField.setText("Invalid user ID");
             return;
         }
-        FacilityBooking fb = new FacilityBooking(99, currentFacility.getID(), checkDate, timeslot, userID);
-        if (!control.checkAvailableFacilityBooking(fb)) {
+        logic.setCurrentFacilityBooking(currentFacility.getID(), checkDate, timeslot, userID);
+        if (!logic.checkAvailableCurrentFacilityBooking()) {
             statusTextField.setText("That timeslot is unavialable");
         } else {
             statusTextField.setText("That timeslot is avialable");
@@ -251,23 +226,19 @@ public class ReceptionistFacilityBooking extends javax.swing.JFrame {
     private void timeslotBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeslotBookingButtonActionPerformed
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
-
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
-        Calendar checkDateCalendar = Calendar.getInstance();
-        checkDateCalendar.setTimeInMillis(checkDate.getTime());
-
-        int userID = getUserID();
+        
+        int userID = logic.getUserID(userIDField.getText());
         if (userID == -1) {
             statusTextField.setText("Invalid user ID");
             return;
         }
-        FacilityBooking fb
-                = new FacilityBooking(-1, currentFacility.getID(), checkDate, timeslot, userID);
-        if (!control.checkAvailableFacilityBooking(fb)) {
+        logic.setCurrentFacilityBooking(currentFacility.getID(), checkDate, timeslot, userID);
+        if (!logic.checkAvailableCurrentFacilityBooking()) {
             statusTextField.setText("Sorry that timeslot has already been booked");
             return;
         }
-        if (control.saveFacilityBooking(fb)) {
+        if (logic.saveCurrentFacilityBooking()) {
             statusTextField.setText("The booking has been saved");
         } else {
             statusTextField.setText("The booking wasn't saved");

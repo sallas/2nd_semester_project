@@ -7,9 +7,8 @@ import domain.WrongNumberOfNights;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTextField;
+import utility.DateLogic;
 
 public class Reservation extends javax.swing.JFrame {
 
@@ -319,14 +318,13 @@ public class Reservation extends javax.swing.JFrame {
             return;
         }
         roomIDsComboBox.removeAllItems();
-        Calendar arrivalDate = Calendar.getInstance();
-        arrivalDate.clear();
-        arrivalDate.setTime(checkDatePicker.getDate());
+        currentBookingArrivalDate = checkDatePicker.getDate();
+        Calendar arrivalDate
+                = DateLogic.utilDateToCalendarDate(currentBookingArrivalDate);
         Calendar departureDate = (Calendar) arrivalDate.clone();
         departureDate.add(Calendar.DATE, currentBookingNumNights);
         java.sql.Date arrival = new java.sql.Date(arrivalDate.getTimeInMillis());
         java.sql.Date departure = new java.sql.Date(departureDate.getTimeInMillis());
-        currentBookingArrivalDate = checkDatePicker.getDate();
         List<Integer> availableRoomIDs
                 = control.getAvailableRoomIDsOfTypeBetweenDates(
                         (String) typeField.getSelectedItem(), arrival, departure);
@@ -339,7 +337,7 @@ public class Reservation extends javax.swing.JFrame {
             }
             currentBookingRoomID = availableRoomIDs.get(0);
         }
-        
+
     }//GEN-LAST:event_roomAvailabilityActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
@@ -390,9 +388,9 @@ public class Reservation extends javax.swing.JFrame {
             statusText.setText("That room type hasn't beeen checked");
             return;
         }
-        java.sql.Date arrival = java.sql.Date.valueOf("2000-01-01");
-        arrival.setTime(currentBookingArrivalDate.getTime());
-        boolean reservationSaved = false;
+        java.sql.Date arrival
+                = new java.sql.Date(currentBookingArrivalDate.getTime());
+        boolean reservationSaved;
         try {
             reservationSaved = control.createNewReservation(firstName, familyName, address,
                     country, phone, email, travelAgency, arrival,

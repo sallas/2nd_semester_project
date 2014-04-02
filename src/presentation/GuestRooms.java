@@ -1,65 +1,28 @@
 package presentation;
 
-import domain.Controller;
-import domain.Customer;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.Map;
+import domain.GuiLogic;
 import javax.swing.table.DefaultTableModel;
 
 public class GuestRooms extends javax.swing.JFrame {
 
-    private Controller instance = Controller.getInstance();
     private LandingPage landingPage;
-    private DefaultTableModel model;
+    private GuiLogic logic;
 
     public GuestRooms() {
         initComponents();
-        model = (DefaultTableModel) jTableGuests.getModel();
-        refreshList();
-
+        constructor();
     }
 
     public GuestRooms(LandingPage landingPage) {
         initComponents();
-        model = (DefaultTableModel) jTableGuests.getModel();
-        refreshList();
         this.landingPage = landingPage;
+        constructor();
     }
 
-    private void refreshList() {
-        Map<Customer, Integer> customers = instance.getAllCurrentGuests();
-        Calendar rightNow = Calendar.getInstance();
-        Calendar midday = (Calendar) rightNow.clone();
-        Date today = new Date(rightNow.getTimeInMillis());
-        today = Date.valueOf(today.toString());
-        midday.setTimeInMillis(today.getTime());
-        midday.set(Calendar.HOUR_OF_DAY, 12);
-
-        for (Map.Entry<Customer, Integer> entry : customers.entrySet()) {
-            if (rightNow.after(midday) && entry.getValue() == 3) {
-                continue;
-            }
-            Object[] ob = new Object[9];
-            Customer c = entry.getKey();
-            Integer status = entry.getValue();
-            ob[0] = c.getID();
-            ob[1] = c.getFirst_name();
-            ob[2] = c.getLast_name();
-            ob[3] = c.getCountry();
-            ob[4] = c.getAddres();
-            ob[5] = c.getPhone();
-            ob[6] = c.getTravel_agency();
-            ob[7] = c.getEmail();
-            if (status == 1) {
-                ob[8] = "Checked in";
-            } else if (status == 2) {
-                ob[8] = "Arriving today";
-            } else {
-                ob[8] = "Leaving today";
-            }
-            model.addRow(ob);
-        }
+    private void constructor() {
+        logic = GuiLogic.getInstance();
+        DefaultTableModel model = (DefaultTableModel) jTableGuests.getModel();
+        logic.refreshGuestTable(model);
     }
 
     /**
