@@ -17,6 +17,7 @@ public class EmptyDBFixture {
             // delete info in table
             st.addBatch("delete from facility_booking");
             st.addBatch("delete from Hotel_user");
+            st.addBatch("delete from unpaid_reservations");
             st.addBatch("delete from Reservation");
             st.addBatch("delete from Room");
             st.addBatch("delete from Customer");

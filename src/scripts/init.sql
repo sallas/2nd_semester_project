@@ -1,5 +1,6 @@
 DROP TABLE facility_booking;
 DROP TABLE HOTEL_USER;
+DROP TABLE unpaid_reservations;
 DROP TABLE reservation;
 DROP TABLE customer;
 DROP TABLE room;
@@ -85,4 +86,10 @@ User_id number(5) NOT NULL,
 PRIMARY KEY (ID),
 FOREIGN KEY (FACILITY_ID) REFERENCES facility(ID),
 FOREIGN KEY (User_id) REFERENCES HOTEL_USER(ID)
+);
+
+
+CREATE TABLE unpaid_reservations (
+ID number(5) NOT NULL,
+FOREIGN KEY (ID) REFERENCES reservation(ID)
 );

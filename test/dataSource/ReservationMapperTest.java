@@ -218,4 +218,14 @@ public class ReservationMapperTest {
         boolean status = rm.checkAvailableReservation(r);
         assertTrue(status);
     }
+    
+    @Test
+    public void testremoveUnpaidReservationMatch(){
+        assertTrue(rm.removeUnpaidReservation(1));
+    }
+    
+    @Test
+    public void testremoveUnpaidReservationNoMatch(){
+        assertFalse(rm.removeUnpaidReservation(99999));
+    }
 }
