@@ -1,4 +1,5 @@
 DROP TABLE queue_facility;
+DROP TABLE facility_booking;
 DROP TABLE HOTEL_USER;
 DROP TABLE reservation;
 DROP TABLE customer;

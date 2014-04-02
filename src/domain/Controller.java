@@ -240,6 +240,8 @@ public class Controller {
      * available
      */
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
+        facade.getAllBookingsOfSpecificDateTimeslotFacility(
+                fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
         return facade.checkAvailableFacilityBooking(fb);
     }
 

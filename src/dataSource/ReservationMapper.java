@@ -1,7 +1,10 @@
 package dataSource;
 
+import domain.FacilityBooking;
 import domain.Reservation;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,12 +123,10 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
      */
     @Override
     public void lockReservationTable() {
-        executeQueryAndGatherResults(
-                Boolean.class,
+        executeSQLQuery(
                 "LOCK TABLE reservation in exclusive mode",
-                "Fail in ReservationMapper - lockReservationTable",
-                new String[]{},
-                new int[]{});
+                "Fail in ReservationMapper - lockReservationTable"
+                );
     }
 
 }
