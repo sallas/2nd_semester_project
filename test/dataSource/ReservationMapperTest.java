@@ -218,4 +218,16 @@ public class ReservationMapperTest {
         boolean status = rm.checkAvailableReservation(r);
         assertTrue(status);
     }
+
+    @Test
+    public void testSearchMatchID() {
+        List<Reservation> reservations = rm.search("1", "id");
+        assertTrue(reservations.get(0).getID() == 1);
+    }
+
+    @Test
+    public void testSearchNoMatchID() {
+        List<Reservation> reservations = rm.search("-1", "id");
+        assertTrue(reservations.isEmpty());
+    }
 }
