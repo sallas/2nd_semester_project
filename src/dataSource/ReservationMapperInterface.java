@@ -1,6 +1,7 @@
 package dataSource;
 
 import domain.Reservation;
+import domain.UnpaidReservation;
 import java.util.List;
 
 public interface ReservationMapperInterface {
@@ -33,4 +34,8 @@ public interface ReservationMapperInterface {
     boolean checkAvailableReservation(Reservation r);
     
     void lockReservationTable();
+    
+    List<UnpaidReservation> getAllUnpaidReservationIDs();
+    
+    boolean removeUnpaidReservation(int ID);
 }

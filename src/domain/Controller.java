@@ -321,4 +321,17 @@ public class Controller {
         }
         return userIDs;
     }
+    
+    public List<Integer> getAllUnpaidReservationIDs(){
+        List<UnpaidReservation> unpaidReservationList = facade.getAllUnpaidReservationIDs();
+        List<Integer> IDlist = new ArrayList();
+        for (UnpaidReservation r : unpaidReservationList){
+            IDlist.add(r.getID());
+        }
+        return IDlist;
+    }
+    
+    public boolean removeUnpaidReservation(int ID){
+        return facade.removeUnpaidReservation(ID);
+    }
 }

@@ -40,6 +40,7 @@ public class RoomMapper extends AbstractMapper implements RoomMapperInterface {
                 "Fail in RoomMapper - getRoom",
                 new String[]{"ID", "type"},
                 new int[]{DataType.INT, DataType.STRING});
+        System.out.println("mapper" + room.size());
         return room;
     }
 }

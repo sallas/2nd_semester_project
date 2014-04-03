@@ -8,6 +8,7 @@ import domain.HotelUser;
 import domain.QueueEntry;
 import domain.Reservation;
 import domain.Room;
+import domain.UnpaidReservation;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -157,6 +158,14 @@ public class DBFacade {
     public List<HotelUser> getAllUsers() {
         return hotelUserMapper.getAllUsers();
     } 
+    
+    public List<UnpaidReservation> getAllUnpaidReservationIDs(){
+        return reservationMapper.getAllUnpaidReservationIDs();
+    }
+    
+    public boolean removeUnpaidReservation(int ID){
+        return reservationMapper.removeUnpaidReservation(ID);
+    }
     
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);

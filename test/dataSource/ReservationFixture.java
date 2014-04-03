@@ -18,6 +18,7 @@ public class ReservationFixture {
             st.addBatch("delete from queue_facility");
             st.addBatch("delete from facility_booking");
             st.addBatch("delete from Hotel_user");
+            st.addBatch("delete from unpaid_reservations");
             st.addBatch("delete from Reservation");
             st.addBatch("delete from Room");
             st.addBatch("delete from Customer");
@@ -51,6 +52,9 @@ public class ReservationFixture {
                     + "to_date('27-01-2014', 'DD-MM-YYYY'))");
             st.addBatch(insert + "(3, 101, 1,to_date('01-02-2014', 'DD-MM-YYYY'),"
                     + "to_date('06-02-2014', 'DD-MM-YYYY'))");
+            //insert into unpaid_reservations
+            insert = "insert into unpaid_reservations values ";
+            st.addBatch(insert + "(1)");
             //insert into facility
             insert = "insert into facility values ";
             st.addBatch(insert + "(1, 'Golden gym', 'gym', 20, 1, 1, 0)");

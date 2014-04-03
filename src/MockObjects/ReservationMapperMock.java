@@ -2,6 +2,7 @@ package MockObjects;
 
 import dataSource.ReservationMapperInterface;
 import domain.Reservation;
+import domain.UnpaidReservation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +72,16 @@ public class ReservationMapperMock implements ReservationMapperInterface {
 
     @Override
     public void lockReservationTable() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<UnpaidReservation> getAllUnpaidReservationIDs() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean removeUnpaidReservation(int ID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
