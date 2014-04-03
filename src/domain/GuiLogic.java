@@ -188,6 +188,18 @@ public class GuiLogic {
         } else if("room".equalsIgnoreCase(currentObject)) {
             List<Room> rooms = control.searchRoom(variable, currentVariable);
             results = fill(rooms);
+        } else if("user".equalsIgnoreCase(currentObject)) {
+            List<HotelUser> rooms = control.searchHotelUser(variable, currentVariable);
+            results = fill(rooms);
+        } else if("facility".equalsIgnoreCase(currentObject)) {
+            List<Facility> rooms = control.searchFacility(variable, currentVariable);
+            results = fill(rooms);
+        } else if("sports booking".equalsIgnoreCase(currentObject)) {
+            List<FacilityBooking> rooms = control.searchFacilityBooking(variable, currentVariable);
+            results = fill(rooms);
+        } else if("customer".equalsIgnoreCase(currentObject)) {
+            List<Customer> rooms = control.searchCustomer(variable, currentVariable);
+            results = fill(rooms);
         }
         
         

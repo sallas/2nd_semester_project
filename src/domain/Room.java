@@ -30,6 +30,6 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room " + "ID: " + ID + ", type: " + type;
+        return "Room Number= " + ID + " | type= " + type;
     }
 }

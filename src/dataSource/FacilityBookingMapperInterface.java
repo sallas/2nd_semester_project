@@ -33,4 +33,6 @@ public interface FacilityBookingMapperInterface {
     public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
             Date date, int timeslot, int facilityID);
     List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID);
+    
+    List<FacilityBooking> search(Object variable, String columnName);
 }

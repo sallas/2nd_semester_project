@@ -169,4 +169,20 @@ public class DBFacade {
     public List<Room> searchRoom(Object variable, String columnName) {
         return roomMapper.search(variable, columnName);
     }
+
+    public List<HotelUser> searchHotelUser(Object variable, String columnName) {
+        return hotelUserMapper.search(variable, columnName);
+    }
+
+    public List<Customer> searchCustomer(Object variable, String columnName) {
+        return customerMapper.search(variable, columnName);
+    }
+
+    public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
+        return facilityBookingMapper.search(variable, columnName);
+    }
+
+    public List<Facility> searchFacility(Object variable, String columnName) {
+        return facilityMapper.search(variable, columnName);
+    }
 }

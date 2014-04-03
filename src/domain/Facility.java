@@ -1,6 +1,7 @@
 package domain;
 
 public class Facility {
+
     private int ID;
     private String name;
     private String type;
@@ -8,7 +9,6 @@ public class Facility {
     private boolean hasWaitingList;
     private boolean hasBooking;
     private boolean hasInstructor;
-
 
     public int getID() {
         return ID;
@@ -75,11 +75,13 @@ public class Facility {
         this.hasBooking = hasBooking;
         this.hasInstructor = hasInstructor;
     }
-    public Facility(){
+
+    public Facility() {
     }
 
     @Override
     public String toString() {
-        return "Facility " + "name: " + name + " , type: " + type + " , capacity: " + capacity;
+        return "Facility ID= " + ID + " | ID= " + name
+                + " | Type= " + type + " | Capacity= " + capacity;
     }
 }

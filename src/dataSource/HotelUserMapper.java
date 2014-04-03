@@ -40,7 +40,7 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
         return executeQueryAndGatherResults(HotelUser.class,
                 "SELECT * FROM hotel_user "
                 + "WHERE " + columnName + " = ?",
-                "Fail in HotelUserMapper - getAllUsers",
+                "Fail in HotelUserMapper - search ",
                 new String[]{"id", "username", "psw", "status", "reservation_id", "spent"},
                 new int[]{0, 1, 1, 1, 0, 0},
                 variable);
