@@ -24,8 +24,8 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "from reservation "
                 + "where id = ?",
                 "Fail in ReservationMapper - getReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE},
+                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
+                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 ID);
         if (reservation.isEmpty()) {
             return null;
@@ -54,6 +54,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 r.getCheckinDate(), r.getDepartureDate());
         return result == 1;
     }
+
     //This method returns a list of all the reservation objects of specified type
     @Override
     public List<Reservation> getAllReservationsOfSpecificType(String type) {
@@ -67,7 +68,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
                 new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 type);
-            return reservation;
+        return reservation;
     }
 
     /*
@@ -95,7 +96,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
      */
     @Override
     public boolean checkAvailableReservation(Reservation r) {
-        
+
         boolean available;
         ArrayList<Reservation> reservation = executeQueryAndGatherResults(
                 Reservation.class,
@@ -108,8 +109,8 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "(checkin_date  < ? AND "
                 + "checkin_date >= ?))",
                 "Fail in RoomMapper - getRoom",
-                new String[]{"ID", "roomID", "customerID", "checkinDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE},
+                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
+                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 r.getRoomID(), r.getCheckinDate(), r.getCheckinDate(), r.getDepartureDate(),
                 r.getDepartureDate(), r.getDepartureDate(), r.getCheckinDate());
         available = reservation.isEmpty();
@@ -126,7 +127,20 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
         executeSQLQuery(
                 "LOCK TABLE reservation in exclusive mode",
                 "Fail in ReservationMapper - lockReservationTable"
-                );
+        );
+    }
+
+    public List<Reservation> search(Object variable, String columnName) {
+        List<Reservation> reservation = executeQueryAndGatherResults(
+                Reservation.class,
+                "select * "
+                + "from reservation "
+                + "where " + columnName + " = ?",
+                "Fail in ReservationMapper - getReservation",
+                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
+                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
+                variable);
+        return reservation;
     }
 
 }

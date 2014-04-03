@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import utility.DateLogic;
 
@@ -176,5 +177,32 @@ public class GuiLogic {
             ob[4] = r.getDepartureDate();
             model.addRow(ob);
         }
+    }
+
+    public DefaultListModel search(String currentObject, String currentVariable, Object variable, DefaultListModel model) {
+        model = new DefaultListModel();
+        System.out.println(variable);
+        List<Reservation> reservations = control.searchReservation(variable, currentVariable);
+        
+//        
+//        if("reservation".equalsIgnoreCase(currentObject)) {
+//            List<Reservation> reservations = control.getAllReservations();
+//            
+//            if("id".equalsIgnoreCase(currentVariable)) {
+//                for (Reservation r : reservations) {
+//                    if(r.getID() == Integer.parseInt(variable)) {
+//                        results.add(r.toJListString());
+//                    }
+//                }
+//            }
+//        }
+        List<String> results = new ArrayList<>();
+        for (Reservation r : reservations) {
+            results.add(r.toJListString());
+        }
+        for (String s : results) {
+            model.addElement(s);
+        }
+        return model;
     }
 }

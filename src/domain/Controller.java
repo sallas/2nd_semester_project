@@ -321,4 +321,8 @@ public class Controller {
         }
         return userIDs;
     }
+    
+    public List<Reservation> searchReservation(Object variable, String columnName) {
+        return facade.searchReservation(variable, columnName);
+    }
 }

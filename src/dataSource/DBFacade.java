@@ -161,4 +161,8 @@ public class DBFacade {
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);
     }
+    
+    public List<Reservation> searchReservation(Object variable, String columnName) {
+        return reservationMapper.search(variable, columnName);
+    }
 }

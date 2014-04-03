@@ -33,4 +33,6 @@ public interface ReservationMapperInterface {
     boolean checkAvailableReservation(Reservation r);
     
     void lockReservationTable();
+    
+    List<Reservation> search(Object variable, String columnName);
 }

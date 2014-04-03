@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.Controller;
+import domain.GuiLogic;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -10,20 +11,23 @@ public class Search extends javax.swing.JFrame {
     private String currentObject;
     private String currentVariable;
     private DefaultListModel model;
+    private GuiLogic logic;
     
     public Search() {
-        initComponents();
-        control = Controller.getInstance();
         init();
     }
 
     private void init() {
+        initComponents();
+        control = Controller.getInstance();
         objectComboBox.removeAllItems();
         variableComboBox.removeAllItems();
         objectComboBox.addItem("Reservation");
         variableComboBox.addItem("ID");
+        variableComboBox.addItem("room_id");
         model = new DefaultListModel();
         resultList.setModel(model);
+        logic = GuiLogic.getInstance();
     }
 
     /**
@@ -125,11 +129,8 @@ public class Search extends javax.swing.JFrame {
     }//GEN-LAST:event_variableComboBoxActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        List<domain.Reservation> reservations = control.getAllReservations();
-        model = new DefaultListModel();
-        for (domain.Reservation r : reservations) {
-            model.addElement(r.toJListString());
-        }
+        model = logic.search(currentObject, currentVariable,
+                variableTextField.getText(), model);
         resultList.setModel(model);
     }//GEN-LAST:event_searchButtonActionPerformed
 
