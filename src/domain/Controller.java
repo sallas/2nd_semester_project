@@ -242,7 +242,7 @@ public class Controller {
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
         List<FacilityBooking> bookings
                 = facade.getAllBookingsOfSpecificDateTimeslotFacility(
-                  fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
+                        fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
         List<Facility> facility = facade.getFacilityByID(fb.getFacilityID());
         return bookings.size() < facility.get(0).getCapacity();
     }
@@ -321,17 +321,28 @@ public class Controller {
         }
         return userIDs;
     }
-    
-    public List<Integer> getAllUnpaidReservationIDs(){
+
+    public List<Integer> getAllUnpaidReservationIDs() {
         List<UnpaidReservation> unpaidReservationList = facade.getAllUnpaidReservationIDs();
         List<Integer> IDlist = new ArrayList();
-        for (UnpaidReservation r : unpaidReservationList){
+        for (UnpaidReservation r : unpaidReservationList) {
             IDlist.add(r.getID());
         }
         return IDlist;
     }
-    
-    public boolean removeUnpaidReservation(int ID){
+
+    public boolean removeUnpaidReservation(int ID) {
         return facade.removeUnpaidReservation(ID);
+    }
+
+    //removes reservation and all the entrys that have reservation_id as a foreign key
+    public boolean removeReservation(int ID) {
+        facade.removeHotelUserByReservationID(ID);
+        facade.removeUnpaidReservation(ID);
+        return facade.removeReservation(ID);
+    }
+
+    public Date getUnpaidReservationBookingDateByID(int ID) {
+        return facade.getUnpaidReservationBookingDateByID(ID);
     }
 }

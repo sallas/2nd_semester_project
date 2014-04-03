@@ -34,4 +34,12 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
                 new String[]{"id", "username", "psw", "status", "reservation_id", "spent"},
                 new int[]{0, 1, 1, 1, 0, 0}, id);
     }
+
+    @Override
+    public boolean removeHotelUserByReservationID(int ID) {
+        return 1 == executeSQLInsert(
+                "DELETE FROM HOTEL_USER WHERE Reservation_id = ?",
+                "Fail in HotelUserMapper - removeHotelUserByReservationID",
+                ID);
+    }
 }

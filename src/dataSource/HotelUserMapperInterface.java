@@ -8,4 +8,6 @@ interface HotelUserMapperInterface {
     List<HotelUser> getAllUsers();
     
     List<HotelUser> getUser(int id);
+    
+    boolean removeHotelUserByReservationID(int ID);
 }

@@ -170,4 +170,16 @@ public class DBFacade {
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);
     }
+    
+    public boolean removeReservation(int ID){
+        return reservationMapper.removeReservation(ID);
+    }
+    
+    public Date getUnpaidReservationBookingDateByID(int ID){
+        return reservationMapper.getUnpaidReservationBookingDateByID(ID);
+    }
+    
+    public boolean removeHotelUserByReservationID(int ID){
+        return hotelUserMapper.removeHotelUserByReservationID(ID);
+    }
 }

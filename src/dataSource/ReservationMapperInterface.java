@@ -2,6 +2,7 @@ package dataSource;
 
 import domain.Reservation;
 import domain.UnpaidReservation;
+import java.sql.Date;
 import java.util.List;
 
 public interface ReservationMapperInterface {
@@ -38,4 +39,8 @@ public interface ReservationMapperInterface {
     List<UnpaidReservation> getAllUnpaidReservationIDs();
     
     boolean removeUnpaidReservation(int ID);
+    
+    boolean removeReservation(int ID);
+    
+    Date getUnpaidReservationBookingDateByID(int ID);
 }
