@@ -42,4 +42,17 @@ public class RoomMapper extends AbstractMapper implements RoomMapperInterface {
                 new int[]{DataType.INT, DataType.STRING});
         return room;
     }
+    
+    @Override
+    public List<Room> search(Object variable, String columnName) {
+        List<Room> rooms = executeQueryAndGatherResults(
+                Room.class,
+                "SELECT * FROM room "
+                + "where " + columnName + " = ?",
+                "Fail in RoomMapper - search",
+                new String[]{"ID", "type"},
+                new int[]{DataType.INT, DataType.STRING},
+                variable);
+        return rooms;
+    }
 }

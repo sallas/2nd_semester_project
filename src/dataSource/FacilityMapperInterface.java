@@ -26,4 +26,6 @@ public interface FacilityMapperInterface {
     
     List<Facility> getFacilityByID(int ID);
     
+    List<Facility> search(Object variable, String columnName);
+    
 }

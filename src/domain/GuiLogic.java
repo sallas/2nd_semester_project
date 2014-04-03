@@ -181,28 +181,27 @@ public class GuiLogic {
 
     public DefaultListModel search(String currentObject, String currentVariable, Object variable, DefaultListModel model) {
         model = new DefaultListModel();
-        System.out.println(variable);
-        List<Reservation> reservations = control.searchReservation(variable, currentVariable);
-        
-//        
-//        if("reservation".equalsIgnoreCase(currentObject)) {
-//            List<Reservation> reservations = control.getAllReservations();
-//            
-//            if("id".equalsIgnoreCase(currentVariable)) {
-//                for (Reservation r : reservations) {
-//                    if(r.getID() == Integer.parseInt(variable)) {
-//                        results.add(r.toJListString());
-//                    }
-//                }
-//            }
-//        }
         List<String> results = new ArrayList<>();
-        for (Reservation r : reservations) {
-            results.add(r.toJListString());
+        if ("reservation".equalsIgnoreCase(currentObject)) {
+            List<Reservation> reservations = control.searchReservation(variable, currentVariable);
+            results = fill(reservations);
+        } else if("room".equalsIgnoreCase(currentObject)) {
+            List<Room> rooms = control.searchRoom(variable, currentVariable);
+            results = fill(rooms);
         }
+        
+        
         for (String s : results) {
             model.addElement(s);
         }
         return model;
+    }
+
+    private <T> List<String> fill(List<T> objects) {
+        List<String> results = new ArrayList<>();
+        for (Object o : objects) {
+            results.add(o.toString());
+        }
+        return results;
     }
 }

@@ -130,13 +130,14 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
         );
     }
 
+    @Override
     public List<Reservation> search(Object variable, String columnName) {
         List<Reservation> reservation = executeQueryAndGatherResults(
                 Reservation.class,
                 "select * "
                 + "from reservation "
                 + "where " + columnName + " = ?",
-                "Fail in ReservationMapper - getReservation",
+                "Fail in ReservationMapper - search",
                 new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
                 new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 variable);

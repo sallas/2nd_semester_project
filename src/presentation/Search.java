@@ -2,6 +2,9 @@ package presentation;
 
 import domain.Controller;
 import domain.GuiLogic;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -12,7 +15,7 @@ public class Search extends javax.swing.JFrame {
     private String currentVariable;
     private DefaultListModel model;
     private GuiLogic logic;
-    
+
     public Search() {
         init();
     }
@@ -20,14 +23,59 @@ public class Search extends javax.swing.JFrame {
     private void init() {
         initComponents();
         control = Controller.getInstance();
-        objectComboBox.removeAllItems();
-        variableComboBox.removeAllItems();
-        objectComboBox.addItem("Reservation");
-        variableComboBox.addItem("ID");
-        variableComboBox.addItem("room_id");
         model = new DefaultListModel();
         resultList.setModel(model);
         logic = GuiLogic.getInstance();
+        fillObjectComboBox();
+    }
+
+    public void fillObjectComboBox() {
+        objectComboBox.removeAllItems();
+        objectComboBox.addItem("Reservation");
+        objectComboBox.addItem("Room");
+        objectComboBox.addItem("Customer");
+        objectComboBox.addItem("User");
+        objectComboBox.addItem("Sports booking");
+        objectComboBox.addItem("Facility");
+    }
+
+    public void fillVariableComboBox(String object) {
+        variableComboBox.removeAllItems();
+        if ("reservation".equalsIgnoreCase(currentObject)) {
+            variableComboBox.addItem("ID");
+            variableComboBox.addItem("Room_ID");
+            variableComboBox.addItem("Customer_ID");
+            variableComboBox.addItem("Checkin_Date");
+            variableComboBox.addItem("Departure_Date");
+        } else if ("room".equalsIgnoreCase(currentObject)) {
+            variableComboBox.addItem("ID");
+            variableComboBox.addItem("Type");
+        } else if ("customer".equalsIgnoreCase(currentObject)) {
+            variableComboBox.addItem("ID");
+            variableComboBox.addItem("Address");
+            variableComboBox.addItem("Country");
+            variableComboBox.addItem("First_name");
+            variableComboBox.addItem("Last_name");
+            variableComboBox.addItem("Phone");
+            variableComboBox.addItem("Email");
+            variableComboBox.addItem("Travel_Agency");
+        } else if ("user".equalsIgnoreCase(currentObject)) {
+            variableComboBox.addItem("ID");
+            variableComboBox.addItem("Username");
+            variableComboBox.addItem("Status");
+            variableComboBox.addItem("Reservation_ID");
+        } else if ("sports booking".equalsIgnoreCase(currentObject)) {
+            variableComboBox.addItem("ID");
+            variableComboBox.addItem("Facility_IDd");
+            variableComboBox.addItem("Booking_Date");
+            variableComboBox.addItem("Timeslot");
+            variableComboBox.addItem("User_ID");
+        } else if ("facility".equalsIgnoreCase(currentObject)) {
+            variableComboBox.addItem("ID");
+            variableComboBox.addItem("Name");
+            variableComboBox.addItem("Type");
+            variableComboBox.addItem("Capacity");
+        } 
     }
 
     /**
@@ -45,6 +93,7 @@ public class Search extends javax.swing.JFrame {
         variableComboBox = new javax.swing.JComboBox();
         variableTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
+        statusTextField = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +125,8 @@ public class Search extends javax.swing.JFrame {
             }
         });
 
+        statusTextField.setText("Status");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,6 +142,10 @@ public class Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(statusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,7 +163,9 @@ public class Search extends javax.swing.JFrame {
                         .addComponent(variableTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(searchButton)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(statusTextField)
+                .addContainerGap())
         );
 
         pack();
@@ -119,6 +176,7 @@ public class Search extends javax.swing.JFrame {
             return;
         }
         currentObject = (String) objectComboBox.getSelectedItem();
+        fillVariableComboBox(currentObject);
     }//GEN-LAST:event_objectComboBoxActionPerformed
 
     private void variableComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_variableComboBoxActionPerformed
@@ -129,8 +187,22 @@ public class Search extends javax.swing.JFrame {
     }//GEN-LAST:event_variableComboBoxActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        statusTextField.setText("");
+        String variableText = variableTextField.getText();
+        Object variable;
+        if(currentVariable.contains("Date")) {
+            if(variableText.matches("[0-9]{4}[-][0-9][0-9][-][0-9][0-9]")) {
+                variable = Date.valueOf(variableText);
+            } else {
+                statusTextField.setText("Date format invalid use :YYYY-MM-DD");
+                return;
+            }
+            
+        } else {
+            variable = variableText;
+        }
         model = logic.search(currentObject, currentVariable,
-                variableTextField.getText(), model);
+                variable , model);
         resultList.setModel(model);
     }//GEN-LAST:event_searchButtonActionPerformed
 
@@ -174,6 +246,7 @@ public class Search extends javax.swing.JFrame {
     private javax.swing.JComboBox objectComboBox;
     private javax.swing.JList resultList;
     private javax.swing.JButton searchButton;
+    private javax.swing.JLabel statusTextField;
     private javax.swing.JComboBox variableComboBox;
     private javax.swing.JTextField variableTextField;
     // End of variables declaration//GEN-END:variables

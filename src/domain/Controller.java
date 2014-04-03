@@ -325,4 +325,8 @@ public class Controller {
     public List<Reservation> searchReservation(Object variable, String columnName) {
         return facade.searchReservation(variable, columnName);
     }
+    
+    public List<Room> searchRoom(Object variable, String columnName) {
+        return facade.searchRoom(variable, columnName);
+    }
 }

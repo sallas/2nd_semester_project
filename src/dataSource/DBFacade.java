@@ -126,16 +126,16 @@ public class DBFacade {
             Date date, int userID, int timeslot) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
     }
-    
+
     public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
-            Date date, int timeslot, int facilityID){
+            Date date, int timeslot, int facilityID) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotFacility(
                 date, timeslot, facilityID);
     }
 
     public HotelUser getUser(int userID) {
         List<HotelUser> hul = hotelUserMapper.getUser(userID);
-        if (hul.isEmpty()){
+        if (hul.isEmpty()) {
             return null;
         } else {
             return hul.get(0);
@@ -153,16 +153,20 @@ public class DBFacade {
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
         return facilityBookingMapper.getAllFacilityBookingOfSpecificUser(ID);
     }
-    
+
     public List<HotelUser> getAllUsers() {
         return hotelUserMapper.getAllUsers();
-    } 
-    
+    }
+
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);
     }
-    
+
     public List<Reservation> searchReservation(Object variable, String columnName) {
         return reservationMapper.search(variable, columnName);
+    }
+
+    public List<Room> searchRoom(Object variable, String columnName) {
+        return roomMapper.search(variable, columnName);
     }
 }
