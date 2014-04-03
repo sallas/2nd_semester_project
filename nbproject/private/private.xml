@@ -13,7 +13,6 @@
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/DBConnector.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/CustomerMapperInterface.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/ReservationMapper.java</file>
-            <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/presentation/Login.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/DBFacade.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/domain/EmailValidator.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/RoomMapper.java</file>
@@ -22,7 +21,6 @@
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/test/dataSource/AbstractMapperTest.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/FacilityMapper.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/test/dataSource/AbstractMapperDummy.java</file>
-            <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/LoginMapper.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/presentation/SportsFacilitySchedule.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/domain/Facility.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/domain/FacilityBooking.java</file>
@@ -33,7 +31,6 @@
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/MockObjects/ReservationMapperMock.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/domain/WrongEmail.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/domain/Customer.java</file>
-            <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/dataSource/AdministratorMapper.java</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/scripts/init.sql</file>
             <file>file:/D:/Programirane/2nd%20Semester/Project/2nd_semester_project/src/domain/HotelUser.java</file>
         </group>
