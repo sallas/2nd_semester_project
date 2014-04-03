@@ -423,6 +423,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                 control.queueUserForSpecificTimeslot(currentBookings.get(0).getID(),
                         logic.getCurrentUserID());
                 statusTextField.setText("Queued for activity");
+                updateQueueList();
             }
             return;
         }
