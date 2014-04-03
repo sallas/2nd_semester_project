@@ -3,6 +3,7 @@ package presentation;
 import domain.Controller;
 import domain.FacilityBooking;
 import domain.GuiLogic;
+import domain.QueueEntry;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,7 +36,7 @@ public class OwnBookings extends javax.swing.JFrame {
     }
     
     private void initTable() {
-        logic.initOwnBookingTable(model, listOfBookings);
+        logic.initOwnBookingTable(model);
     }
 
     /**
@@ -125,11 +126,20 @@ public class OwnBookings extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBookingButtonActionPerformed
-        control.removeFacilityBooking(listOfBookings.get(bookingsTable.getSelectedRow()).getID());
+        int bookingID = logic.getListOfBookings().get(bookingsTable.getSelectedRow()).getID();
+        List<QueueEntry> q = control.getQueueEntriesOfSpecificBooking(bookingID);
+        if (q.isEmpty()){
+            control.removeFacilityBooking(bookingID);
+        } else {
+            int newUserID = control.popUserFromQueueForID(bookingID);
+            System.out.println(newUserID);
+            control.updateFacilityBookingUserID(bookingID, newUserID);
+        }
         initTable();
     }//GEN-LAST:event_cancelBookingButtonActionPerformed
 
     private void backToFacilityBookingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToFacilityBookingsButtonActionPerformed
+        sportsFacilitySchedule.refreshAll();
         sportsFacilitySchedule.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backToFacilityBookingsButtonActionPerformed

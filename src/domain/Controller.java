@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 
 public class Controller {
 
@@ -320,6 +318,28 @@ public class Controller {
             userIDs.add(u.getId());
         }
         return userIDs;
+    }
+    
+    public boolean queueUserForSpecificTimeslot(int bookingID, int userID){
+        QueueEntry entry = new QueueEntry(-1, userID, bookingID);
+        return facade.saveQueueEntry(entry);
+    }
+    
+    public void shutdownConnection(){
+        facade.shutdown();
+    }
+    
+    public boolean updateFacilityBookingUserID(int bookingID, int userID) {
+        return facade.updateFacilityBookingUserID(bookingID, userID);
+    }
+    
+    /*
+     * Pop user from the queue for specific booking id and return his id.
+     */
+    public int popUserFromQueueForID(int bookingID) {
+        List<QueueEntry> entries = this.getQueueEntriesOfSpecificBooking(bookingID);
+        facade.deleteQueueEntryForSpecificID(bookingID, entries.get(0).getUserID());
+        return entries.get(0).getUserID();
     }
     
     public List<Integer> getAllUnpaidReservationIDs(){
