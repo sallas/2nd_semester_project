@@ -134,4 +134,12 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new int[] {DataType.INT, DataType.INT, DataType.DATE, DataType.INT, DataType.INT}, 
                 ID);
     }
+    
+    @Override
+    public boolean updateFacilityBookingUserID(int bookingID, int userID){
+        return executeSQLInsert(
+                "UPDATE facility_booking SET user_id = ? WHERE id = ?",
+                "Fail in FacilityBookingMapper - updateFacilityBookingUserID",
+                userID, bookingID) == 1;
+    }
 }

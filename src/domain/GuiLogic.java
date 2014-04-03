@@ -17,11 +17,20 @@ public class GuiLogic {
     private int currentUserID;
     private List<String> timeslots;
     private FacilityBooking currentFacilityBooking;
+    private List<FacilityBooking> listOfBookings;
     private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
     private GuiLogic() {
         control = Controller.getInstance();
         currentUserID = 1;
+    }
+
+    public int getCurrentUserID() {
+        return currentUserID;
+    }
+
+    public FacilityBooking getCurrentFacilityBooking() {
+        return currentFacilityBooking;
     }
 
     public static GuiLogic getInstance() {
@@ -153,13 +162,13 @@ public class GuiLogic {
         }
     }
 
-    public void initOwnBookingTable(DefaultTableModel model, List<FacilityBooking> listOfBookings) {
-        listOfBookings = control.getAllFacilityBookingOfSpecificUser(currentUserID);
+    public void initOwnBookingTable(DefaultTableModel model) {
+        this.listOfBookings = control.getAllFacilityBookingOfSpecificUser(currentUserID);
         control.getAllFacilityNames();
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
         }
-        for (FacilityBooking i : listOfBookings) {
+        for (FacilityBooking i : this.listOfBookings) {
             model.addRow(new Object[]{control.getFacilityName(i.getFacilityID()),
                 df.format(i.getBookingDate()), (i.getTimeslot() + 7) + " - " + (i.getTimeslot() + 8)});
         }
@@ -176,5 +185,9 @@ public class GuiLogic {
             ob[4] = r.getDepartureDate();
             model.addRow(ob);
         }
+    }
+
+    public List<FacilityBooking> getListOfBookings() {
+        return listOfBookings;
     }
 }

@@ -161,4 +161,24 @@ public class DBFacade {
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);
     }
+    
+    public boolean saveQueueEntry(QueueEntry entry) {
+        return queueMapper.saveQueueEntry(entry);
+    }
+
+    public void shutdown() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+    
+    public boolean updateFacilityBookingUserID(int bookingID, int userID) {
+        return facilityBookingMapper.updateFacilityBookingUserID(bookingID, userID);
+    }
+    
+    public boolean deleteQueueEntryForSpecificID(int bookingID, int userID) {
+        return queueMapper.deleteQueueEntryForSpecificID(bookingID, userID);
+    }
 }
