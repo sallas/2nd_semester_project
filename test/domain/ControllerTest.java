@@ -248,6 +248,6 @@ public class ControllerTest {
     @Test
     public void testGetAllUserIDs() {
         List<Integer> userIDs = controller.getAllUserIDs();
-        assertTrue(userIDs.size() == 2);
+        assertTrue(userIDs.size() == 3);
     }
 }

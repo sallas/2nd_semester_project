@@ -32,7 +32,7 @@ public class HotelUserMapperTest {
     @Test
     public void testGetAllUsers() {
         List<HotelUser> users = hum.getAllUsers();
-        assertTrue(users.size() == 2);
+        assertTrue(users.size() == 3);
     }
 
     /*

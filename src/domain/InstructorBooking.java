@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class InstructorBooking {
 
-    private int id;
+    private int ID;
     private int facilityID;
     private int instructorID;
     private Date bookedDate;
@@ -14,19 +14,19 @@ public class InstructorBooking {
     }
 
     public InstructorBooking(int id, int facilityID, int instructorID, Date bookedDate, int timeslot) {
-        this.id = id;
+        this.ID = id;
         this.facilityID = facilityID;
         this.instructorID = instructorID;
         this.bookedDate = bookedDate;
         this.timeslot = timeslot;
     }
 
-    public int getId() {
-        return id;
+    public int getID() {
+        return ID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public int getFacilityID() {
@@ -63,7 +63,7 @@ public class InstructorBooking {
 
     @Override
     public String toString() {
-        return "InstructorBooking id= " + id + " | facilityID= "
+        return "InstructorBooking id= " + ID + " | facilityID= "
                 + facilityID + " | instructorID=" + instructorID
                 + " | bookedDate= " + bookedDate + " | timeslot= " + timeslot;
     }

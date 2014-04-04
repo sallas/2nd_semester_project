@@ -378,4 +378,8 @@ public class Controller {
     public boolean removeUnpaidReservation(int ID){
         return facade.removeUnpaidReservation(ID);
     }
+
+    public List<InstructorBooking> getInstructorBookings(int userID) {
+        return facade.getInstructorBookings(userID);
+    }
 }

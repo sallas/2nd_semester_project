@@ -82,7 +82,7 @@ ID number(5) PRIMARY KEY,
 Username varchar(20) NOT NULL,
 Psw varchar(20) NOT NULL,
 Status varchar(20) NOT NULL,
-Reservation_id number(5) NOT NULL,
+Reservation_id number(5),
 Spent number(5) NOT NULL,
 FOREIGN KEY (Reservation_id) REFERENCES reservation(ID)
 );
@@ -114,7 +114,7 @@ FOREIGN KEY (ID) REFERENCES reservation(ID)
 );
 
 CREATE TABLE instructor (
-ID number(5) PRIMARY KEY
+ID number(5) PRIMARY KEY,
 user_id number(5) NOT NULL,
 FOREIGN KEY (user_id) REFERENCES hotel_user(id)
 ); 
