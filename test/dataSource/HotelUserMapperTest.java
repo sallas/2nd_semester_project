@@ -52,4 +52,9 @@ public class HotelUserMapperTest {
         List<HotelUser> users = hum.getUser(-1);
         assertTrue(users.isEmpty());
     }
+    
+    @Test
+    public void testRemoveHotelUserByReservationID(){
+        assertTrue(hum.removeHotelUserByReservationID(1));
+    }
 }

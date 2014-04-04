@@ -220,12 +220,12 @@ public class ReservationMapperTest {
     }
     
     @Test
-    public void testremoveUnpaidReservationMatch(){
+    public void testRemoveUnpaidReservationMatch(){
         assertTrue(rm.removeUnpaidReservation(1));
     }
     
     @Test
-    public void testremoveUnpaidReservationNoMatch(){
+    public void testRemoveUnpaidReservationNoMatch(){
         assertFalse(rm.removeUnpaidReservation(99999));
     }
     
@@ -234,10 +234,27 @@ public class ReservationMapperTest {
         List<Reservation> reservations = rm.search("1", "id");
         assertTrue(reservations.get(0).getID() == 1);
     }
-
+    
+    @Test
+    public void testRemoveReservationMatch(){
+        assertTrue(rm.removeUnpaidReservation(2));
+        assertTrue(rm.removeReservation(2));
+    }
+    
     @Test
     public void testSearchNoMatchID() {
         List<Reservation> reservations = rm.search("-1", "id");
         assertTrue(reservations.isEmpty());
+    }
+    
+    @Test
+    public void testRemoveReservationNoMatch(){
+        assertFalse(rm.removeReservation(9999999));
+    }
+    
+    @Test
+    public void testGetUnpaidReservationBookingDateByIDMatch(){
+        System.out.println(rm.getUnpaidReservationBookingDateByID(1).toString());
+        assertTrue(rm.getUnpaidReservationBookingDateByID(1).toString().equals("2014-03-24"));
     }
 }

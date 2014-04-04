@@ -144,4 +144,14 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "Fail in FacilityBookingMapper - updateFacilityBookingUserID",
                 userID, bookingID) == 1;
     }
+    
+    @Override
+    public boolean deleteFacilityBookingByReservationID(int ID){
+        return 0 != executeSQLInsert(
+                "delete from facility_booking where "
+                        + "user_ID = (select user_id from hotel_user"
+                        + " where reservation_id = ?)",
+                "Fail in FacilityBookingMapper - deleteFacilityBookingByReservationID",
+                ID);
+    }
 }

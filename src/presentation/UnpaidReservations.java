@@ -6,8 +6,10 @@
 package presentation;
 
 import domain.Controller;
+import java.sql.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import utility.DateLogic;
 
 /**
  *
@@ -15,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class UnpaidReservations extends javax.swing.JFrame {
 
+    private LandingPage landingPage;
     private Controller controller;
     private DefaultTableModel model;
 
@@ -24,6 +27,12 @@ public class UnpaidReservations extends javax.swing.JFrame {
     public UnpaidReservations() {
         initComponents();
         constructor();
+    }
+
+    public UnpaidReservations(LandingPage landingPage) {
+        initComponents();
+        constructor();
+        this.landingPage = landingPage;
     }
 
     private void constructor() {
@@ -38,8 +47,13 @@ public class UnpaidReservations extends javax.swing.JFrame {
             model.removeRow(i);
         }
         for (int i : reservations) {
-            Object[] ob = new Object[1];
+            Object[] ob = new Object[2];
+            Date today = DateLogic.getCurrentTimeInSQLDate();
+            Date overdueDate = DateLogic.addDaysToSQLDate(controller.getUnpaidReservationBookingDateByID(i), 5);
             ob[0] = i;
+            if (today.after(overdueDate)) {
+                ob[1] = "OVERDUE";
+            }
             model.addRow(ob);
         }
     }
@@ -55,7 +69,9 @@ public class UnpaidReservations extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         unpaidReservationsTable = new javax.swing.JTable();
+        markReservationAsPaidButton = new javax.swing.JButton();
         deleteReservationButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,14 +80,14 @@ public class UnpaidReservations extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Reservation ID"
+                "Reservation ID", "Overdue"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -84,10 +100,24 @@ public class UnpaidReservations extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(unpaidReservationsTable);
 
+        markReservationAsPaidButton.setText("Mark As Paid");
+        markReservationAsPaidButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                markReservationAsPaidButtonActionPerformed(evt);
+            }
+        });
+
         deleteReservationButton.setText("Delete Reservation");
         deleteReservationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteReservationButtonActionPerformed(evt);
+            }
+        });
+
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -96,34 +126,57 @@ public class UnpaidReservations extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(deleteReservationButton)
-                .addGap(32, 32, 32)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(deleteReservationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(markReservationAsPaidButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(backButton))
+                .addGap(39, 39, 39)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(deleteReservationButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(markReservationAsPaidButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(deleteReservationButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(backButton)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void markReservationAsPaidButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markReservationAsPaidButtonActionPerformed
+        int[] unpaidReservations = unpaidReservationsTable.getSelectedRows();
+        for (int i : unpaidReservations) {
+            controller.removeUnpaidReservation((int) model.getValueAt(i, 0));
+        }
+        refreshTable();
+    }//GEN-LAST:event_markReservationAsPaidButtonActionPerformed
+
     private void deleteReservationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteReservationButtonActionPerformed
         int[] unpaidReservations = unpaidReservationsTable.getSelectedRows();
         for (int i : unpaidReservations) {
-            controller.removeUnpaidReservation((int)model.getValueAt(i, 0));
+            controller.removeUnpaidReservation((int) model.getValueAt(i, 0));
+            controller.removeReservation((int) model.getValueAt(i, 0));
         }
         refreshTable();
     }//GEN-LAST:event_deleteReservationButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        landingPage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,8 +214,10 @@ public class UnpaidReservations extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
     private javax.swing.JButton deleteReservationButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton markReservationAsPaidButton;
     private javax.swing.JTable unpaidReservationsTable;
     // End of variables declaration//GEN-END:variables
 }

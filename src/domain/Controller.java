@@ -365,17 +365,26 @@ public class Controller {
         facade.deleteQueueEntryForSpecificID(bookingID, entries.get(0).getUserID());
         return entries.get(0).getUserID();
     }
-    
-    public List<Integer> getAllUnpaidReservationIDs(){
+
+    public List<Integer> getAllUnpaidReservationIDs() {
         List<UnpaidReservation> unpaidReservationList = facade.getAllUnpaidReservationIDs();
         List<Integer> IDlist = new ArrayList();
-        for (UnpaidReservation r : unpaidReservationList){
+        for (UnpaidReservation r : unpaidReservationList) {
             IDlist.add(r.getID());
         }
         return IDlist;
     }
-    
-    public boolean removeUnpaidReservation(int ID){
+
+    public boolean removeUnpaidReservation(int ID) {
         return facade.removeUnpaidReservation(ID);
+    }
+
+    //removes reservation and all the entrys that have reservation_id as a foreign key
+    public boolean removeReservation(int ID) {
+        return facade.removeReservation(ID);
+    }
+
+    public Date getUnpaidReservationBookingDateByID(int ID) {
+        return facade.getUnpaidReservationBookingDateByID(ID);
     }
 }

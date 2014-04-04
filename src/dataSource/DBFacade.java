@@ -159,18 +159,32 @@ public class DBFacade {
         return hotelUserMapper.getAllUsers();
     }
 
-    public List<UnpaidReservation> getAllUnpaidReservationIDs(){
+    public List<UnpaidReservation> getAllUnpaidReservationIDs() {
         return reservationMapper.getAllUnpaidReservationIDs();
     }
-    
-    public boolean removeUnpaidReservation(int ID){
+
+    public boolean removeUnpaidReservation(int ID) {
         return reservationMapper.removeUnpaidReservation(ID);
     }
-    
+
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);
     }
 
+    public boolean removeReservation(int ID) {
+        return deleteReservationLogic.deleteReservation(
+                ID, connection, reservationMapper, hotelUserMapper,
+                queueMapper, facilityBookingMapper);
+    }
+
+    public Date getUnpaidReservationBookingDateByID(int ID) {
+        return reservationMapper.getUnpaidReservationBookingDateByID(ID);
+    }
+
+    public boolean removeHotelUserByReservationID(int ID) {
+        return hotelUserMapper.removeHotelUserByReservationID(ID);
+    }
+    
     public List<Reservation> searchReservation(Object variable, String columnName) {
         return reservationMapper.search(variable, columnName);
     }

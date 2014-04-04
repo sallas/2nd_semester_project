@@ -57,5 +57,10 @@ public class QueueMapperTest {
         assertTrue(r);
         assertEquals(0, check.size());
     }
+    
+    @Test
+    public void testDeleteQueueEntryByReservationID(){
+        assertTrue (qm.deleteQueueEntryByReservationID(2));
+    }
 
 }

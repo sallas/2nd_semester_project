@@ -54,7 +54,9 @@ public class ReservationFixture {
                     + "to_date('06-02-2014', 'DD-MM-YYYY'))");
             //insert into unpaid_reservations
             insert = "insert into unpaid_reservations values ";
-            st.addBatch(insert + "(1)");
+            st.addBatch(insert + "(1, to_date('24-03-2014', 'DD-MM-YYYY'))");
+            st.addBatch(insert + "(2, to_date('23-01-2014', 'DD-MM-YYYY'))");
+            st.addBatch(insert + "(3, to_date('01-02-2014', 'DD-MM-YYYY'))");
             //insert into facility
             insert = "insert into facility values ";
             st.addBatch(insert + "(1, 'Golden gym', 'gym', 20, 1, 1, 0)");
