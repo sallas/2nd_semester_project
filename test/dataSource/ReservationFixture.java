@@ -15,6 +15,9 @@ public class ReservationFixture {
             con.setAutoCommit(false);
 
             // delete info in table
+            st.addBatch("delete from instructor_booking");
+            st.addBatch("delete from instructor_sports");
+            st.addBatch("delete from instructor");
             st.addBatch("delete from queue_facility");
             st.addBatch("delete from facility_booking");
             st.addBatch("delete from Hotel_user");
@@ -34,6 +37,11 @@ public class ReservationFixture {
             st.addBatch("create sequence hotel_userseq start with 3");
             st.addBatch("drop sequence queue_facilityseq");
             st.addBatch("create sequence queue_facilityseq start with 2");
+            st.addBatch("drop sequence instructorSeq");
+            st.addBatch("create sequence instructorSeq start with 2");
+            st.addBatch("drop sequence instructor_bookingSeq");
+            st.addBatch("create sequence instructor_bookingSeq start with 2");
+
             // insert data into rooms
             String insert = "insert into room values ";
             st.addBatch(insert + "(100,'double')");
@@ -65,6 +73,7 @@ public class ReservationFixture {
             insert = "insert into hotel_user values ";
             st.addBatch(insert + "(1, 'user1', 'password1', 'guest', 1, 0)");
             st.addBatch(insert + "(2, 'user2', 'password2', 'guest', 2, 0)");
+            st.addBatch(insert + "(3, 'user3', 'password3', 'instructor', NULL, 0)");
             //insert into facility_booking
             insert = "insert into facility_booking values ";
             st.addBatch(insert + "(1, 1, to_date('24-03-2014', 'DD-MM-YYYY'),"
@@ -75,6 +84,13 @@ public class ReservationFixture {
                     + "4, 1)");
             insert = "insert into queue_facility values ";
             st.addBatch(insert + "(1, 2, 1)");
+            //insert into facility_booking
+            insert = "insert into instructor values ";
+            st.addBatch(insert + "(1, 3)");
+            insert = "insert into instructor_booking values ";
+            st.addBatch(insert + "(1, 1, 1, to_date('06-04-2014', 'DD-MM-YYYY')"
+                    + ", 1)");
+
             st.executeBatch();
             // end transaction
             con.commit();

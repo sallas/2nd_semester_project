@@ -23,7 +23,7 @@ public class GuiLogic {
 
     private GuiLogic() {
         control = Controller.getInstance();
-        currentUserID = 1;
+        currentUserID = 3;
     }
 
     public int getCurrentUserID() {
@@ -191,7 +191,7 @@ public class GuiLogic {
     public List<FacilityBooking> getListOfBookings() {
         return listOfBookings;
     }
-    
+
     public DefaultListModel search(String currentObject, String currentVariable, Object variable, DefaultListModel model) {
         model = new DefaultListModel();
         List<String> results = new ArrayList<>();
@@ -227,5 +227,16 @@ public class GuiLogic {
             results.add(o.toString());
         }
         return results;
+    }
+
+    public void fillMyInstructorBookingTable(DefaultTableModel model) {
+        List<InstructorBooking> bookings = control.getInstructorBookings(currentUserID);
+        for (InstructorBooking ib : bookings) {
+            Object[] ob = new Object[3];
+            ob[0] = ib.getFacilityID();
+            ob[1] = ib.getBookedDate();
+            ob[2] = ib.getTimeslot();
+            model.addRow(ob);
+        }
     }
 }

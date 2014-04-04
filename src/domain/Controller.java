@@ -387,4 +387,8 @@ public class Controller {
     public Date getUnpaidReservationBookingDateByID(int ID) {
         return facade.getUnpaidReservationBookingDateByID(ID);
     }
+
+    public List<InstructorBooking> getInstructorBookings(int userID) {
+        return facade.getInstructorBookings(userID);
+    }
 }

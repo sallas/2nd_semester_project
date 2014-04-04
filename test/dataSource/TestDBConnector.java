@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class TestDBConnector {
 
-    private final String id = "cphtd46";
-    private final String pw = "cphtd46";
+    private final String id = "cphbk77";
+    private final String pw = "cphbk77";
 
     public Connection getConnection() {
         Connection con = null;
