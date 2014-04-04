@@ -13,6 +13,9 @@ public class ReservationMapperTest {
 
     Connection con;
     ReservationMapper rm;
+    QueueMapperInterface qm;
+    FacilityBookingMapperInterface fbm;
+    HotelUserMapperInterface hum;
     TestDBConnector connector = new TestDBConnector();
 
     public ReservationMapperTest() {
@@ -26,6 +29,9 @@ public class ReservationMapperTest {
         con = connector.getConnection();
         ReservationFixture.setUp(con);
         rm = new ReservationMapper(con);
+        qm = new QueueMapper(con);
+        fbm = new FacilityBookingMapper(con);
+        hum = new HotelUserMapper(con);
     }
 
     @After
@@ -237,7 +243,10 @@ public class ReservationMapperTest {
     
     @Test
     public void testRemoveReservationMatch(){
-        assertTrue(rm.removeUnpaidReservation(2));
+        qm.deleteQueueEntryByReservationID(2);
+        fbm.deleteFacilityBookingByReservationID(2);
+        hum.removeHotelUserByReservationID(2);
+        rm.removeUnpaidReservation(2);
         assertTrue(rm.removeReservation(2));
     }
     
@@ -254,7 +263,6 @@ public class ReservationMapperTest {
     
     @Test
     public void testGetUnpaidReservationBookingDateByIDMatch(){
-        System.out.println(rm.getUnpaidReservationBookingDateByID(1).toString());
         assertTrue(rm.getUnpaidReservationBookingDateByID(1).toString().equals("2014-03-24"));
     }
 }

@@ -14,6 +14,7 @@ public class FacilityBookingTest {
 
     Connection con;
     FacilityBookingMapper fbm;
+    QueueMapperInterface qm;
     TestDBConnector connector = new TestDBConnector();
 
     public FacilityBookingTest() {
@@ -24,6 +25,7 @@ public class FacilityBookingTest {
         con = connector.getConnection();
         ReservationFixture.setUp(con);
         fbm = new FacilityBookingMapper(con);
+        qm = new QueueMapper(con);
     }
 
     @After
@@ -174,6 +176,7 @@ public class FacilityBookingTest {
     
     @Test
     public void testDeleteFacilityBookingByReservationID(){
+        qm.deleteQueueEntryByReservationID(2);
         assertTrue(fbm.deleteFacilityBookingByReservationID(2));
     }
 
