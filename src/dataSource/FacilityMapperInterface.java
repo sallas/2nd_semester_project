@@ -17,7 +17,7 @@ public interface FacilityMapperInterface {
     /*
      * Get facilities by type.
      */
-    ArrayList<Facility> getFacilities(String type);
+    List<Facility> getFacilities(String type);
 
     /*
      * Get all facilities.
@@ -25,5 +25,7 @@ public interface FacilityMapperInterface {
     ArrayList<Facility> getFacilities();
     
     List<Facility> getFacilityByID(int ID);
+    
+    List<Facility> search(Object variable, String columnName);
     
 }

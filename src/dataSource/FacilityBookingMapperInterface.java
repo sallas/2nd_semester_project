@@ -35,4 +35,6 @@ public interface FacilityBookingMapperInterface {
     List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID);
     
     public boolean updateFacilityBookingUserID(int bookingID, int userID);
+    
+    List<FacilityBooking> search(Object variable, String columnName);
 }

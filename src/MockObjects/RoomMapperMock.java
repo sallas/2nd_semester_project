@@ -49,4 +49,9 @@ public class RoomMapperMock implements RoomMapperInterface {
         return returnRooms;
     }
 
+    @Override
+    public List<Room> search(Object variable, String columnName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
