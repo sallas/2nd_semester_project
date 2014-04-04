@@ -2,9 +2,6 @@ package dataSource;
 
 import domain.Customer;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +13,7 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
 
     @Override
     public Customer getCustomer(int ID) {
-        ArrayList<Customer> customer = executeQueryAndGatherResults(
-                Customer.class,
-                "SELECT * FROM customer WHERE ID = ?",
-                "Fail in CustomerMapper - getCustomer",
-                new String[]{"ID", "addres", "country", "first_name", "last_name", "phone", "email", "travel_agency"},
-                new int[]{DataType.INT, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING},
-                ID);
+        List<Customer> customer = search(ID, "id");
         if (customer.isEmpty()) {
             return null;
         } else {
@@ -39,8 +30,9 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
                 "Fail in CustomerMapper - saveCustomer",
                 new String[]{"ID"}, new int[]{DataType.INT});
         c.setID(seq.get(0).getID());
-        if (c.getTravel_agency() == null)
+        if (c.getTravel_agency() == null) {
             c.setTravel_agency(new String());
+        }
         int result = executeSQLInsert(
                 "INSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 "Fail in CustomerMapper - saveCustomer",
@@ -66,5 +58,20 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
         } else {
             return customer;
         }
+    }
+
+    @Override
+    public List<Customer> search(Object variable, String columnName) {
+        return executeQueryAndGatherResults(
+                Customer.class,
+                "SELECT * FROM customer "
+                + "WHERE " + columnName + " = ?",
+                "Fail in CustomerMapper - search ",
+                new String[]{"ID", "addres", "country", "first_name",
+                    "last_name", "phone", "email", "travel_agency"},
+                new int[]{DataType.INT, DataType.STRING, DataType.STRING,
+                    DataType.STRING, DataType.STRING, DataType.STRING,
+                    DataType.STRING, DataType.STRING},
+                variable);
     }
 }

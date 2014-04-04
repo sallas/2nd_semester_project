@@ -19,15 +19,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
 //    It uses a select sql query from the reservation table.
     @Override
     public Reservation getReservation(int ID) {
-        ArrayList<Reservation> reservation = executeQueryAndGatherResults(
-                Reservation.class,
-                "select * "
-                + "from reservation "
-                + "where id = ?",
-                "Fail in ReservationMapper - getReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE},
-                ID);
+        List<Reservation> reservation = search(ID, "id");
         if (reservation.isEmpty()) {
             return null;
         } else {
@@ -116,8 +108,8 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "(checkin_date  < ? AND "
                 + "checkin_date >= ?))",
                 "Fail in ReservationMapper - checkAvailableReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE},
+                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
+                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 r.getRoomID(), r.getCheckinDate(), r.getCheckinDate(), r.getDepartureDate(),
                 r.getDepartureDate(), r.getDepartureDate(), r.getCheckinDate());
         available = reservation.isEmpty();
@@ -134,7 +126,21 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
         executeSQLQuery(
                 "LOCK TABLE reservation in exclusive mode",
                 "Fail in ReservationMapper - lockReservationTable"
-                );
+        );
+    }
+    
+    @Override
+    public List<Reservation> search(Object variable, String columnName) {
+        List<Reservation> reservation = executeQueryAndGatherResults(
+                Reservation.class,
+                "select * "
+                + "from reservation "
+                + "where " + columnName + " = ?",
+                "Fail in ReservationMapper - search",
+                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
+                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
+                variable);
+        return reservation;
     }
     
     @Override

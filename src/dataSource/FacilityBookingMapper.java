@@ -67,11 +67,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public List<FacilityBooking> getAllBookingsOfSpecificDate(Date date) {
-        return executeQueryAndGatherResults(FacilityBooking.class,
-                "SELECT * FROM facility_booking WHERE booking_date = ?",
-                "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date);
+        return search(date, "booking_date");
     }
 
     /*
@@ -102,7 +98,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
                 new int[]{0, 0, 2, 0, 0}, date, userID, timeslot);
     }
-    
+
     /*
      * Returns all faciltiy bookings made for a f id userID and on the
      
@@ -117,22 +113,28 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
                 new int[]{0, 0, 2, 0, 0}, date, timeslot, facilityID);
     }
+
     @Override
-    public boolean removeFacilityBooking(int ID){
+    public boolean removeFacilityBooking(int ID) {
         return executeSQLInsert(
-                "DELETE FROM facility_booking WHERE id = ?", 
-                "Fail in FacilityBookingMapper - removeFacilityBooking", 
+                "DELETE FROM facility_booking WHERE id = ?",
+                "Fail in FacilityBookingMapper - removeFacilityBooking",
                 ID) == 1;
     }
 
     @Override
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
+        return search(ID, "id");
+    }
+
+    @Override
+    public List<FacilityBooking> search(Object variable, String columnName) {
         return executeQueryAndGatherResults(FacilityBooking.class,
-                "SELECT * FROM facility_booking WHERE user_id = ?",
-                "Fail in FacilityBookingMapper - getAllBookings", 
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"}, 
-                new int[] {DataType.INT, DataType.INT, DataType.DATE, DataType.INT, DataType.INT}, 
-                ID);
+                "SELECT * FROM facility_booking "
+                + "WHERE " + columnName + " = ?",
+                "Fail in FacilityBookingMapper - search ",
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
+                new int[]{0, 0, 2, 0, 0}, variable);
     }
     
     @Override

@@ -240,7 +240,7 @@ public class Controller {
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
         List<FacilityBooking> bookings
                 = facade.getAllBookingsOfSpecificDateTimeslotFacility(
-                  fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
+                        fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
         List<Facility> facility = facade.getFacilityByID(fb.getFacilityID());
         return bookings.size() < facility.get(0).getCapacity();
     }
@@ -318,6 +318,30 @@ public class Controller {
             userIDs.add(u.getId());
         }
         return userIDs;
+    }
+
+    public List<Reservation> searchReservation(Object variable, String columnName) {
+        return facade.searchReservation(variable, columnName);
+    }
+
+    public List<Room> searchRoom(Object variable, String columnName) {
+        return facade.searchRoom(variable, columnName);
+    }
+
+    public List<HotelUser> searchHotelUser(Object variable, String columnName) {
+        return facade.searchHotelUser(variable, columnName);
+    }
+
+    public List<Customer> searchCustomer(Object variable, String columnName) {
+        return facade.searchCustomer(variable, columnName);
+    }
+
+    public List<Facility> searchFacility(Object variable, String columnName) {
+        return facade.searchFacility(variable, columnName);
+    }
+
+    public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
+        return facade.searchFacilityBooking(variable, columnName);
     }
     
     public boolean queueUserForSpecificTimeslot(int bookingID, int userID){

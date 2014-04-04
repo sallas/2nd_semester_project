@@ -37,5 +37,7 @@ public interface ReservationMapperInterface {
     
     List<UnpaidReservation> getAllUnpaidReservationIDs();
     
+    List<Reservation> search(Object variable, String columnName);
+    
     boolean removeUnpaidReservation(int ID);
 }

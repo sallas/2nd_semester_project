@@ -228,4 +228,16 @@ public class ReservationMapperTest {
     public void testremoveUnpaidReservationNoMatch(){
         assertFalse(rm.removeUnpaidReservation(99999));
     }
+    
+    @Test
+    public void testSearchMatchID() {
+        List<Reservation> reservations = rm.search("1", "id");
+        assertTrue(reservations.get(0).getID() == 1);
+    }
+
+    @Test
+    public void testSearchNoMatchID() {
+        List<Reservation> reservations = rm.search("-1", "id");
+        assertTrue(reservations.isEmpty());
+    }
 }

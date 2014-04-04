@@ -88,10 +88,10 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "ID=" + ID + ", addres=" + addres + ", country="
-                + country + ", first_name=" + first_name + ", last_name="
-                + last_name + ", phone=" + phone + ", email=" + email
-                + ", travel_agency=" + travel_agency + '}';
+        return "Customer ID= " + ID + " | address= " + addres + " | country= "
+                + country + " | First Name= " + first_name + " | Last Name= "
+                + last_name + " | Phone number= " + phone
+                + " | Email= " + email + " | Travel Agency= " + travel_agency;
     }
 
     public Customer(int ID, String addres, String country, String first_name,
@@ -105,6 +105,8 @@ public class Customer {
         this.email = email;
         this.travel_agency = travel_agency;
     }
-    public Customer() {}
+
+    public Customer() {
+    }
 
 }

@@ -120,7 +120,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         currentAmountOfBookingsOnSpecificDate
                 = logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
     }
-    
+
     private void removeRows() {
         for (int i = 11; i >= 0; i--) {
             model.removeRow(i);
