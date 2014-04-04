@@ -2,9 +2,6 @@ package dataSource;
 
 import domain.Customer;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +13,7 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
 
     @Override
     public Customer getCustomer(int ID) {
-        ArrayList<Customer> customer = executeQueryAndGatherResults(
-                Customer.class,
-                "SELECT * FROM customer WHERE ID = ?",
-                "Fail in CustomerMapper - getCustomer",
-                new String[]{"ID", "addres", "country", "first_name", "last_name", "phone", "email", "travel_agency"},
-                new int[]{DataType.INT, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING},
-                ID);
+        List<Customer> customer = search(ID, "id");
         if (customer.isEmpty()) {
             return null;
         } else {

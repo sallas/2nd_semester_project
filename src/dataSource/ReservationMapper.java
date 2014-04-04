@@ -18,15 +18,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
 //    It uses a select sql query from the reservation table.
     @Override
     public Reservation getReservation(int ID) {
-        ArrayList<Reservation> reservation = executeQueryAndGatherResults(
-                Reservation.class,
-                "select * "
-                + "from reservation "
-                + "where id = ?",
-                "Fail in ReservationMapper - getReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
-                ID);
+        List<Reservation> reservation = search(ID, "id");
         if (reservation.isEmpty()) {
             return null;
         } else {

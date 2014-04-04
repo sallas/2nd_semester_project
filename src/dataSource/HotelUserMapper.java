@@ -28,11 +28,7 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
      */
     @Override
     public List<HotelUser> getUser(int id) {
-        return executeQueryAndGatherResults(HotelUser.class,
-                "SELECT * FROM hotel_user WHERE ID = ?",
-                "Fail in HotelUserMapper - getAllUsers",
-                new String[]{"id", "username", "psw", "status", "reservation_id", "spent"},
-                new int[]{0, 1, 1, 1, 0, 0}, id);
+        return search(id, "id");
     }
 
     @Override

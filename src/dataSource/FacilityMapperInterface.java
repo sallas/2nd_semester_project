@@ -17,7 +17,7 @@ public interface FacilityMapperInterface {
     /*
      * Get facilities by type.
      */
-    ArrayList<Facility> getFacilities(String type);
+    List<Facility> getFacilities(String type);
 
     /*
      * Get all facilities.

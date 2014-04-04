@@ -15,15 +15,8 @@ public class FacilityMapper extends AbstractMapper implements FacilityMapperInte
      * Get facilities by type.
      */
     @Override
-    public ArrayList<Facility> getFacilities(String type) {
-        ArrayList<Facility> facilities = executeQueryAndGatherResults(Facility.class,
-                "SELECT * FROM facility WHERE type = ?",
-                "Fail in FacilityMapper - getFacilities",
-                new String[]{"ID", "name", "type", "capacity",
-                    "hasWaitingList", "hasBooking", "hasInstructor"},
-                new int[]{0, 1, 1, 0, 3, 3, 3},
-                type);
-        return facilities;
+    public List<Facility> getFacilities(String type) {
+        return search(type, "type");
     }
 
     @Override
@@ -39,13 +32,7 @@ public class FacilityMapper extends AbstractMapper implements FacilityMapperInte
 
     @Override
     public List<Facility> getFacilityByID(int ID) {
-        ArrayList<Facility> facilities = executeQueryAndGatherResults(Facility.class,
-                "SELECT * FROM facility WHERE ID = ?",
-                "Fail in FacilityMapper - getFacilities",
-                new String[]{"ID", "name", "type", "capacity",
-                    "hasWaitingList", "hasBooking", "hasInstructor"},
-                new int[]{0, 1, 1, 0, 3, 3, 3}, ID);
-        return facilities;
+        return search(ID, "id");
     }
 
     @Override
