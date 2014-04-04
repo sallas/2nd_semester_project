@@ -171,5 +171,10 @@ public class FacilityBookingTest {
     public void testRemoveFacilityBookingNoMatch(){
         assertFalse(fbm.removeFacilityBooking(999999));
     }
+    
+    @Test
+    public void testDeleteFacilityBookingByReservationID(){
+        assertTrue(fbm.deleteFacilityBookingByReservationID(2));
+    }
 
 }

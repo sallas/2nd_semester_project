@@ -66,4 +66,15 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
                 bookingID, userID);
         return result != 0;
     }
+    
+    @Override
+    public boolean deleteQueueEntryByReservationID(int ID){
+        return 0 != executeSQLInsert(
+                "delete from queue_facility "
+                        + "where user_ID = "
+                        + "(select user_id from hotel_user"
+                        + " where reservation_id = ?)",
+                "Fail in QueueMapper - delete QueueEntryByReservationID", 
+                ID);
+    }
 }

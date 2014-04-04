@@ -337,8 +337,6 @@ public class Controller {
 
     //removes reservation and all the entrys that have reservation_id as a foreign key
     public boolean removeReservation(int ID) {
-        facade.removeHotelUserByReservationID(ID);
-        facade.removeUnpaidReservation(ID);
         return facade.removeReservation(ID);
     }
 

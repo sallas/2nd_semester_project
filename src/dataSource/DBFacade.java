@@ -127,16 +127,16 @@ public class DBFacade {
             Date date, int userID, int timeslot) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
     }
-    
+
     public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
-            Date date, int timeslot, int facilityID){
+            Date date, int timeslot, int facilityID) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotFacility(
                 date, timeslot, facilityID);
     }
 
     public HotelUser getUser(int userID) {
         List<HotelUser> hul = hotelUserMapper.getUser(userID);
-        if (hul.isEmpty()){
+        if (hul.isEmpty()) {
             return null;
         } else {
             return hul.get(0);
@@ -154,32 +154,34 @@ public class DBFacade {
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
         return facilityBookingMapper.getAllFacilityBookingOfSpecificUser(ID);
     }
-    
+
     public List<HotelUser> getAllUsers() {
         return hotelUserMapper.getAllUsers();
-    } 
-    
-    public List<UnpaidReservation> getAllUnpaidReservationIDs(){
+    }
+
+    public List<UnpaidReservation> getAllUnpaidReservationIDs() {
         return reservationMapper.getAllUnpaidReservationIDs();
     }
-    
-    public boolean removeUnpaidReservation(int ID){
+
+    public boolean removeUnpaidReservation(int ID) {
         return reservationMapper.removeUnpaidReservation(ID);
     }
-    
+
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);
     }
-    
-    public boolean removeReservation(int ID){
-        return reservationMapper.removeReservation(ID);
+
+    public boolean removeReservation(int ID) {
+        return deleteReservationLogic.deleteReservation(
+                ID, connection, reservationMapper, hotelUserMapper,
+                queueMapper, facilityBookingMapper);
     }
-    
-    public Date getUnpaidReservationBookingDateByID(int ID){
+
+    public Date getUnpaidReservationBookingDateByID(int ID) {
         return reservationMapper.getUnpaidReservationBookingDateByID(ID);
     }
-    
-    public boolean removeHotelUserByReservationID(int ID){
+
+    public boolean removeHotelUserByReservationID(int ID) {
         return hotelUserMapper.removeHotelUserByReservationID(ID);
     }
 }

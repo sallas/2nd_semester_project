@@ -25,4 +25,5 @@ public interface QueueMapperInterface {
      */
     boolean saveQueueEntry(QueueEntry entry);
     
+    boolean deleteQueueEntryByReservationID(int ID);
 }

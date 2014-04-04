@@ -134,4 +134,14 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new int[] {DataType.INT, DataType.INT, DataType.DATE, DataType.INT, DataType.INT}, 
                 ID);
     }
+    
+    @Override
+    public boolean deleteFacilityBookingByReservationID(int ID){
+        return 0 != executeSQLInsert(
+                "delete from facility_booking where "
+                        + "user_ID = (select user_id from hotel_user"
+                        + " where reservation_id = ?)",
+                "Fail in FacilityBookingMapper - deleteFacilityBookingByReservationID",
+                ID);
+    }
 }
