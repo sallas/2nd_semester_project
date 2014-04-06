@@ -33,16 +33,16 @@ public interface ReservationMapperInterface {
      * Otherwise returns false
      */
     boolean checkAvailableReservation(Reservation r);
-    
+
     void lockReservationTable();
-    
+
     List<UnpaidReservation> getAllUnpaidReservationIDs();
-    
+
     List<Reservation> search(Object variable, String columnName);
-    
+
     boolean removeUnpaidReservation(int ID);
-    
+
     boolean removeReservation(int ID);
-    
+
     Date getUnpaidReservationBookingDateByID(int ID);
 }

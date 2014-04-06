@@ -2,13 +2,12 @@ package dataSource;
 
 import domain.HotelUser;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HotelUserMapper extends AbstractMapper implements HotelUserMapperInterface {
 
     public HotelUserMapper(Connection con) {
-        super(con);
+        super(con, "hotel_user", HotelUser.class);
     }
 
     /*
@@ -26,25 +25,13 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
      */
     @Override
     public List<HotelUser> getUser(int id) {
-        return search(id, "id");
+        return generalSearch("id", "Fail in HotelUserMapper - getUser", id);
     }
 
     @Override
     public List<HotelUser> search(Object variable, String columnName) {
-        return executeQueryAndGatherResults(HotelUser.class,
-                "SELECT * FROM hotel_user "
-                + "WHERE " + columnName + " = ?",
-                "Fail in HotelUserMapper - search ",
-                variable);
-    }
-
-    @Override
-    public List<HotelUser> search(Object variable, String columnName, String exMessage) {
-        return executeQueryAndGatherResults(HotelUser.class,
-                "SELECT * FROM hotel_user "
-                + "WHERE " + columnName + " = ?",
-                exMessage,
-                variable);
+        return generalSearch(columnName,
+                "Fail in HotelUserMapper - search ", variable);
     }
 
     @Override

@@ -14,14 +14,15 @@ import utility.DateLogic;
 public class ReservationMapper extends AbstractMapper implements ReservationMapperInterface {
 
     public ReservationMapper(Connection con) {
-        super(con);
+        super(con, "reservation", Reservation.class);
     }
 
 //    This method returns a reservation object based on the ID parameter.
 //    It uses a select sql query from the reservation table.
     @Override
     public Reservation getReservation(int ID) {
-        List<Reservation> reservation = search(ID, "id");
+        List<Reservation> reservation = generalSearch("id",
+                "Fail in ReservationMapper - getReservation", ID);
         if (reservation.isEmpty()) {
             return null;
         } else {
@@ -35,12 +36,10 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
     //The second query simply inserts the data into the database table.
     @Override
     public boolean saveReservation(Reservation r) {
-        ArrayList<Reservation> seq = executeQueryAndGatherResults(
-                Reservation.class,
-                "SELECT reservationSeq.nextval "
+        int seqNum = getSequenceNumber("SELECT reservationSeq.nextval "
                 + "FROM dual",
                 "Fail in ReservationMapper - saveReservation");
-        r.setID(seq.get(0).getID());
+        r.setID(seqNum);
         int result = executeSQLInsert(
                 "INSERT INTO reservation VALUES (?, ?, ?, ?, ?)",
                 "Fail in ReservationMapper - saveReservation",
@@ -50,7 +49,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
             executeSQLInsert(
                     "INSERT INTO unpaid_reservations VALUES (?, ?)",
                     "Fail in ReservationMapper - saveReservation (unpaid_reservations table)",
-                    seq.get(0).getID(), DateLogic.getCurrentTimeInSQLDate());
+                    seqNum, DateLogic.getCurrentTimeInSQLDate());
         }
         return result == 1;
     }
@@ -123,17 +122,11 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 "Fail in ReservationMapper - lockReservationTable"
         );
     }
-    
+
     @Override
     public List<Reservation> search(Object variable, String columnName) {
-        List<Reservation> reservation = executeQueryAndGatherResults(
-                Reservation.class,
-                "select * "
-                + "from reservation "
-                + "where " + columnName + " = ?",
-                "Fail in ReservationMapper - search",
-                variable);
-        return reservation;
+        return generalSearch(columnName,
+                "Fail in ReservationMapper - search ", variable);
     }
 
     @Override
@@ -163,37 +156,9 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
 
     @Override
     public Date getUnpaidReservationBookingDateByID(int ID) {
-        return executeQueryAndGatherResults(
-                UnpaidReservation.class,
-                "SELECT BOOKING_DATE FROM unpaid_reservations WHERE ID = ?",
-                "Fail in ReservationMapper - getUnpaidReservationBookingDateByID",
+        return generalSearch(UnpaidReservation.class, "unpaid_reservations",
+                "ID", "Fail in ReservationMapper -"
+                + " getUnpaidReservationBookingDateByID",
                 ID).get(0).getBookingDate();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

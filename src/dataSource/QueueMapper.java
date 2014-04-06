@@ -8,7 +8,7 @@ import java.util.List;
 public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
 
     public QueueMapper(Connection con) {
-        super(con);
+        super(con, "queue_facility", QueueEntry.class);
     }
     
     /*
@@ -38,12 +38,10 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
      */
     @Override
     public boolean saveQueueEntry(QueueEntry entry) {
-        ArrayList<QueueEntry> seq = executeQueryAndGatherResults(
-                QueueEntry.class,
-                "SELECT queue_facilityseq.nextval "
+        int seqNum = getSequenceNumber("SELECT queue_facilityseq.nextval "
                 + "FROM dual",
                 "Fail in QueueMapper - saveQueueEntry - nextval");
-        entry.setID(seq.get(0).getID());
+        entry.setID(seqNum);
         int result = executeSQLInsert(
                 "INSERT INTO queue_facility VALUES (?, ?, ?)",
                 "Fail in QueueMapper - saveQueueEntry",

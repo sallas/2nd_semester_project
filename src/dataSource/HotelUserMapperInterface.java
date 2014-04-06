@@ -11,7 +11,5 @@ interface HotelUserMapperInterface {
     
     List<HotelUser> search(Object variable, String columnName);
     
-    List<HotelUser> search(Object variable, String columnName, String exMessage);
-    
     boolean removeHotelUserByReservationID(int ID);
 }

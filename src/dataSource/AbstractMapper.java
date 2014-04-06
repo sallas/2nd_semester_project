@@ -8,14 +8,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class AbstractMapper {
 
     protected final Connection con;
+    protected final String tableName;
+    protected final Class classType;
 
-    public AbstractMapper(Connection con) {
+    public AbstractMapper(Connection con, String tableName, Class classType) {
         this.con = con;
+        this.tableName = tableName;
+        this.classType = classType;
     }
+    
+    
 
     /*
      * Utility function for executing SQL Queries with automatic mapping
@@ -154,13 +162,37 @@ public abstract class AbstractMapper {
         return result;
     }
 
-    public <T> List<T> generalSearch(Class<T> objectType,
+    protected <T> List<T> generalSearch(Class<T> objectType,
             String tableName, String columnName,
             String exMessage, Object variable) {
         return executeQueryAndGatherResults(
                 objectType,
                 "SELECT * FROM " + tableName
-                + "WHERE " + columnName + " = ?",
+                + " WHERE " + columnName + " = ?",
                 exMessage, variable);
     }
+
+    protected <T> List<T> generalSearch(String columnName,
+            String exMessage, Object variable) {
+        return executeQueryAndGatherResults(
+                classType,
+                "SELECT * FROM " + tableName
+                + " WHERE " + columnName + " = ?",
+                exMessage, variable);
+    }
+
+    protected int getSequenceNumber(String statement, String exMessage) {
+        int seq = 0;
+        ResultSet rs = executeSQLQuery(statement,
+                exMessage);
+        try {
+            if (rs.next()) {
+                seq = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AbstractMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return seq;
+    }
+
 }

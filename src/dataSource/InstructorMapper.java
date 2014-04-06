@@ -7,15 +7,11 @@ import java.util.List;
 public class InstructorMapper extends AbstractMapper {
 
     public InstructorMapper(Connection con) {
-        super(con);
+        super(con, "instructor", Instructor.class);
     }
 
     public List<Instructor> search(Object variable, String columnName) {
-        return executeQueryAndGatherResults(
-                Instructor.class,
-                "SELECT * FROM Instructor "
-                + "WHERE " + columnName + " = ?",
-                "Fail in InstructorMapper - search ",
-                variable);
+        return generalSearch(columnName, 
+                "Fail in InstructorMapper - search ", variable);
     }
 }

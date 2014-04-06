@@ -263,6 +263,8 @@ public class ReservationMapperTest {
     
     @Test
     public void testGetUnpaidReservationBookingDateByIDMatch(){
-        assertTrue(rm.getUnpaidReservationBookingDateByID(1).toString().equals("2014-03-24"));
+        String expectedDateString = "2014-03-24";
+        String resultDateString = rm.getUnpaidReservationBookingDateByID(1).toString();
+        assertEquals(expectedDateString, resultDateString);
     }
 }

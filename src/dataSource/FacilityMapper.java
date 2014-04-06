@@ -8,7 +8,7 @@ import java.util.List;
 public class FacilityMapper extends AbstractMapper implements FacilityMapperInterface {
 
     public FacilityMapper(Connection con) {
-        super(con);
+        super(con, "facility", Facility.class);
     }
 
     /*
@@ -16,7 +16,7 @@ public class FacilityMapper extends AbstractMapper implements FacilityMapperInte
      */
     @Override
     public List<Facility> getFacilities(String type) {
-        return search(type, "type");
+        return generalSearch("type", "Fail in FacilityMapper - getFacilities", type);
     }
 
     @Override
@@ -29,16 +29,12 @@ public class FacilityMapper extends AbstractMapper implements FacilityMapperInte
 
     @Override
     public List<Facility> getFacilityByID(int ID) {
-        return search(ID, "id");
+        return generalSearch("id", "Fail in FacilityMapper - getFacilityByID", ID);
     }
 
     @Override
     public List<Facility> search(Object variable, String columnName) {
-        ArrayList<Facility> facilities = executeQueryAndGatherResults(Facility.class,
-                "SELECT * FROM facility "
-                + "WHERE " + columnName + " = ?",
-                "Fail in FacilityMapper - search ",
-                variable);
-        return facilities;
+        return generalSearch(columnName,
+                "Fail in FacilityMapper - search ", variable);
     }
 }

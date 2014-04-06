@@ -49,10 +49,4 @@ public class CustomerMapperMock implements CustomerMapperInterface {
     public List<Customer> search(Object variable, String columnName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public List<Customer> search(Object variable, String columnName, String exMessage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

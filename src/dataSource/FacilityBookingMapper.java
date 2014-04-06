@@ -11,7 +11,7 @@ import java.util.List;
 public class FacilityBookingMapper extends AbstractMapper implements FacilityBookingMapperInterface {
 
     public FacilityBookingMapper(Connection con) {
-        super(con);
+        super(con, "facility_booking", FacilityBooking.class);
     }
 
     /*
@@ -41,13 +41,10 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public boolean saveFacilityBooking(FacilityBooking fb) {
-        ArrayList<FacilityBooking> seq = executeQueryAndGatherResults(
-                FacilityBooking.class,
-                "SELECT facility_bookingseq.nextval "
-                + "FROM dual",
-                "Fail in FacilityBookingMapper - saveFacilityBooking",
-                new String[]{"ID"}, new int[]{0});
-        fb.setID(seq.get(0).getID());
+        int seqNum = getSequenceNumber("SELECT facility_bookingseq.nextval"
+                + " FROM dual",
+                "Fail in FacilityBookingMapper - saveFacilityBooking");
+        fb.setID(seqNum);
         int result = executeSQLInsert(
                 "INSERT INTO facility_booking VALUES (?, ?, ?, ?, ?)",
                 "Fail in FacilityBookingMapper - saveFacilityBooking",
@@ -65,7 +62,9 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public List<FacilityBooking> getAllBookingsOfSpecificDate(Date date) {
-        return search(date, "booking_date");
+        return generalSearch("booking_date",
+                "Fail in FacilityBookingMapper - "
+                + "getAllBookingsOfSpecificDate", date);
     }
 
     /*
@@ -118,29 +117,30 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
-        return search(ID, "id");
+        return generalSearch("id", "Fail in FacilityBookingMapper -"
+                + " getAllFacilityBookingOfSpecificUser ", ID);
     }
 
     @Override
     public List<FacilityBooking> search(Object variable, String columnName) {
-        return generalSearch(FacilityBooking.class, "facility_booking",
-                columnName, "Fail in FacilityBookingMapper - search ", variable);
+        return generalSearch(columnName,
+                "Fail in FacilityBookingMapper - search ", variable);
     }
-    
+
     @Override
-    public boolean updateFacilityBookingUserID(int bookingID, int userID){
+    public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return executeSQLInsert(
                 "UPDATE facility_booking SET user_id = ? WHERE id = ?",
                 "Fail in FacilityBookingMapper - updateFacilityBookingUserID",
                 userID, bookingID) == 1;
     }
-    
+
     @Override
-    public boolean deleteFacilityBookingByReservationID(int ID){
+    public boolean deleteFacilityBookingByReservationID(int ID) {
         return 0 != executeSQLInsert(
                 "delete from facility_booking where "
-                        + "user_ID = (select user_id from hotel_user"
-                        + " where reservation_id = ?)",
+                + "user_ID = (select user_id from hotel_user"
+                + " where reservation_id = ?)",
                 "Fail in FacilityBookingMapper - deleteFacilityBookingByReservationID",
                 ID);
     }

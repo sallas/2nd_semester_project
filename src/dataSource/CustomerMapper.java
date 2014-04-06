@@ -8,12 +8,12 @@ import java.util.List;
 public class CustomerMapper extends AbstractMapper implements CustomerMapperInterface {
 
     public CustomerMapper(Connection con) {
-        super(con);
+        super(con, "Customer", Customer.class);
     }
 
     @Override
     public Customer getCustomer(int ID) {
-        List<Customer> customer = search(ID, "id");
+        List<Customer> customer = generalSearch("ID", "Fail in CustomerMapper - saveCustomer", ID);
         if (customer.isEmpty()) {
             return null;
         } else {
@@ -23,12 +23,10 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
 
     @Override
     public int saveNewCustomer(Customer c) {
-        ArrayList<Customer> seq = executeQueryAndGatherResults(
-                Customer.class,
-                "SELECT customerSeq.nextval "
+        int seq = getSequenceNumber("SELECT customerSeq.nextval "
                 + "FROM dual",
                 "Fail in CustomerMapper - saveCustomer");
-        c.setID(seq.get(0).getID());
+        c.setID(seq);
         if (c.getTravel_agency() == null) {
             c.setTravel_agency(new String());
         }
@@ -59,13 +57,7 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
 
     @Override
     public List<Customer> search(Object variable, String columnName) {
-        return generalSearch(Customer.class, "Customer", columnName,
+        return generalSearch(columnName,
                 "Fail in Customer Mapper - Search ", variable);
-    }
-
-    @Override
-    public List<Customer> search(Object variable, String columnName, String exMessage) {
-        return generalSearch(Customer.class, "Customer", columnName,
-                exMessage, variable);
     }
 }
