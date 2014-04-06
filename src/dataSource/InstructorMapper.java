@@ -16,8 +16,6 @@ public class InstructorMapper extends AbstractMapper {
                 "SELECT * FROM Instructor "
                 + "WHERE " + columnName + " = ?",
                 "Fail in InstructorMapper - search ",
-                new String[]{"ID", "userID"},
-                new int[]{DataType.INT, DataType.INT},
                 variable);
     }
 }

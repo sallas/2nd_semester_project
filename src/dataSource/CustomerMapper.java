@@ -27,8 +27,7 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
                 Customer.class,
                 "SELECT customerSeq.nextval "
                 + "FROM dual",
-                "Fail in CustomerMapper - saveCustomer",
-                new String[]{"ID"}, new int[]{DataType.INT});
+                "Fail in CustomerMapper - saveCustomer");
         c.setID(seq.get(0).getID());
         if (c.getTravel_agency() == null) {
             c.setTravel_agency(new String());
@@ -50,9 +49,7 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
         ArrayList<Customer> customer = executeQueryAndGatherResults(
                 Customer.class,
                 "SELECT * FROM customer",
-                "Fail in CustomerMapper - getCustomer",
-                new String[]{"ID", "addres", "country", "first_name", "last_name", "phone", "email", "travel_agency"},
-                new int[]{DataType.INT, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING, DataType.STRING});
+                "Fail in CustomerMapper - getCustomer");
         if (customer.isEmpty()) {
             return null;
         } else {
@@ -62,16 +59,13 @@ public class CustomerMapper extends AbstractMapper implements CustomerMapperInte
 
     @Override
     public List<Customer> search(Object variable, String columnName) {
-        return executeQueryAndGatherResults(
-                Customer.class,
-                "SELECT * FROM customer "
-                + "WHERE " + columnName + " = ?",
-                "Fail in CustomerMapper - search ",
-                new String[]{"ID", "addres", "country", "first_name",
-                    "last_name", "phone", "email", "travel_agency"},
-                new int[]{DataType.INT, DataType.STRING, DataType.STRING,
-                    DataType.STRING, DataType.STRING, DataType.STRING,
-                    DataType.STRING, DataType.STRING},
-                variable);
+        return generalSearch(Customer.class, "Customer", columnName,
+                "Fail in Customer Mapper - Search ", variable);
+    }
+
+    @Override
+    public List<Customer> search(Object variable, String columnName, String exMessage) {
+        return generalSearch(Customer.class, "Customer", columnName,
+                exMessage, variable);
     }
 }

@@ -23,10 +23,7 @@ public class FacilityMapper extends AbstractMapper implements FacilityMapperInte
     public ArrayList<Facility> getFacilities() {
         ArrayList<Facility> facilities = executeQueryAndGatherResults(Facility.class,
                 "SELECT * FROM facility",
-                "Fail in FacilityMapper - getFacilities",
-                new String[]{"ID", "name", "type", "capacity",
-                    "hasWaitingList", "hasBooking", "hasInstructor"},
-                new int[]{0, 1, 1, 0, 3, 3, 3});
+                "Fail in FacilityMapper - getFacilities");
         return facilities;
     }
 
@@ -41,9 +38,6 @@ public class FacilityMapper extends AbstractMapper implements FacilityMapperInte
                 "SELECT * FROM facility "
                 + "WHERE " + columnName + " = ?",
                 "Fail in FacilityMapper - search ",
-                new String[]{"ID", "name", "type", "capacity",
-                    "hasWaitingList", "hasBooking", "hasInstructor"},
-                new int[]{0, 1, 1, 0, 3, 3, 3},
                 variable);
         return facilities;
     }

@@ -30,9 +30,7 @@ public class RoomMapper extends AbstractMapper implements RoomMapperInterface {
         List<Room> room = executeQueryAndGatherResults(
                 Room.class,
                 "SELECT * FROM room",
-                "Fail in RoomMapper - getRoom",
-                new String[]{"ID", "type"},
-                new int[]{DataType.INT, DataType.STRING});
+                "Fail in RoomMapper - getRoom");
         System.out.println("mapper" + room.size());
         return room;
     }
@@ -44,8 +42,6 @@ public class RoomMapper extends AbstractMapper implements RoomMapperInterface {
                 "SELECT * FROM room "
                 + "where " + columnName + " = ?",
                 "Fail in RoomMapper - search",
-                new String[]{"ID", "type"},
-                new int[]{DataType.INT, DataType.STRING},
                 variable);
         return rooms;
     }

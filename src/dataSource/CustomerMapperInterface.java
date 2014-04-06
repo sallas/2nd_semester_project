@@ -12,4 +12,6 @@ public interface CustomerMapperInterface {
     List<Customer> getAllCustomers();
     
     List<Customer> search(Object variable, String columnName);
+    
+    List<Customer> search(Object variable, String columnName, String exMessage);
 }

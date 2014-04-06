@@ -17,10 +17,6 @@ public class InstructorBookingMapper extends AbstractMapper {
                 + "WHERE instructor_id = (SELECT id FROM instructor "
                 + "WHERE user_id = ?)",
                 "Fail in InstructorBookingMapper - search ",
-                new String[]{"ID", "facilityID", "instructorID", "bookedDate",
-                    "timeslot"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT,
-                    DataType.DATE, DataType.INT},
                 userID);
     }
 
@@ -30,10 +26,6 @@ public class InstructorBookingMapper extends AbstractMapper {
                 "SELECT * FROM Instructor_Booking "
                 + "WHERE " + columnName + " = ?",
                 "Fail in InstructorBookingMapper - search ",
-                new String[]{"ID", "facilityID", "instructorID", "bookedDate",
-                    "timeslot"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT,
-                    DataType.DATE, DataType.INT},
                 variable);
     }
 

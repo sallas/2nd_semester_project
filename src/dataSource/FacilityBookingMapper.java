@@ -60,9 +60,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
     public List<FacilityBooking> getAllBookings() {
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking",
-                "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0});
+                "Fail in FacilityBookingMapper - getAllBookings");
     }
 
     @Override
@@ -79,9 +77,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
             Date date, int userID) {
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking WHERE booking_date = ? AND user_id = ?",
-                "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date, userID);
+                "Fail in FacilityBookingMapper - getAllBookings", date, userID);
     }
 
     /*
@@ -95,8 +91,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "SELECT * FROM facility_booking WHERE booking_date = ?"
                 + " AND user_id = ? AND timeslot = ?",
                 "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date, userID, timeslot);
+                date, userID, timeslot);
     }
 
     /*
@@ -110,8 +105,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "SELECT * FROM facility_booking WHERE booking_date = ?"
                 + " AND timeslot = ? AND facility_id = ?",
                 "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date, timeslot, facilityID);
+                date, timeslot, facilityID);
     }
 
     @Override
@@ -129,12 +123,8 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public List<FacilityBooking> search(Object variable, String columnName) {
-        return executeQueryAndGatherResults(FacilityBooking.class,
-                "SELECT * FROM facility_booking "
-                + "WHERE " + columnName + " = ?",
-                "Fail in FacilityBookingMapper - search ",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, variable);
+        return generalSearch(FacilityBooking.class, "facility_booking",
+                columnName, "Fail in FacilityBookingMapper - search ", variable);
     }
     
     @Override

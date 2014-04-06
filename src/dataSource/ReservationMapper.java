@@ -39,8 +39,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 Reservation.class,
                 "SELECT reservationSeq.nextval "
                 + "FROM dual",
-                "Fail in ReservationMapper - saveReservation",
-                new String[]{"ID"}, new int[]{DataType.INT});
+                "Fail in ReservationMapper - saveReservation");
         r.setID(seq.get(0).getID());
         int result = executeSQLInsert(
                 "INSERT INTO reservation VALUES (?, ?, ?, ?, ?)",
@@ -66,8 +65,6 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "from reservation "
                 + "where room_id in (select id from room where type = ?)",
                 "Fail in ReservationMapper - getReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 type);
         return reservation;
     }
@@ -81,9 +78,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
         ArrayList<Reservation> reservation = executeQueryAndGatherResults(
                 Reservation.class,
                 "SELECT * FROM reservation",
-                "Fail in RoomMapper - getRoom",
-                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE});
+                "Fail in RoomMapper - getRoom");
         if (reservation.isEmpty()) {
             return null;
         } else {
@@ -110,8 +105,6 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "(checkin_date  < ? AND "
                 + "checkin_date >= ?))",
                 "Fail in ReservationMapper - checkAvailableReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 r.getRoomID(), r.getCheckinDate(), r.getCheckinDate(), r.getDepartureDate(),
                 r.getDepartureDate(), r.getDepartureDate(), r.getCheckinDate());
         available = reservation.isEmpty();
@@ -139,8 +132,6 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "from reservation "
                 + "where " + columnName + " = ?",
                 "Fail in ReservationMapper - search",
-                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 variable);
         return reservation;
     }
@@ -150,9 +141,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
         return executeQueryAndGatherResults(
                 UnpaidReservation.class,
                 "SELECT * FROM unpaid_reservations",
-                "Fail in ReservationMapper - getAllUnpaidReservationIDs",
-                new String[]{"ID"},
-                new int[]{DataType.INT}
+                "Fail in ReservationMapper - getAllUnpaidReservationIDs"
         );
     }
 
@@ -178,8 +167,6 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 UnpaidReservation.class,
                 "SELECT BOOKING_DATE FROM unpaid_reservations WHERE ID = ?",
                 "Fail in ReservationMapper - getUnpaidReservationBookingDateByID",
-                new String[]{"bookingDate"},
-                new int[]{DataType.DATE},
                 ID).get(0).getBookingDate();
     }
 }

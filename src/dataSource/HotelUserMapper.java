@@ -18,9 +18,7 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
     public List<HotelUser> getAllUsers() {
         return executeQueryAndGatherResults(HotelUser.class,
                 "SELECT * FROM hotel_user",
-                "Fail in HotelUserMapper - getAllUsers",
-                new String[]{"id", "username", "psw", "status", "reservation_id", "spent"},
-                new int[]{0, 1, 1, 1, 0, 0});
+                "Fail in HotelUserMapper - getAllUsers");
     }
 
     /*
@@ -37,8 +35,15 @@ public class HotelUserMapper extends AbstractMapper implements HotelUserMapperIn
                 "SELECT * FROM hotel_user "
                 + "WHERE " + columnName + " = ?",
                 "Fail in HotelUserMapper - search ",
-                new String[]{"id", "username", "psw", "status", "reservation_id", "spent"},
-                new int[]{0, 1, 1, 1, 0, 0},
+                variable);
+    }
+
+    @Override
+    public List<HotelUser> search(Object variable, String columnName, String exMessage) {
+        return executeQueryAndGatherResults(HotelUser.class,
+                "SELECT * FROM hotel_user "
+                + "WHERE " + columnName + " = ?",
+                exMessage,
                 variable);
     }
 

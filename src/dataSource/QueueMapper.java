@@ -19,8 +19,7 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
         return executeQueryAndGatherResults(QueueEntry.class,
                 "SELECT * FROM queue_facility WHERE facility_booking_id = ?",
                 "Fail in QueueMapper - getQueueForSpecificBooking",
-                new String[]{"ID", "userID", "facilityBookingID"},
-                new int[]{0, 0, 0}, booking_id);
+                booking_id);
     }
     
     /*
@@ -31,8 +30,7 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
         return executeQueryAndGatherResults(QueueEntry.class,
                 "SELECT * FROM queue_facility WHERE user_id = ?",
                 "Fail in QueueMapper - getQueueForSpecificUser",
-                new String[]{"ID", "userID", "facilityBookingID"},
-                new int[]{0, 0, 0}, userID);
+                userID);
     }
     
     /*
@@ -44,8 +42,7 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
                 QueueEntry.class,
                 "SELECT queue_facilityseq.nextval "
                 + "FROM dual",
-                "Fail in QueueMapper - saveQueueEntry - nextval",
-                new String[]{"ID"}, new int[]{0});
+                "Fail in QueueMapper - saveQueueEntry - nextval");
         entry.setID(seq.get(0).getID());
         int result = executeSQLInsert(
                 "INSERT INTO queue_facility VALUES (?, ?, ?)",

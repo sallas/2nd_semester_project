@@ -7,16 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.lang.reflect.Field;
+import java.util.List;
 
 public abstract class AbstractMapper {
-
-    public class DataType {
-
-        public static final int INT = 0;
-        public static final int STRING = 1;
-        public static final int DATE = 2;
-        public static final int BOOL = 3;
-    }
 
     protected final Connection con;
 
@@ -69,35 +62,33 @@ public abstract class AbstractMapper {
             Class<T> objectType,
             String statement,
             String exMessage,
-            String[] resultNames,
-            int[] resultArray,
             Object... values) {
         ArrayList<T> result = new ArrayList();
         int i;
         ResultSet rs = executeSQLQuery(statement,
                 exMessage, values);
+        Field[] fs = objectType.getDeclaredFields();
         try {
             while (rs.next()) {
                 //New T object instance
                 T object = objectType.newInstance();
-                for (i = 0; i < resultArray.length; i++) {
+                for (i = 0; i < fs.length; i++) {
                     //Set fields from result names with reflection.
-                    Field field = objectType.getDeclaredField(resultNames[i]);
+                    Field field = objectType.getDeclaredField(fs[i].getName());
                     field.setAccessible(true);
-                    switch (resultArray[i]) {
-                        case 0:
-                            field.set(object, rs.getInt(i + 1));
-                            break;
-                        case 1:
-                            field.set(object, rs.getString(i + 1));
-                            break;
-                        case 2:
-                            field.set(object, rs.getDate(i + 1));
-                            break;
-                        case 3:
-                            field.set(object, rs.getBoolean(i + 1));
-                            break;
+                    String s = fs[i].getGenericType().toString();
+                    if (s.equalsIgnoreCase("int")) {
+                        field.set(object, rs.getInt(i + 1));
+                    } else if (s.equalsIgnoreCase("class java.lang.String")) {
+                        field.set(object, rs.getString(i + 1));
+                    } else if (s.equalsIgnoreCase("class java.sql.Date")) {
+                        field.set(object, rs.getDate(i + 1));
+                    } else if (s.equalsIgnoreCase("boolean")) {
+                        field.set(object, rs.getBoolean(i + 1));
+                    } else {
+                        throw new NoSuchFieldException();
                     }
+
                     field.setAccessible(false);
                 }
                 //add T object to the final result set.
@@ -147,7 +138,7 @@ public abstract class AbstractMapper {
             result = st.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getErrorCode());
-            
+
             System.out.println(exMessage);
             System.out.println(ex.getMessage());
         } finally {
@@ -161,5 +152,15 @@ public abstract class AbstractMapper {
             }
         }
         return result;
+    }
+
+    public <T> List<T> generalSearch(Class<T> objectType,
+            String tableName, String columnName,
+            String exMessage, Object variable) {
+        return executeQueryAndGatherResults(
+                objectType,
+                "SELECT * FROM " + tableName
+                + "WHERE " + columnName + " = ?",
+                exMessage, variable);
     }
 }

@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
-
 public class Customer {
 
     private int ID;
@@ -12,15 +10,6 @@ public class Customer {
     private String phone;
     private String email;
     private String travel_agency = "";
-    private ArrayList<Reservation> reservation;
-
-    public ArrayList<Reservation> getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(ArrayList<Reservation> reservation) {
-        this.reservation = reservation;
-    }
 
     public int getID() {
         return ID;
