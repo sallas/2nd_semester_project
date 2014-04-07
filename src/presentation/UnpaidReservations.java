@@ -48,7 +48,7 @@ public class UnpaidReservations extends javax.swing.JFrame {
         }
         for (int i : reservations) {
             Object[] ob = new Object[2];
-            Date today = DateLogic.getCurrentTimeInSQLDate();
+            Date today = DateLogic.getCurrentDateInSQLDate();
             Date overdueDate = DateLogic.addDaysToSQLDate(controller.getUnpaidReservationBookingDateByID(i), 5);
             ob[0] = i;
             if (today.after(overdueDate)) {

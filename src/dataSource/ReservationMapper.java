@@ -49,7 +49,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
             executeSQLInsert(
                     "INSERT INTO unpaid_reservations VALUES (?, ?)",
                     "Fail in ReservationMapper - saveReservation (unpaid_reservations table)",
-                    seqNum, DateLogic.getCurrentTimeInSQLDate());
+                    seqNum, DateLogic.getCurrentDateInSQLDate());
         }
         return result == 1;
     }

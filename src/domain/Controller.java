@@ -391,4 +391,9 @@ public class Controller {
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return facade.getInstructorBookings(userID);
     }
+    
+    public List<InstructorBooking> getInstructorBookingByUserIDAndDate(
+            int userID, Date date) {
+        return facade.getInstructorBookingByUserIDAndDate(userID, date);
+    }
 }

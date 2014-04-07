@@ -108,7 +108,6 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }
 
     private void setUpDates() {
-        logic.setUpTimeslots();
         String[] dateStrings = logic.setUpDates(dates);
         dayComboBox.setModel(new javax.swing.DefaultComboBoxModel(dateStrings));
     }

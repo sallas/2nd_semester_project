@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 public class DateLogic {
 
-    static public Date getCurrentTimeInSQLDate() {
+    static public Date getCurrentDateInSQLDate() {
         Calendar rightNow = Calendar.getInstance();
         Date today = new Date(rightNow.getTimeInMillis());
         today = Date.valueOf(today.toString());
@@ -20,7 +20,7 @@ public class DateLogic {
         return newDate;
     }
 
-    static public Calendar getCurrentTimeCalendarDate() {
+    static public Calendar getCurrentDateCalendarDate() {
         Calendar rightNow = Calendar.getInstance();
         Date today = new Date(rightNow.getTimeInMillis());
         today = Date.valueOf(today.toString());

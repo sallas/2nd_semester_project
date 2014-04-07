@@ -24,6 +24,7 @@ public class GuiLogic {
     private GuiLogic() {
         control = Controller.getInstance();
         currentUserID = 3;
+        setUpTimeslots();
     }
 
     public int getCurrentUserID() {
@@ -41,9 +42,12 @@ public class GuiLogic {
         return instance;
     }
 
+    /*
+     * Returns a array of date Strings while also builing up the dates List
+     */
     public String[] setUpDates(List<Date> dates) {
         String[] dateStrings = new String[8];
-        Date today = DateLogic.getCurrentTimeInSQLDate();
+        Date today = DateLogic.getCurrentDateInSQLDate();
         for (int i = 0; i < 8; i++) {
             dates.add(today);
             dateStrings[i] = dates.get(i).toString();
@@ -52,7 +56,7 @@ public class GuiLogic {
         return dateStrings;
     }
 
-    public void setUpTimeslots() {
+    private void setUpTimeslots() {
         timeslots = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             timeslots.add((8 + i) + " - " + (9 + i));
@@ -122,7 +126,7 @@ public class GuiLogic {
     public void refreshGuestTable(DefaultTableModel model) {
         Map<Customer, Integer> customers = control.getAllCurrentGuests();
         Calendar rightNow = Calendar.getInstance();
-        Calendar midday = DateLogic.getCurrentTimeCalendarDate();
+        Calendar midday = DateLogic.getCurrentDateCalendarDate();
         midday.set(Calendar.HOUR_OF_DAY, 12);
 
         for (Map.Entry<Customer, Integer> entry : customers.entrySet()) {
@@ -232,10 +236,37 @@ public class GuiLogic {
     public void fillMyInstructorBookingTable(DefaultTableModel model) {
         List<InstructorBooking> bookings = control.getInstructorBookings(currentUserID);
         for (InstructorBooking ib : bookings) {
+            if (ib.getBookedDate().before(DateLogic.getCurrentDateInSQLDate())) {
+                continue;
+            }
             Object[] ob = new Object[3];
             ob[0] = ib.getFacilityID();
             ob[1] = ib.getBookedDate();
-            ob[2] = ib.getTimeslot();
+            ob[2] = timeslots.get(ib.getTimeslot() - 1);
+            model.addRow(ob);
+        }
+    }
+
+    public void fillMyInstructorBookingTableForToday(DefaultTableModel model) {
+        List<InstructorBooking> bookings
+                = control.getInstructorBookingByUserIDAndDate(
+                        currentUserID, DateLogic.getCurrentDateInSQLDate());
+        for (int i = 0; i < 12; i++) {
+            Object[] ob = new Object[3];
+            ob[0] = timeslots.get(i);
+            InstructorBooking booking = null;
+            for (InstructorBooking ib : bookings) {
+                if (ib.getTimeslot() == i + 1) {
+                    booking = ib;
+                }
+            }
+            if (booking != null) {
+                ob[1] = "Booked";
+                ob[2] = booking.getFacilityID();
+            } else {
+                ob[1] = "Not Booked";
+                ob[2] = "None";
+            }
             model.addRow(ob);
         }
     }

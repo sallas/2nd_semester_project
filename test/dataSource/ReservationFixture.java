@@ -88,7 +88,7 @@ public class ReservationFixture {
             insert = "insert into instructor values ";
             st.addBatch(insert + "(1, 3)");
             insert = "insert into instructor_booking values ";
-            st.addBatch(insert + "(1, 1, 1, to_date('06-04-2014', 'DD-MM-YYYY')"
+            st.addBatch(insert + "(1, 1, 1, to_date('06-06-2014', 'DD-MM-YYYY')"
                     + ", 1)");
 
             st.executeBatch();

@@ -187,11 +187,11 @@ public class DBFacade {
     public boolean removeHotelUserByReservationID(int ID) {
         return hotelUserMapper.removeHotelUserByReservationID(ID);
     }
-    
+
     public List<Reservation> searchReservation(Object variable, String columnName) {
         return reservationMapper.search(variable, columnName);
     }
-    
+
     public boolean saveQueueEntry(QueueEntry entry) {
         return queueMapper.saveQueueEntry(entry);
     }
@@ -203,7 +203,7 @@ public class DBFacade {
             System.err.println(e);
         }
     }
-    
+
     public List<Room> searchRoom(Object variable, String columnName) {
         return roomMapper.search(variable, columnName);
     }
@@ -211,19 +211,19 @@ public class DBFacade {
     public List<HotelUser> searchHotelUser(Object variable, String columnName) {
         return hotelUserMapper.search(variable, columnName);
     }
-    
+
     public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return facilityBookingMapper.updateFacilityBookingUserID(bookingID, userID);
     }
-    
+
     public List<Customer> searchCustomer(Object variable, String columnName) {
         return customerMapper.search(variable, columnName);
     }
-    
+
     public boolean deleteQueueEntryForSpecificID(int bookingID, int userID) {
         return queueMapper.deleteQueueEntryForSpecificID(bookingID, userID);
     }
-    
+
     public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
         return facilityBookingMapper.search(variable, columnName);
     }
@@ -234,5 +234,11 @@ public class DBFacade {
 
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return instructorBookingMapper.getInstructorBookingByUserID(userID);
+    }
+
+    public List<InstructorBooking> getInstructorBookingByUserIDAndDate(
+            int userID, Date date) {
+        return instructorBookingMapper.getInstructorBookingByUserIDAndDate(
+                userID, date);
     }
 }
