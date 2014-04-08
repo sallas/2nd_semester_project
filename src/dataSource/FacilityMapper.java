@@ -8,43 +8,33 @@ import java.util.List;
 public class FacilityMapper extends AbstractMapper implements FacilityMapperInterface {
 
     public FacilityMapper(Connection con) {
-        super(con);
+        super(con, "facility", Facility.class);
     }
 
     /*
      * Get facilities by type.
      */
     @Override
-    public ArrayList<Facility> getFacilities(String type) {
-        ArrayList<Facility> facilities = executeQueryAndGatherResults(Facility.class,
-                "SELECT * FROM facility WHERE type = ?",
-                "Fail in FacilityMapper - getFacilities",
-                new String[]{"ID", "name", "type", "capacity",
-                    "hasWaitingList", "hasBooking", "hasInstructor"},
-                new int[]{0, 1, 1, 0, 3, 3, 3},
-                type);
-        return facilities;
+    public List<Facility> getFacilities(String type) {
+        return generalSearch("type", "Fail in FacilityMapper - getFacilities", type);
     }
 
     @Override
     public ArrayList<Facility> getFacilities() {
         ArrayList<Facility> facilities = executeQueryAndGatherResults(Facility.class,
                 "SELECT * FROM facility",
-                "Fail in FacilityMapper - getFacilities",
-                new String[]{"ID", "name", "type", "capacity",
-                    "hasWaitingList", "hasBooking", "hasInstructor"},
-                new int[]{0, 1, 1, 0, 3, 3, 3});
+                "Fail in FacilityMapper - getFacilities");
         return facilities;
     }
 
     @Override
     public List<Facility> getFacilityByID(int ID) {
-        ArrayList<Facility> facilities = executeQueryAndGatherResults(Facility.class,
-                "SELECT * FROM facility WHERE ID = ?",
-                "Fail in FacilityMapper - getFacilities",
-                new String[]{"ID", "name", "type", "capacity",
-                    "hasWaitingList", "hasBooking", "hasInstructor"},
-                new int[]{0, 1, 1, 0, 3, 3, 3}, ID);
-        return facilities;
+        return generalSearch("id", "Fail in FacilityMapper - getFacilityByID", ID);
+    }
+
+    @Override
+    public List<Facility> search(Object variable, String columnName) {
+        return generalSearch(columnName,
+                "Fail in FacilityMapper - search ", variable);
     }
 }

@@ -1,6 +1,7 @@
 package domain;
 
 public class HotelUser {
+
     private int id;
     private String username;
     private String psw;
@@ -19,7 +20,7 @@ public class HotelUser {
 
     public HotelUser() {
     }
-    
+
     public int getId() {
         return id;
     }
@@ -67,4 +68,13 @@ public class HotelUser {
     public void setSpent(int spent) {
         this.spent = spent;
     }
+
+    @Override
+    public String toString() {
+        return "HotelUser ID= " + id + " | username= " + username
+                + " | psw= " + psw + ", status= " + status
+                + " | Reservation_ID= " + reservation_id
+                + " | spent= " + spent;
+    }
+
 }

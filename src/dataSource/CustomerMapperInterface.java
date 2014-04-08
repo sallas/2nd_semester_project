@@ -10,4 +10,7 @@ public interface CustomerMapperInterface {
     Customer getCustomer(int ID);
     
     List<Customer> getAllCustomers();
+    
+    List<Customer> search(Object variable, String columnName);
+    
 }

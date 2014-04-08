@@ -4,30 +4,25 @@ import domain.FacilityBooking;
 import domain.Reservation;
 import domain.UnpaidReservation;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import utility.DateLogic;
 
 public class ReservationMapper extends AbstractMapper implements ReservationMapperInterface {
 
     public ReservationMapper(Connection con) {
-        super(con);
+        super(con, "reservation", Reservation.class);
     }
 
 //    This method returns a reservation object based on the ID parameter.
 //    It uses a select sql query from the reservation table.
     @Override
     public Reservation getReservation(int ID) {
-        ArrayList<Reservation> reservation = executeQueryAndGatherResults(
-                Reservation.class,
-                "select * "
-                + "from reservation "
-                + "where id = ?",
-                "Fail in ReservationMapper - getReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE},
-                ID);
+        List<Reservation> reservation = generalSearch("id",
+                "Fail in ReservationMapper - getReservation", ID);
         if (reservation.isEmpty()) {
             return null;
         } else {
@@ -41,13 +36,10 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
     //The second query simply inserts the data into the database table.
     @Override
     public boolean saveReservation(Reservation r) {
-        ArrayList<Reservation> seq = executeQueryAndGatherResults(
-                Reservation.class,
-                "SELECT reservationSeq.nextval "
+        int seqNum = getSequenceNumber("SELECT reservationSeq.nextval "
                 + "FROM dual",
-                "Fail in ReservationMapper - saveReservation",
-                new String[]{"ID"}, new int[]{DataType.INT});
-        r.setID(seq.get(0).getID());
+                "Fail in ReservationMapper - saveReservation");
+        r.setID(seqNum);
         int result = executeSQLInsert(
                 "INSERT INTO reservation VALUES (?, ?, ?, ?, ?)",
                 "Fail in ReservationMapper - saveReservation",
@@ -55,9 +47,9 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 r.getCheckinDate(), r.getDepartureDate());
         if (result == 1) {
             executeSQLInsert(
-                    "INSERT INTO unpaid_reservations VALUES (?)",
+                    "INSERT INTO unpaid_reservations VALUES (?, ?)",
                     "Fail in ReservationMapper - saveReservation (unpaid_reservations table)",
-                    seq.get(0).getID());
+                    seqNum, DateLogic.getCurrentTimeInSQLDate());
         }
         return result == 1;
     }
@@ -72,8 +64,6 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "from reservation "
                 + "where room_id in (select id from room where type = ?)",
                 "Fail in ReservationMapper - getReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE},
                 type);
         return reservation;
     }
@@ -87,9 +77,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
         ArrayList<Reservation> reservation = executeQueryAndGatherResults(
                 Reservation.class,
                 "SELECT * FROM reservation",
-                "Fail in RoomMapper - getRoom",
-                new String[]{"ID", "roomID", "customerID", "checkinDate", "departureDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE, DataType.DATE});
+                "Fail in RoomMapper - getRoom");
         if (reservation.isEmpty()) {
             return null;
         } else {
@@ -116,8 +104,6 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                 + "(checkin_date  < ? AND "
                 + "checkin_date >= ?))",
                 "Fail in ReservationMapper - checkAvailableReservation",
-                new String[]{"ID", "roomID", "customerID", "checkinDate"},
-                new int[]{DataType.INT, DataType.INT, DataType.INT, DataType.DATE},
                 r.getRoomID(), r.getCheckinDate(), r.getCheckinDate(), r.getDepartureDate(),
                 r.getDepartureDate(), r.getDepartureDate(), r.getCheckinDate());
         available = reservation.isEmpty();
@@ -134,26 +120,45 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
         executeSQLQuery(
                 "LOCK TABLE reservation in exclusive mode",
                 "Fail in ReservationMapper - lockReservationTable"
-                );
-    }
-    
-    @Override
-    public List<UnpaidReservation> getAllUnpaidReservationIDs(){
-        return executeQueryAndGatherResults(
-                UnpaidReservation.class,
-                "SELECT * FROM unpaid_reservations", 
-                "Fail in ReservationMapper - getAllUnpaidReservationIDs", 
-                new String[]{"ID"},
-                new int[]{DataType.INT}
         );
     }
-    
+
     @Override
-    public boolean removeUnpaidReservation(int ID){
+    public List<Reservation> search(Object variable, String columnName) {
+        return generalSearch(columnName,
+                "Fail in ReservationMapper - search ", variable);
+    }
+
+    @Override
+    public List<UnpaidReservation> getAllUnpaidReservationIDs() {
+        return executeQueryAndGatherResults(
+                UnpaidReservation.class,
+                "SELECT * FROM unpaid_reservations",
+                "Fail in ReservationMapper - getAllUnpaidReservationIDs"
+        );
+    }
+
+    @Override
+    public boolean removeUnpaidReservation(int ID) {
         return 1 == executeSQLInsert(
                 "DELETE FROM unpaid_reservations WHERE ID = ?",
                 "Fail in ReservationMapper - removeUnpaidReservation",
                 ID);
     }
 
+    @Override
+    public boolean removeReservation(int ID) {
+        return 1 == executeSQLInsert(
+                "DELETE FROM reservation WHERE ID = ?",
+                "Fail in ReservationMapper - removeReservation",
+                ID);
+    }
+
+    @Override
+    public Date getUnpaidReservationBookingDateByID(int ID) {
+        return generalSearch(UnpaidReservation.class, "unpaid_reservations",
+                "ID", "Fail in ReservationMapper -"
+                + " getUnpaidReservationBookingDateByID",
+                ID).get(0).getBookingDate();
+    }
 }

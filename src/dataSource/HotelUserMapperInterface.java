@@ -8,4 +8,8 @@ interface HotelUserMapperInterface {
     List<HotelUser> getAllUsers();
     
     List<HotelUser> getUser(int id);
+    
+    List<HotelUser> search(Object variable, String columnName);
+    
+    boolean removeHotelUserByReservationID(int ID);
 }

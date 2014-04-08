@@ -8,7 +8,7 @@ import java.util.List;
 public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
 
     public QueueMapper(Connection con) {
-        super(con);
+        super(con, "queue_facility", QueueEntry.class);
     }
     
     /*
@@ -19,8 +19,7 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
         return executeQueryAndGatherResults(QueueEntry.class,
                 "SELECT * FROM queue_facility WHERE facility_booking_id = ?",
                 "Fail in QueueMapper - getQueueForSpecificBooking",
-                new String[]{"ID", "userID", "facilityBookingID"},
-                new int[]{0, 0, 0}, booking_id);
+                booking_id);
     }
     
     /*
@@ -31,8 +30,7 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
         return executeQueryAndGatherResults(QueueEntry.class,
                 "SELECT * FROM queue_facility WHERE user_id = ?",
                 "Fail in QueueMapper - getQueueForSpecificUser",
-                new String[]{"ID", "userID", "facilityBookingID"},
-                new int[]{0, 0, 0}, userID);
+                userID);
     }
     
     /*
@@ -40,13 +38,10 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
      */
     @Override
     public boolean saveQueueEntry(QueueEntry entry) {
-        ArrayList<QueueEntry> seq = executeQueryAndGatherResults(
-                QueueEntry.class,
-                "SELECT queue_facilityseq.nextval "
+        int seqNum = getSequenceNumber("SELECT queue_facilityseq.nextval "
                 + "FROM dual",
-                "Fail in QueueMapper - saveQueueEntry - nextval",
-                new String[]{"ID"}, new int[]{0});
-        entry.setID(seq.get(0).getID());
+                "Fail in QueueMapper - saveQueueEntry - nextval");
+        entry.setID(seqNum);
         int result = executeSQLInsert(
                 "INSERT INTO queue_facility VALUES (?, ?, ?)",
                 "Fail in QueueMapper - saveQueueEntry",
@@ -65,5 +60,16 @@ public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
                 "Fail in QueueMapper - deleteQueueEntryForSpecificID",
                 bookingID, userID);
         return result != 0;
+    }
+    
+    @Override
+    public boolean deleteQueueEntryByReservationID(int ID){
+        return 0 != executeSQLInsert(
+                "delete from queue_facility "
+                        + "where user_ID = "
+                        + "(select user_id from hotel_user"
+                        + " where reservation_id = ?)",
+                "Fail in QueueMapper - delete QueueEntryByReservationID", 
+                ID);
     }
 }

@@ -4,6 +4,7 @@ import domain.Customer;
 import domain.Facility;
 import domain.FacilityBooking;
 import domain.HotelUser;
+import domain.InstructorBooking;
 
 import domain.QueueEntry;
 import domain.Reservation;
@@ -24,6 +25,7 @@ public class DBFacade {
     private static FacilityBookingMapper facilityBookingMapper;
     private static HotelUserMapperInterface hotelUserMapper;
     private static QueueMapperInterface queueMapper;
+    private static InstructorBookingMapper instructorBookingMapper;
     private static Connection connection;
 
     private DBFacade() {
@@ -44,6 +46,7 @@ public class DBFacade {
         facilityBookingMapper = new FacilityBookingMapper(con);
         hotelUserMapper = new HotelUserMapper(con);
         queueMapper = new QueueMapper(con);
+        instructorBookingMapper = new InstructorBookingMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -127,16 +130,16 @@ public class DBFacade {
             Date date, int userID, int timeslot) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotUser(date, userID, timeslot);
     }
-    
+
     public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
-            Date date, int timeslot, int facilityID){
+            Date date, int timeslot, int facilityID) {
         return facilityBookingMapper.getAllBookingsOfSpecificDateTimeslotFacility(
                 date, timeslot, facilityID);
     }
 
     public HotelUser getUser(int userID) {
         List<HotelUser> hul = hotelUserMapper.getUser(userID);
-        if (hul.isEmpty()){
+        if (hul.isEmpty()) {
             return null;
         } else {
             return hul.get(0);
@@ -154,21 +157,39 @@ public class DBFacade {
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
         return facilityBookingMapper.getAllFacilityBookingOfSpecificUser(ID);
     }
-    
+
     public List<HotelUser> getAllUsers() {
         return hotelUserMapper.getAllUsers();
-    } 
-    
-    public List<UnpaidReservation> getAllUnpaidReservationIDs(){
+    }
+
+    public List<UnpaidReservation> getAllUnpaidReservationIDs() {
         return reservationMapper.getAllUnpaidReservationIDs();
     }
-    
-    public boolean removeUnpaidReservation(int ID){
+
+    public boolean removeUnpaidReservation(int ID) {
         return reservationMapper.removeUnpaidReservation(ID);
     }
-    
+
     public List<Facility> getFacilityByID(int ID) {
         return facilityMapper.getFacilityByID(ID);
+    }
+
+    public boolean removeReservation(int ID) {
+        return deleteReservationLogic.deleteReservation(
+                ID, connection, reservationMapper, hotelUserMapper,
+                queueMapper, facilityBookingMapper);
+    }
+
+    public Date getUnpaidReservationBookingDateByID(int ID) {
+        return reservationMapper.getUnpaidReservationBookingDateByID(ID);
+    }
+
+    public boolean removeHotelUserByReservationID(int ID) {
+        return hotelUserMapper.removeHotelUserByReservationID(ID);
+    }
+    
+    public List<Reservation> searchReservation(Object variable, String columnName) {
+        return reservationMapper.search(variable, columnName);
     }
     
     public boolean saveQueueEntry(QueueEntry entry) {
@@ -183,11 +204,35 @@ public class DBFacade {
         }
     }
     
+    public List<Room> searchRoom(Object variable, String columnName) {
+        return roomMapper.search(variable, columnName);
+    }
+
+    public List<HotelUser> searchHotelUser(Object variable, String columnName) {
+        return hotelUserMapper.search(variable, columnName);
+    }
+    
     public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return facilityBookingMapper.updateFacilityBookingUserID(bookingID, userID);
     }
     
+    public List<Customer> searchCustomer(Object variable, String columnName) {
+        return customerMapper.search(variable, columnName);
+    }
+    
     public boolean deleteQueueEntryForSpecificID(int bookingID, int userID) {
         return queueMapper.deleteQueueEntryForSpecificID(bookingID, userID);
+    }
+    
+    public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
+        return facilityBookingMapper.search(variable, columnName);
+    }
+
+    public List<Facility> searchFacility(Object variable, String columnName) {
+        return facilityMapper.search(variable, columnName);
+    }
+
+    public List<InstructorBooking> getInstructorBookings(int userID) {
+        return instructorBookingMapper.getInstructorBookingByUserID(userID);
     }
 }

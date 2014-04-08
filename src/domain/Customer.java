@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
-
 public class Customer {
 
     private int ID;
@@ -12,15 +10,6 @@ public class Customer {
     private String phone;
     private String email;
     private String travel_agency = "";
-    private ArrayList<Reservation> reservation;
-
-    public ArrayList<Reservation> getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(ArrayList<Reservation> reservation) {
-        this.reservation = reservation;
-    }
 
     public int getID() {
         return ID;
@@ -88,10 +77,10 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "ID=" + ID + ", addres=" + addres + ", country="
-                + country + ", first_name=" + first_name + ", last_name="
-                + last_name + ", phone=" + phone + ", email=" + email
-                + ", travel_agency=" + travel_agency + '}';
+        return "Customer ID= " + ID + " | address= " + addres + " | country= "
+                + country + " | First Name= " + first_name + " | Last Name= "
+                + last_name + " | Phone number= " + phone
+                + " | Email= " + email + " | Travel Agency= " + travel_agency;
     }
 
     public Customer(int ID, String addres, String country, String first_name,
@@ -105,6 +94,8 @@ public class Customer {
         this.email = email;
         this.travel_agency = travel_agency;
     }
-    public Customer() {}
+
+    public Customer() {
+    }
 
 }

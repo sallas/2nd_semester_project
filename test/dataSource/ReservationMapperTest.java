@@ -13,6 +13,9 @@ public class ReservationMapperTest {
 
     Connection con;
     ReservationMapper rm;
+    QueueMapperInterface qm;
+    FacilityBookingMapperInterface fbm;
+    HotelUserMapperInterface hum;
     TestDBConnector connector = new TestDBConnector();
 
     public ReservationMapperTest() {
@@ -26,6 +29,9 @@ public class ReservationMapperTest {
         con = connector.getConnection();
         ReservationFixture.setUp(con);
         rm = new ReservationMapper(con);
+        qm = new QueueMapper(con);
+        fbm = new FacilityBookingMapper(con);
+        hum = new HotelUserMapper(con);
     }
 
     @After
@@ -220,12 +226,45 @@ public class ReservationMapperTest {
     }
     
     @Test
-    public void testremoveUnpaidReservationMatch(){
+    public void testRemoveUnpaidReservationMatch(){
         assertTrue(rm.removeUnpaidReservation(1));
     }
     
     @Test
-    public void testremoveUnpaidReservationNoMatch(){
+    public void testRemoveUnpaidReservationNoMatch(){
         assertFalse(rm.removeUnpaidReservation(99999));
+    }
+    
+    @Test
+    public void testSearchMatchID() {
+        List<Reservation> reservations = rm.search("1", "id");
+        assertTrue(reservations.get(0).getID() == 1);
+    }
+    
+    @Test
+    public void testRemoveReservationMatch(){
+        qm.deleteQueueEntryByReservationID(2);
+        fbm.deleteFacilityBookingByReservationID(2);
+        hum.removeHotelUserByReservationID(2);
+        rm.removeUnpaidReservation(2);
+        assertTrue(rm.removeReservation(2));
+    }
+    
+    @Test
+    public void testSearchNoMatchID() {
+        List<Reservation> reservations = rm.search("-1", "id");
+        assertTrue(reservations.isEmpty());
+    }
+    
+    @Test
+    public void testRemoveReservationNoMatch(){
+        assertFalse(rm.removeReservation(9999999));
+    }
+    
+    @Test
+    public void testGetUnpaidReservationBookingDateByIDMatch(){
+        String expectedDateString = "2014-03-24";
+        String resultDateString = rm.getUnpaidReservationBookingDateByID(1).toString();
+        assertEquals(expectedDateString, resultDateString);
     }
 }

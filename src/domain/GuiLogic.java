@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import utility.DateLogic;
 
@@ -22,7 +23,7 @@ public class GuiLogic {
 
     private GuiLogic() {
         control = Controller.getInstance();
-        currentUserID = 1;
+        currentUserID = 3;
     }
 
     public int getCurrentUserID() {
@@ -189,5 +190,53 @@ public class GuiLogic {
 
     public List<FacilityBooking> getListOfBookings() {
         return listOfBookings;
+    }
+
+    public DefaultListModel search(String currentObject, String currentVariable, Object variable, DefaultListModel model) {
+        model = new DefaultListModel();
+        List<String> results = new ArrayList<>();
+        if ("reservation".equalsIgnoreCase(currentObject)) {
+            List<Reservation> reservations = control.searchReservation(variable, currentVariable);
+            results = fill(reservations);
+        } else if ("room".equalsIgnoreCase(currentObject)) {
+            List<Room> rooms = control.searchRoom(variable, currentVariable);
+            results = fill(rooms);
+        } else if ("user".equalsIgnoreCase(currentObject)) {
+            List<HotelUser> rooms = control.searchHotelUser(variable, currentVariable);
+            results = fill(rooms);
+        } else if ("facility".equalsIgnoreCase(currentObject)) {
+            List<Facility> rooms = control.searchFacility(variable, currentVariable);
+            results = fill(rooms);
+        } else if ("sports booking".equalsIgnoreCase(currentObject)) {
+            List<FacilityBooking> rooms = control.searchFacilityBooking(variable, currentVariable);
+            results = fill(rooms);
+        } else if ("customer".equalsIgnoreCase(currentObject)) {
+            List<Customer> rooms = control.searchCustomer(variable, currentVariable);
+            results = fill(rooms);
+        }
+
+        for (String s : results) {
+            model.addElement(s);
+        }
+        return model;
+    }
+
+    private <T> List<String> fill(List<T> objects) {
+        List<String> results = new ArrayList<>();
+        for (Object o : objects) {
+            results.add(o.toString());
+        }
+        return results;
+    }
+
+    public void fillMyInstructorBookingTable(DefaultTableModel model) {
+        List<InstructorBooking> bookings = control.getInstructorBookings(currentUserID);
+        for (InstructorBooking ib : bookings) {
+            Object[] ob = new Object[3];
+            ob[0] = ib.getFacilityID();
+            ob[1] = ib.getBookedDate();
+            ob[2] = ib.getTimeslot();
+            model.addRow(ob);
+        }
     }
 }

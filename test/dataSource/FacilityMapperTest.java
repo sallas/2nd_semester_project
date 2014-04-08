@@ -2,13 +2,10 @@ package dataSource;
 
 import domain.Facility;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +32,7 @@ public class FacilityMapperTest {
 
     @Test
     public void testGetAllFacilities() throws SQLException {
-        ArrayList<Facility> res = fm.getFacilities();
+        List<Facility> res = fm.getFacilities();
         assertEquals(res.get(0).getID(), 1);
         assertEquals(res.get(1).isHasBooking(), false);
         assertEquals(res.get(1).isHasInstructor(), true);
@@ -43,14 +40,14 @@ public class FacilityMapperTest {
     
     @Test
     public void testGetFacilityByType() throws SQLException {
-        ArrayList<Facility> res = fm.getFacilities("gym");
+        List<Facility> res = fm.getFacilities("gym");
         assertEquals(res.size(), 1);
         assertEquals(res.get(0).getCapacity(), 20);
     }
     
     @Test
     public void testGetFacilityByNonExistingType() throws SQLException {
-        ArrayList<Facility> res = fm.getFacilities("tenn");
+        List<Facility> res = fm.getFacilities("tenn");
         assertEquals(res.size(), 0);
     }
 }

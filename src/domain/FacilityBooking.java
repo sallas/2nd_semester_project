@@ -3,6 +3,7 @@ package domain;
 import java.sql.Date;
 
 public class FacilityBooking {
+
     private int ID;
     private int facilityID;
     private Date bookingDate;
@@ -18,12 +19,11 @@ public class FacilityBooking {
         this.userID = userID;
         this.isBookedByOriginalUser = isBookedByOriginalUser;
     }
-    
+
     public FacilityBooking() {
         bookingDate = null;
     }
 
-    
     public int getID() {
         return ID;
     }
@@ -64,13 +64,13 @@ public class FacilityBooking {
         this.userID = userID;
     }
 
-    public boolean isIsBookedByOriginalUser() {
-        return isBookedByOriginalUser;
+    @Override
+    public String toString() {
+        return "Sports Booking " + "ID= " + ID + " | Facility ID= " + facilityID
+                + " | Booking Date= " + bookingDate + " | Timeslot= " + timeslot
+                + " | User ID= " + userID;
     }
 
-    public void setIsBookedByOriginalUser(boolean isBookedByOriginalUser) {
-        this.isBookedByOriginalUser = isBookedByOriginalUser;
-    }
     
     
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public class FacilityBookingMapper extends AbstractMapper implements FacilityBookingMapperInterface {
 
     public FacilityBookingMapper(Connection con) {
-        super(con);
+        super(con, "facility_booking", FacilityBooking.class);
     }
 
     /*
@@ -41,13 +41,10 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public boolean saveFacilityBooking(FacilityBooking fb) {
-        ArrayList<FacilityBooking> seq = executeQueryAndGatherResults(
-                FacilityBooking.class,
-                "SELECT facility_bookingseq.nextval "
-                + "FROM dual",
-                "Fail in FacilityBookingMapper - saveFacilityBooking",
-                new String[]{"ID"}, new int[]{0});
-        fb.setID(seq.get(0).getID());
+        int seqNum = getSequenceNumber("SELECT facility_bookingseq.nextval"
+                + " FROM dual",
+                "Fail in FacilityBookingMapper - saveFacilityBooking");
+        fb.setID(seqNum);
         int result = executeSQLInsert(
                 "INSERT INTO facility_booking VALUES (?, ?, ?, ?, ?, ?)",
                 "Fail in FacilityBookingMapper - saveFacilityBooking",
@@ -61,18 +58,14 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
         System.out.println("Hello");
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking",
-                "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
-                new int[]{0, 0, 2, 0, 0, 3});
+                "Fail in FacilityBookingMapper - getAllBookings");
     }
 
     @Override
     public List<FacilityBooking> getAllBookingsOfSpecificDate(Date date) {
-        return executeQueryAndGatherResults(FacilityBooking.class,
-                "SELECT * FROM facility_booking WHERE booking_date = ?",
-                "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
-                new int[]{0, 0, 2, 0, 0, 3}, date);
+        return generalSearch("booking_date",
+                "Fail in FacilityBookingMapper - "
+                + "getAllBookingsOfSpecificDate", date);
     }
 
     /*
@@ -84,9 +77,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
             Date date, int userID) {
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking WHERE booking_date = ? AND user_id = ?",
-                "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
-                new int[]{0, 0, 2, 0, 0, 3}, date, userID);
+                "Fail in FacilityBookingMapper - getAllBookings", date, userID);
     }
 
     /*
@@ -100,10 +91,9 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "SELECT * FROM facility_booking WHERE booking_date = ?"
                 + " AND user_id = ? AND timeslot = ?",
                 "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date, userID, timeslot);
+                date, userID, timeslot);
     }
-    
+
     /*
      * Returns all faciltiy bookings made for a f id userID and on the
      
@@ -115,32 +105,44 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "SELECT * FROM facility_booking WHERE booking_date = ?"
                 + " AND timeslot = ? AND facility_id = ?",
                 "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date, timeslot, facilityID);
+                date, timeslot, facilityID);
     }
+
     @Override
-    public boolean removeFacilityBooking(int ID){
+    public boolean removeFacilityBooking(int ID) {
         return executeSQLInsert(
-                "DELETE FROM facility_booking WHERE id = ?", 
-                "Fail in FacilityBookingMapper - removeFacilityBooking", 
+                "DELETE FROM facility_booking WHERE id = ?",
+                "Fail in FacilityBookingMapper - removeFacilityBooking",
                 ID) == 1;
     }
 
     @Override
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
-        return executeQueryAndGatherResults(FacilityBooking.class,
-                "SELECT * FROM facility_booking WHERE user_id = ?",
-                "Fail in FacilityBookingMapper - getAllBookings", 
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"}, 
-                new int[] {DataType.INT, DataType.INT, DataType.DATE, DataType.INT, DataType.INT}, 
-                ID);
+        return generalSearch("id", "Fail in FacilityBookingMapper -"
+                + " getAllFacilityBookingOfSpecificUser ", ID);
     }
-    
+
     @Override
-    public boolean updateFacilityBookingUserID(int bookingID, int userID){
+    public List<FacilityBooking> search(Object variable, String columnName) {
+        return generalSearch(columnName,
+                "Fail in FacilityBookingMapper - search ", variable);
+    }
+
+    @Override
+    public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return executeSQLInsert(
                 "UPDATE facility_booking SET user_id = ? WHERE id = ?",
                 "Fail in FacilityBookingMapper - updateFacilityBookingUserID",
                 userID, bookingID) == 1;
+    }
+
+    @Override
+    public boolean deleteFacilityBookingByReservationID(int ID) {
+        return 0 != executeSQLInsert(
+                "delete from facility_booking where "
+                + "user_ID = (select user_id from hotel_user"
+                + " where reservation_id = ?)",
+                "Fail in FacilityBookingMapper - deleteFacilityBookingByReservationID",
+                ID);
     }
 }

@@ -1,3 +1,6 @@
+DROP TABLE instructor_booking;
+DROP TABLE instructor_sports;
+DROP TABLE instructor;
 DROP TABLE queue_facility;
 DROP TABLE facility_booking;
 DROP TABLE HOTEL_USER;
@@ -27,6 +30,10 @@ DROP SEQUENCE hotel_userSeq;
 CREATE SEQUENCE hotel_userSeq START WITH 1;
 DROP SEQUENCE queue_facilitySeq;
 CREATE SEQUENCE queue_facilitySeq START WITH 1;
+DROP SEQUENCE instructorSeq;
+CREATE SEQUENCE instructorSeq START WITH 1;
+DROP SEQUENCE instructor_bookingSeq;
+CREATE SEQUENCE instructor_bookingSeq START WITH 1;
 
 CREATE TABLE room_cost (
 Type varchar2(30) NOT NULL,
@@ -75,7 +82,7 @@ ID number(5) PRIMARY KEY,
 Username varchar(20) NOT NULL,
 Psw varchar(20) NOT NULL,
 Status varchar(20) NOT NULL,
-Reservation_id number(5) NOT NULL,
+Reservation_id number(5),
 Spent number(5) NOT NULL,
 FOREIGN KEY (Reservation_id) REFERENCES reservation(ID)
 );
@@ -104,4 +111,28 @@ FOREIGN KEY (FACILITY_BOOKING_ID) REFERENCES FACILITY_BOOKING(ID)
 
 CREATE TABLE unpaid_reservations (
 ID number(5) NOT NULL,
+BOOKING_DATE date NOT NULL,
 FOREIGN KEY (ID) REFERENCES reservation(ID)
+
+
+CREATE TABLE instructor (
+ID number(5) PRIMARY KEY,
+user_id number(5) NOT NULL,
+FOREIGN KEY (user_id) REFERENCES hotel_user(id)
+); 
+
+CREATE TABLE instructor_sports (
+instructor_id number(5) NOT NULL,
+type varchar(20),
+FOREIGN KEY (instructor_id) REFERENCES instructor(ID)
+);
+
+CREATE TABLE instructor_booking(
+id number(5) PRIMARY KEY,
+facility_id number(5) NOT NULL,
+instructor_id number(5) NOT NULL,
+booked_date date NOT NULL,
+timeslot number(5) NOT NULL,
+FOREIGN KEY (instructor_id) REFERENCES instructor(ID),
+FOREIGN KEY (facility_id) REFERENCES facility(ID)
+);
