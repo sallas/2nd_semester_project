@@ -204,7 +204,8 @@ public class ControllerTest {
      */
     @Test
     public void testCheckAvailableFacilityBookingAvailable() {
-        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 1, 999);
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 
+                1, 999, true);
         boolean status = controller.checkAvailableFacilityBooking(fb);
         assertTrue(status);
     }
@@ -214,7 +215,8 @@ public class ControllerTest {
      */
     @Test
     public void testCheckAvailableFacilityBookingUnavailable() {
-        FacilityBooking fb = new FacilityBooking(1, 2, Date.valueOf("2014-03-24"), 4, 999);
+        FacilityBooking fb = new FacilityBooking(1, 2, Date.valueOf("2014-03-24"), 
+                4, 999, true);
 
         boolean status = controller.checkAvailableFacilityBooking(fb);
         assertFalse(status);
