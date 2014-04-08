@@ -1,7 +1,6 @@
 package dataSource;
 
 import domain.FacilityBooking;
-import domain.Reservation;
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
@@ -22,7 +21,7 @@ public class FacilityBookingTest {
 
     @Before
     public void init() {
-        con = connector.getConnection();
+        con = connector.getConnection(); 
         ReservationFixture.setUp(con);
         fbm = new FacilityBookingMapper(con);
         qm = new QueueMapper(con);

@@ -48,7 +48,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "INSERT INTO facility_booking VALUES (?, ?, ?, ?, ?, ?)",
                 "Fail in FacilityBookingMapper - saveFacilityBooking",
                 fb.getID(), fb.getFacilityID(), fb.getBookingDate(),
-                fb.getTimeslot(), fb.getUserID(), fb.isIsBookedByOriginalUser());
+                fb.getTimeslot(), fb.getUserID(), fb.isIsBookedByOriginalUser() ? 1 : 0);
         return result != 0;
     }
 
