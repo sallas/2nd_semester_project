@@ -49,20 +49,21 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 new String[]{"ID"}, new int[]{0});
         fb.setID(seq.get(0).getID());
         int result = executeSQLInsert(
-                "INSERT INTO facility_booking VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO facility_booking VALUES (?, ?, ?, ?, ?, ?)",
                 "Fail in FacilityBookingMapper - saveFacilityBooking",
                 fb.getID(), fb.getFacilityID(), fb.getBookingDate(),
-                fb.getTimeslot(), fb.getUserID());
+                fb.getTimeslot(), fb.getUserID(), fb.isIsBookedByOriginalUser());
         return result != 0;
     }
 
     @Override
     public List<FacilityBooking> getAllBookings() {
+        System.out.println("Hello");
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking",
                 "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0});
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
+                new int[]{0, 0, 2, 0, 0, 3});
     }
 
     @Override
@@ -70,8 +71,8 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking WHERE booking_date = ?",
                 "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date);
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
+                new int[]{0, 0, 2, 0, 0, 3}, date);
     }
 
     /*
@@ -84,8 +85,8 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking WHERE booking_date = ? AND user_id = ?",
                 "Fail in FacilityBookingMapper - getAllBookings",
-                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID"},
-                new int[]{0, 0, 2, 0, 0}, date, userID);
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
+                new int[]{0, 0, 2, 0, 0, 3}, date, userID);
     }
 
     /*

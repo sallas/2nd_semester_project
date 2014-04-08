@@ -75,7 +75,7 @@ public class GuiLogic {
     public void fillAvailabilityTable(int facilityID, Date checkDate, DefaultTableModel model) {
         FacilityBooking fb;
         for (int i = 0; i < 12; i++) {
-            fb = new FacilityBooking(99, facilityID, checkDate, i + 1, currentUserID);
+            fb = new FacilityBooking(99, facilityID, checkDate, i + 1, currentUserID, true);
             if (control.checkAvailableFacilityBooking(fb)) {
                 String s = timeslots.get(i);
                 model.addRow(new Object[]{s, "Available"});
@@ -102,12 +102,12 @@ public class GuiLogic {
 
     public void setCurrentFacilityBooking(int facilityID, Date checkDate, int timeslot) {
         currentFacilityBooking
-                = new FacilityBooking(-1, facilityID, checkDate, timeslot, currentUserID);
+                = new FacilityBooking(-1, facilityID, checkDate, timeslot, currentUserID, true);
     }
 
     public void setCurrentFacilityBooking(int facilityID, Date checkDate, int timeslot, int userID) {
         currentFacilityBooking
-                = new FacilityBooking(-1, facilityID, checkDate, timeslot, userID);
+                = new FacilityBooking(-1, facilityID, checkDate, timeslot, userID, true);
     }
 
     public boolean checkAvailableCurrentFacilityBooking() {
