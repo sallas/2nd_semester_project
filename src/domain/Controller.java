@@ -92,12 +92,14 @@ public class Controller {
         Date departureSQLDate = new Date(departureDate.getTimeInMillis());
         Customer customer = new Customer(-1, address, country, firstName,
                 familyName, phone, email, agency);
+        List<Customer> customers = new ArrayList();
+        customers.add(customer);
         Reservation reservation = new Reservation(-1, roomID,
                 -1, checkin, departureSQLDate);
         if (!facade.checkAvailableReservation(reservation)) {
             throw new UnavailableReservation("Another reservation conflict with this reservation");
         }
-        return facade.saveReservationInformation(reservation, customer);
+        return facade.saveReservationInformation(reservation, customers);
     }
 
     /*
@@ -396,4 +398,9 @@ public class Controller {
             int userID, Date date) {
         return facade.getInstructorBookingByUserIDAndDate(userID, date);
     }
+
+    void saveReservationWithGuests(Reservation reservation, List<Customer> guests) {
+        facade.saveReservationInformation(reservation, guests);
+    }
+
 }

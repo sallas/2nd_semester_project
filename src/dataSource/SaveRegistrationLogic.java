@@ -5,6 +5,7 @@ import domain.Reservation;
 import domain.UnavailableReservation;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 /*
  *   Helper class for the controller class to make it more readable
@@ -18,7 +19,7 @@ public class SaveRegistrationLogic {
      * Locks the reservation table for a split second so no double booking will happen
      */
     public static boolean saveReservationInformation(Reservation r,
-            Customer c, Connection connection,
+            List<Customer> c, Connection connection,
             ReservationMapperInterface reservationMapper,
             CustomerMapperInterface customerMapper) {
 
@@ -29,7 +30,11 @@ public class SaveRegistrationLogic {
             reservationMapper.lockReservationTable();
 
             status = status && reservationMapper.checkAvailableReservation(r);
-            int customerID = customerMapper.saveNewCustomer(c);
+            int customerID = customerMapper.saveNewCustomer(c.get(0));
+            c.remove(0);
+            for (Customer customer : c) {
+                customerMapper.saveNewCustomer(customer);
+            }
             if (customerID == -1) {
                 status = false;
             }

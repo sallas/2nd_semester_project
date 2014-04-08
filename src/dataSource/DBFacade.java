@@ -77,7 +77,7 @@ public class DBFacade {
         return roomMapper.getAllRooms();
     }
 
-    public boolean saveReservationInformation(Reservation r, Customer c) {
+    public boolean saveReservationInformation(Reservation r, List<Customer> c) {
         return SaveRegistrationLogic.saveReservationInformation(
                 r, c, connection, reservationMapper, customerMapper);
     }

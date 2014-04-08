@@ -5,6 +5,7 @@ DROP TABLE queue_facility;
 DROP TABLE facility_booking;
 DROP TABLE HOTEL_USER;
 DROP TABLE unpaid_reservations;
+DROP TABLE Reservation_Customer;
 DROP TABLE reservation;
 DROP TABLE customer;
 DROP TABLE room;
@@ -134,4 +135,11 @@ booked_date date NOT NULL,
 timeslot number(5) NOT NULL,
 FOREIGN KEY (instructor_id) REFERENCES instructor(ID),
 FOREIGN KEY (facility_id) REFERENCES facility(ID)
+);
+
+CREATE TABLE Reservation_Customer (
+reservation_id number(5) PRIMARY KEY,
+customer_id number(5) NOT NULL,
+FOREIGN KEY (reservation_id) REFERENCES reservation(ID),
+FOREIGN KEY (customer_id) REFERENCES customer(ID)
 );

@@ -20,11 +20,14 @@ public class GuiLogic {
     private FacilityBooking currentFacilityBooking;
     private List<FacilityBooking> listOfBookings;
     private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    private List<Customer> guests;
+    private EmailValidator emailValidator;
 
     private GuiLogic() {
         control = Controller.getInstance();
         currentUserID = 3;
         setUpTimeslots();
+        guests = new ArrayList<>();
     }
 
     public int getCurrentUserID() {
@@ -269,5 +272,30 @@ public class GuiLogic {
             }
             model.addRow(ob);
         }
+    }
+
+    public void addGuestToCurrentReservation(String firstName,
+            String familyName, String address, String country,
+            String phone, String travelAgency, String email) throws WrongEmail {
+        if (!emailValidator.validate(email)) {
+            throw new WrongEmail("Email is wrong.");
+        }
+        Customer c = new Customer(-1, address, country, firstName,
+                familyName, phone, email, travelAgency);
+
+        guests.add(c);
+    }
+
+    public boolean saveReservation(Date arrival, int nights,
+            int roomID) {
+        Calendar departureDate = Calendar.getInstance();
+        departureDate.clear();
+        departureDate.setTimeInMillis(arrival.getTime());
+        departureDate.add(Calendar.DATE, nights);
+        Date departureSQLDate = new Date(departureDate.getTimeInMillis());
+        Reservation reservation = new Reservation(-1, roomID,
+                -1, arrival, departureSQLDate);
+        control.saveReservationWithGuests(reservation, guests);
+        return false;
     }
 }
