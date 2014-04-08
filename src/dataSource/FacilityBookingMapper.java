@@ -48,7 +48,8 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "INSERT INTO facility_booking VALUES (?, ?, ?, ?, ?, ?)",
                 "Fail in FacilityBookingMapper - saveFacilityBooking",
                 fb.getID(), fb.getFacilityID(), fb.getBookingDate(),
-                fb.getTimeslot(), fb.getUserID(), fb.isIsBookedByOriginalUser() ? 1 : 0);
+                fb.getTimeslot(), fb.getUserID(), 
+                fb.isIsBookedByOriginalUser() ? 1 : 0);
         return result != 0;
     }
 
@@ -129,7 +130,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
     @Override
     public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return executeSQLInsert(
-                "UPDATE facility_booking SET user_id = ? WHERE id = ?",
+                "UPDATE facility_booking SET user_id = ?, IS_ORIGINAL_USER = 0 WHERE id = ?",
                 "Fail in FacilityBookingMapper - updateFacilityBookingUserID",
                 userID, bookingID) == 1;
     }

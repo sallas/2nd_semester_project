@@ -23,7 +23,7 @@ public class GuiLogic {
 
     private GuiLogic() {
         control = Controller.getInstance();
-        currentUserID = 3;
+        currentUserID = 2;
     }
 
     public int getCurrentUserID() {
@@ -32,6 +32,10 @@ public class GuiLogic {
 
     public FacilityBooking getCurrentFacilityBooking() {
         return currentFacilityBooking;
+    }
+
+    public void setCurrentFacilityBooking(FacilityBooking currentFacilityBooking) {
+        this.currentFacilityBooking = currentFacilityBooking;
     }
 
     public static GuiLogic getInstance() {

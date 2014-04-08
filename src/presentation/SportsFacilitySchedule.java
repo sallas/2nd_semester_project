@@ -57,6 +57,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         setUpDates();
         model = (DefaultTableModel) timeslotTable.getModel();
         queueJList.setModel(queueModel);
+        updateCurrentBooking();
         fillUpAvailablityTable();
         updateBookedLabel();
         updateQueueList();
@@ -64,6 +65,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }
     
     public void refreshAll(){
+        updateCurrentBooking();
         removeRows();
         fillUpAvailablityTable();
         updateBookedLabel();
@@ -71,21 +73,36 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         updateBookedByOriginalUser();
     }
     
-    private void updateBookedByOriginalUser() {
-        
-    }
-
-    private void updateQueueList() {
-        queueModel.clear();
+    public void updateCurrentBooking(){
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
         List<FacilityBooking> currentBookings
                 = control.getAllBookingsOfSpecificDateTimeslotFacility(
-                        checkDate, timeslot, currentFacility);
+                checkDate, timeslot, currentFacility);
         if (!currentBookings.isEmpty()) {
+            logic.setCurrentFacilityBooking(currentBookings.get(0));
+        }
+    }
+    
+    private void updateBookedByOriginalUser() {
+        FacilityBooking currentBooking
+                = logic.getCurrentFacilityBooking();
+        if (currentBooking != null) {
+            if (currentBooking.isIsBookedByOriginalUser()){
+                bookedByOriginalLabel.setText("Yes");
+            } else {
+                bookedByOriginalLabel.setText("No");
+            }
+        }
+    }
+
+    private void updateQueueList() {
+        queueModel.clear();
+        FacilityBooking currentBooking = logic.getCurrentFacilityBooking();
+        if (currentBooking != null) {
             List<QueueEntry> queueEntries
-                    = control.getQueueEntriesOfSpecificBooking(currentBookings.get(0).getID());
+                    = control.getQueueEntriesOfSpecificBooking(currentBooking.getID());
             for (int i = 0; i < queueEntries.size(); i++) {
                 queueModel.add(i, control.getUserForSpecificUserID(queueEntries.get(i).getUserID()).getUsername());
             }
@@ -353,10 +370,11 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(bookedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(bookedByOriginalLabel))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(bookedByOriginalLabel)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -392,10 +410,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         facilityNameLabel.setText(facility);
         currentFacility = control.getFacility(facility);
         facilitySpecsLabel.setText(currentFacility.toString());
-        removeRows();
-        fillUpAvailablityTable();
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_facilityChooserActionPerformed
 
     private void checkActivtyBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkActivtyBookingButtonActionPerformed
@@ -412,10 +427,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }//GEN-LAST:event_checkActivtyBookingButtonActionPerformed
 
     private void dayComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayComboBoxActionPerformed
-        removeRows();
-        fillUpAvailablityTable();
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_dayComboBoxActionPerformed
 
     private void timeslotBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeslotBookingButtonActionPerformed
@@ -466,10 +478,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         } else {
             statusTextField.setText("Your booking wasn't saved");
         }
-        removeRows();
-        fillUpAvailablityTable();
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_timeslotBookingButtonActionPerformed
 
     private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
@@ -478,8 +487,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 
     private void timeslotComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeslotComboBoxActionPerformed
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_timeslotComboBoxActionPerformed
 
     private void viewOwnBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOwnBookingButtonActionPerformed

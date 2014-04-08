@@ -132,7 +132,6 @@ public class OwnBookings extends javax.swing.JFrame {
             control.removeFacilityBooking(bookingID);
         } else {
             int newUserID = control.popUserFromQueueForID(bookingID);
-            System.out.println(newUserID);
             control.updateFacilityBookingUserID(bookingID, newUserID);
         }
         initTable();
