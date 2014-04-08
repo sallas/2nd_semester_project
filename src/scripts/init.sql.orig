@@ -113,8 +113,9 @@ CREATE TABLE unpaid_reservations (
 ID number(5) NOT NULL,
 BOOKING_DATE date NOT NULL,
 FOREIGN KEY (ID) REFERENCES reservation(ID)
+<<<<<<< HEAD
+=======
 );
-
 
 CREATE TABLE instructor (
 ID number(5) PRIMARY KEY,
@@ -137,3 +138,4 @@ timeslot number(5) NOT NULL,
 FOREIGN KEY (instructor_id) REFERENCES instructor(ID),
 FOREIGN KEY (facility_id) REFERENCES facility(ID)
 );
+>>>>>>> a6fc7ec228d0f349b1748daa377c05c5881af3f0

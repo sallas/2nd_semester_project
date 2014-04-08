@@ -64,6 +64,7 @@ public class FacilityBooking {
         this.userID = userID;
     }
 
+<<<<<<< HEAD
     public boolean isIsBookedByOriginalUser() {
         return isBookedByOriginalUser;
     }
@@ -73,6 +74,7 @@ public class FacilityBooking {
     }
     
     
+=======
     @Override
     public String toString() {
         return "Sports Booking " + "ID= " + ID + " | Facility ID= " + facilityID
@@ -80,6 +82,5 @@ public class FacilityBooking {
                 + " | User ID= " + userID;
     }
 
-    
-    
+>>>>>>> a6fc7ec228d0f349b1748daa377c05c5881af3f0
 }

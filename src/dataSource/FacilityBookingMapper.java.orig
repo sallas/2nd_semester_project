@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FacilityBookingMapper extends AbstractMapper implements FacilityBookingMapperInterface {
@@ -54,16 +55,31 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public List<FacilityBooking> getAllBookings() {
+        System.out.println("Hello");
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking",
+<<<<<<< HEAD
+                "Fail in FacilityBookingMapper - getAllBookings",
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
+                new int[]{0, 0, 2, 0, 0, 3});
+=======
                 "Fail in FacilityBookingMapper - getAllBookings");
+>>>>>>> a6fc7ec228d0f349b1748daa377c05c5881af3f0
     }
 
     @Override
     public List<FacilityBooking> getAllBookingsOfSpecificDate(Date date) {
+<<<<<<< HEAD
+        return executeQueryAndGatherResults(FacilityBooking.class,
+                "SELECT * FROM facility_booking WHERE booking_date = ?",
+                "Fail in FacilityBookingMapper - getAllBookings",
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
+                new int[]{0, 0, 2, 0, 0, 3}, date);
+=======
         return generalSearch("booking_date",
                 "Fail in FacilityBookingMapper - "
                 + "getAllBookingsOfSpecificDate", date);
+>>>>>>> a6fc7ec228d0f349b1748daa377c05c5881af3f0
     }
 
     /*
@@ -75,7 +91,13 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
             Date date, int userID) {
         return executeQueryAndGatherResults(FacilityBooking.class,
                 "SELECT * FROM facility_booking WHERE booking_date = ? AND user_id = ?",
+<<<<<<< HEAD
+                "Fail in FacilityBookingMapper - getAllBookings",
+                new String[]{"ID", "facilityID", "bookingDate", "timeslot", "userID", "isBookedByOriginalUser"},
+                new int[]{0, 0, 2, 0, 0, 3}, date, userID);
+=======
                 "Fail in FacilityBookingMapper - getAllBookings", date, userID);
+>>>>>>> a6fc7ec228d0f349b1748daa377c05c5881af3f0
     }
 
     /*
