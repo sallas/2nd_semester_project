@@ -26,4 +26,18 @@ public interface FacilityBookingMapperInterface {
 
     List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotUser(
             Date date, int userID, int timeslot);
+    
+    boolean removeFacilityBooking(int ID);
+    
+
+    public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
+            Date date, int timeslot, int facilityID);
+    
+    List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID);
+    
+    public boolean updateFacilityBookingUserID(int bookingID, int userID);
+    
+    boolean deleteFacilityBookingByReservationID(int ID);
+    
+    List<FacilityBooking> search(Object variable, String columnName);
 }

@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class Controller {
 
@@ -37,12 +36,9 @@ public class Controller {
         List<Room> allRooms = facade.getAllRooms();
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date currentDate = new java.sql.Date(utilDate.getTime());
-        List<Integer> availableSingleRooms
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates("single", currentDate, currentDate);
-        List<Integer> availableDoubleRooms
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates("double", currentDate, currentDate);
-        List<Integer> availableFamilyRooms
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates("family", currentDate, currentDate);
+        List<Integer> availableSingleRooms = getAllAvailableRoomIDsOfTypeAndBetweenDates("single", currentDate, currentDate);
+        List<Integer> availableDoubleRooms = getAllAvailableRoomIDsOfTypeAndBetweenDates("double", currentDate, currentDate);
+        List<Integer> availableFamilyRooms = getAllAvailableRoomIDsOfTypeAndBetweenDates("family", currentDate, currentDate);
         for (Room r : allRooms) {
             String s;
             if (availableSingleRooms.contains(r.getID())
@@ -107,19 +103,15 @@ public class Controller {
     /*
      *   Returns a RoomID of a  random available room during your specified time period
      */
-    public int getAvailableRoomIDOfTypeBetweenDates(
+    public List<Integer> getAvailableRoomIDsOfTypeBetweenDates(
             String type, Date arrivalDate, Date departureDate) {
 
-        List<Integer> availableRoomIDs
-                = getAllAvailableRoomIDsOfTypeAndBetweenDates(
-                        type, arrivalDate, departureDate);
+        List<Integer> availableRoomIDs = getAllAvailableRoomIDsOfTypeAndBetweenDates(
+                type, arrivalDate, departureDate);
         if (availableRoomIDs.isEmpty()) {
-            currentRoomID = -1;
-            return -1;
+            return null;
         }
-        Random rand = new Random();
-        currentRoomID = availableRoomIDs.get(rand.nextInt(availableRoomIDs.size()));
-        return currentRoomID;
+        return availableRoomIDs;
     }
 
     /*
@@ -140,8 +132,7 @@ public class Controller {
 
         }
 
-        List<Reservation> reservations
-                = facade.getAllReservationsOfSpecificType(type);
+        List<Reservation> reservations = facade.getAllReservationsOfSpecificType(type);
         Date bookedArrivalDate;
         Date bookedDepartureDate;
 
@@ -160,9 +151,9 @@ public class Controller {
             }
             if (status) {
                 if (arrivalDate.before(bookedArrivalDate)
-                        && departureDate.before(bookedArrivalDate)) {
+                        && departureDate.compareTo(bookedArrivalDate) <= 0) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
-                } else if (arrivalDate.after(bookedDepartureDate)) {
+                } else if (arrivalDate.compareTo(bookedDepartureDate) >= 0) {
                     roomAvailability.put(r.getRoomID(), Boolean.TRUE);
                 } else {
                     roomAvailability.put(r.getRoomID(), Boolean.FALSE);
@@ -184,27 +175,36 @@ public class Controller {
     /*
      *   Returns a list of a customers currently in the hotel
      */
-    public List<Customer> getAllCurrentGuests() {
+    public Map<Customer, Integer> getAllCurrentGuests() {
         List<Customer> allCustomers = facade.getAllCustomers();
         Map<Integer, Customer> customerMap = new HashMap<>();
         for (Customer c : allCustomers) {
             customerMap.put(c.getID(), c);
         }
         List<Reservation> allReservations = facade.getAllReservations();
-        List<Customer> currentGuests = new ArrayList<>();
-        Date rightNow = new Date(Calendar.getInstance().getTimeInMillis());
+        Calendar rightNow = Calendar.getInstance();
+        Date today = new Date(rightNow.getTimeInMillis());
+        today = Date.valueOf(today.toString());
         Date arrivalDate;
         Date departureDate;
 
+        Map<Customer, Integer> currentCustomerStatus = new HashMap<>();
         for (Reservation r : allReservations) {
             arrivalDate = r.getCheckinDate();
             departureDate = r.getDepartureDate();
-            if (rightNow.after(arrivalDate) && rightNow.before(departureDate)) {
-                currentGuests.add(customerMap.get(r.getCustomerID()));
+            System.out.println("");
+            System.out.println("arrival =" + arrivalDate);
+            System.out.println("departure = " + departureDate);
+            if (today.compareTo(arrivalDate) == 0) {
+                currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 2);
+            } else if (today.compareTo(departureDate) == 0) {
+                currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 3);
+            } else if (today.after(arrivalDate) && today.before(departureDate)) {
+                currentCustomerStatus.put(customerMap.get(r.getCustomerID()), 1);
             }
 
         }
-        return currentGuests;
+        return currentCustomerStatus;
     }
 
     /*
@@ -238,11 +238,23 @@ public class Controller {
      * available
      */
     public boolean checkAvailableFacilityBooking(FacilityBooking fb) {
-        return facade.checkAvailableFacilityBooking(fb);
+        List<FacilityBooking> bookings
+                = facade.getAllBookingsOfSpecificDateTimeslotFacility(
+                        fb.getBookingDate(), fb.getTimeslot(), fb.getFacilityID());
+        List<Facility> facility = facade.getFacilityByID(fb.getFacilityID());
+        return bookings.size() < facility.get(0).getCapacity();
     }
 
     public boolean saveFacilityBooking(FacilityBooking fb) {
         return facade.saveFacilityBooking(fb);
+    }
+
+    public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
+        return facade.getAllFacilityBookingOfSpecificUser(ID);
+    }
+
+    public boolean removeFacilityBooking(int ID) {
+        return facade.removeFacilityBooking(ID);
     }
 
     public List<FacilityBooking> getAllFacilityBookingsOfSpecificDate(Date date) {
@@ -253,16 +265,131 @@ public class Controller {
         return facade.getAllFacilityBookingsOfSpecificDateAndUser(date, id);
     }
 
+    public List<FacilityBooking> getAllBookingsOfSpecificDateTimeslotFacility(
+            Date date, int timeslot, Facility facility) {
+        return facade.getAllBookingsOfSpecificDateTimeslotFacility(date, timeslot, facility.getID());
+    }
+
     /*
      * Returns true if specified user already have a facility booking on
      * given date and timeslot
      */
     public boolean doesUserHaveFacilityBookingOnSpecificDateAndTimeslot(
             Date date, int userID, int timeslot) {
-        List<FacilityBooking> bookings
-                = facade.getAllFacilityBookingsOfSpecificDateTimeslotUser(
-                        date, userID, timeslot);
+        List<FacilityBooking> bookings = facade.getAllFacilityBookingsOfSpecificDateTimeslotUser(
+                date, userID, timeslot);
         return !bookings.isEmpty();
+    }
+
+    /*
+     * Get specific user by id.
+     */
+    public HotelUser getUserForSpecificUserID(int userID) {
+        return facade.getUser(userID);
+    }
+
+    public List<QueueEntry> getQueueEntriesOfSpecificBooking(int id) {
+        return facade.getQueueEntriesOfSpecificBooking(id);
+    }
+
+    public int getCurrentUserID() {
+        return 1;
+    }
+
+    public String getFacilityName(int facilityID) {
+        for (Map.Entry<String, Facility> entry : facilityMap.entrySet()) {
+            String string = entry.getKey();
+            Facility facility = entry.getValue();
+            if (facility.getID() == facilityID) {
+                return string;
+            }
+        }
+        return "";
+    }
+
+    public List<Reservation> getAllReservations() {
+        return facade.getAllReservations();
+    }
+
+    public List<Integer> getAllUserIDs() {
+        List<Integer> userIDs = new ArrayList<>();
+        List<HotelUser> users = facade.getAllUsers();
+        for (HotelUser u : users) {
+            userIDs.add(u.getId());
+        }
+        return userIDs;
+    }
+
+    public List<Reservation> searchReservation(Object variable, String columnName) {
+        return facade.searchReservation(variable, columnName);
+    }
+
+    public List<Room> searchRoom(Object variable, String columnName) {
+        return facade.searchRoom(variable, columnName);
+    }
+
+    public List<HotelUser> searchHotelUser(Object variable, String columnName) {
+        return facade.searchHotelUser(variable, columnName);
+    }
+
+    public List<Customer> searchCustomer(Object variable, String columnName) {
+        return facade.searchCustomer(variable, columnName);
+    }
+
+    public List<Facility> searchFacility(Object variable, String columnName) {
+        return facade.searchFacility(variable, columnName);
+    }
+
+    public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
+        return facade.searchFacilityBooking(variable, columnName);
+    }
+    
+    public boolean queueUserForSpecificTimeslot(int bookingID, int userID){
+        QueueEntry entry = new QueueEntry(-1, userID, bookingID);
+        return facade.saveQueueEntry(entry);
+    }
+    
+    public void shutdownConnection(){
+        facade.shutdown();
+    }
+    
+    public boolean updateFacilityBookingUserID(int bookingID, int userID) {
+        return facade.updateFacilityBookingUserID(bookingID, userID);
+    }
+    
+    /*
+     * Pop user from the queue for specific booking id and return his id.
+     */
+    public int popUserFromQueueForID(int bookingID) {
+        List<QueueEntry> entries = this.getQueueEntriesOfSpecificBooking(bookingID);
+        facade.deleteQueueEntryForSpecificID(bookingID, entries.get(0).getUserID());
+        return entries.get(0).getUserID();
+    }
+
+    public List<Integer> getAllUnpaidReservationIDs() {
+        List<UnpaidReservation> unpaidReservationList = facade.getAllUnpaidReservationIDs();
+        List<Integer> IDlist = new ArrayList();
+        for (UnpaidReservation r : unpaidReservationList) {
+            IDlist.add(r.getID());
+        }
+        return IDlist;
+    }
+
+    public boolean removeUnpaidReservation(int ID) {
+        return facade.removeUnpaidReservation(ID);
+    }
+
+    //removes reservation and all the entrys that have reservation_id as a foreign key
+    public boolean removeReservation(int ID) {
+        return facade.removeReservation(ID);
+    }
+
+    public Date getUnpaidReservationBookingDateByID(int ID) {
+        return facade.getUnpaidReservationBookingDateByID(ID);
+    }
+
+    public List<InstructorBooking> getInstructorBookings(int userID) {
+        return facade.getInstructorBookings(userID);
     }
 
     public boolean checkCredentials(String username, String password) {

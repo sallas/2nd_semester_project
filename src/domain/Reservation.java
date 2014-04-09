@@ -64,8 +64,8 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Reservation: " + "ID = " + ID + ", roomID = " + roomID
-                + ", customerID = " + customerID + ", checkinDate = "
-                + checkinDate + ", numberNights = " + departureDate + '.';
+        return "ID= " + ID + " | Room number= " +roomID+ " | Customer ID= "
+                + customerID + " | Arrival Date= " + checkinDate + 
+                " | Departure Date= " + departureDate;
     }
 }

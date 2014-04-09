@@ -12,6 +12,8 @@ public class HotelUserMapperTest {
 
     Connection con;
     HotelUserMapper hum;
+    FacilityBookingMapperInterface fbm;
+    QueueMapperInterface qm;
     TestDBConnector connector = new TestDBConnector();
 
     @Before
@@ -19,6 +21,8 @@ public class HotelUserMapperTest {
         con = connector.getConnection();
         ReservationFixture.setUp(con);
         hum = new HotelUserMapper(con);
+        fbm = new FacilityBookingMapper(con);
+        qm = new QueueMapper(con);
     }
 
     @After
@@ -32,7 +36,7 @@ public class HotelUserMapperTest {
     @Test
     public void testGetAllUsers() {
         List<HotelUser> users = hum.getAllUsers();
-        assertTrue(users.size() == 2);
+        assertTrue(users.size() == 3);
     }
 
     /*
@@ -51,5 +55,12 @@ public class HotelUserMapperTest {
     public void testGetUserNoMatch() {
         List<HotelUser> users = hum.getUser(-1);
         assertTrue(users.isEmpty());
+    }
+    
+    @Test
+    public void testRemoveHotelUserByReservationID(){
+        qm.deleteQueueEntryByReservationID(1);
+        fbm.deleteFacilityBookingByReservationID(1);
+        assertTrue(hum.removeHotelUserByReservationID(1));
     }
 }

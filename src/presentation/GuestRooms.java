@@ -1,58 +1,28 @@
 package presentation;
 
-import domain.Controller;
-import domain.Customer;
-import java.util.List;
+import domain.GuiLogic;
+import javax.swing.table.DefaultTableModel;
 
 public class GuestRooms extends javax.swing.JFrame {
 
-    private Controller instance = Controller.getInstance();
     private LandingPage landingPage;
+    private GuiLogic logic;
 
     public GuestRooms() {
         initComponents();
-        refreshList();
+        constructor();
     }
 
     public GuestRooms(LandingPage landingPage) {
         initComponents();
-        refreshList();
         this.landingPage = landingPage;
+        constructor();
     }
 
-    private void refreshList() {
-        List<Customer> customers = instance.getAllCurrentGuests();
-        int counter = 0;
-        Object[][] ob = new Object[customers.size()][8];
-        for (Customer c : customers) {
-            ob[counter][0] = c.getID();
-            ob[counter][1] = c.getFirst_name();
-            ob[counter][2] = c.getLast_name();
-            ob[counter][3] = c.getCountry();
-            ob[counter][4] = c.getAddres();
-            ob[counter][5] = c.getPhone();
-            ob[counter][6] = c.getTravel_agency();
-            ob[counter][7] = c.getEmail();
-            counter++;
-        }
-
-        jTableGuests.setModel(new javax.swing.table.DefaultTableModel(
-                ob,
-                new String[]{
-                    "ID", "First Name", "Last Name", "Country",
-                    "Address", "Phone", "Agency", "Email"
-                }
-        ) {
-            Class[] types = new Class[]{
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-        });
+    private void constructor() {
+        logic = GuiLogic.getInstance();
+        DefaultTableModel model = (DefaultTableModel) jTableGuests.getModel();
+        logic.refreshGuestTable(model);
     }
 
     /**
@@ -68,8 +38,6 @@ public class GuestRooms extends javax.swing.JFrame {
         jButtonBackToMenu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableGuests = new javax.swing.JTable();
-        jButtonNext = new javax.swing.JButton();
-        jButtonBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,49 +53,29 @@ public class GuestRooms extends javax.swing.JFrame {
         jTableGuests.setAutoCreateRowSorter(true);
         jTableGuests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "First Name", "Last Name", "Country", "Address", "Phone", "Travel Agency", "Email"
+                "ID", "First Name", "Last Name", "Country", "Address", "Phone", "Travel Agency", "Email", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jTableGuests.setCellSelectionEnabled(true);
+        jTableGuests.setColumnSelectionAllowed(false);
         jScrollPane1.setViewportView(jTableGuests);
-
-        jButtonNext.setText("Next");
-
-        jButtonBack.setText("Back");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,15 +85,12 @@ public class GuestRooms extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonBackToMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(64, 64, 64)
-                        .addComponent(jButtonBack)
-                        .addGap(64, 64, 64)
-                        .addComponent(jButtonNext))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelGuests)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,10 +99,7 @@ public class GuestRooms extends javax.swing.JFrame {
                     .addComponent(jLabelGuests, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonBackToMenu)
-                    .addComponent(jButtonNext)
-                    .addComponent(jButtonBack)))
+                .addComponent(jButtonBackToMenu))
         );
 
         pack();
@@ -205,9 +147,7 @@ public class GuestRooms extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonBackToMenu;
-    private javax.swing.JButton jButtonNext;
     private javax.swing.JLabel jLabelGuests;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableGuests;

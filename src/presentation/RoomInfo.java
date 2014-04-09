@@ -1,50 +1,28 @@
 package presentation;
 
-import domain.Controller;
-import java.util.List;
+import domain.GuiLogic;
+import javax.swing.table.DefaultTableModel;
 
 public class RoomInfo extends javax.swing.JFrame {
 
-    private Controller instance = Controller.getInstance();
     private LandingPage landingPage;
+    private GuiLogic logic;
 
     public RoomInfo() {
         initComponents();
-        refreshList();
+        constructor();
     }
 
-    RoomInfo(LandingPage landingPage) {
+    public RoomInfo(LandingPage landingPage) {
         initComponents();
-        refreshList();
+        constructor();
         this.landingPage = landingPage;
     }
 
-    private void refreshList() {
-        List<String> roomList = instance.getRooms();
-        int counter = 0;
-        Object[][] ob = new Object[roomList.size()][3];
-        for (String i : roomList) {
-            String[] separated = i.split("_");
-            ob[counter][0] = separated[0];
-            ob[counter][1] = separated[1];
-            ob[counter][2] = separated[2];
-            counter++;
-        }
-
-        jTableRooms.setModel(new javax.swing.table.DefaultTableModel(
-                ob,
-                new String[]{
-                    "ID", "Type", "Available"
-                }
-        ) {
-            Class[] types = new Class[]{
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-        });
+    private void constructor() {
+        logic = GuiLogic.getInstance();
+        DefaultTableModel model = (DefaultTableModel) jTableRooms.getModel();
+        logic.refreshRoomInfoTable(model);
     }
 
     /**
@@ -70,9 +48,7 @@ public class RoomInfo extends javax.swing.JFrame {
         jTableRooms.setAutoCreateRowSorter(true);
         jTableRooms.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Type", "Available From"
@@ -87,7 +63,7 @@ public class RoomInfo extends javax.swing.JFrame {
             }
         });
         jTableRooms.setToolTipText("");
-        jTableRooms.setCellSelectionEnabled(true);
+        jTableRooms.setColumnSelectionAllowed(false);
         jScrollPane1.setViewportView(jTableRooms);
 
         jButtonBackToMenu.setText("Back to Menu");

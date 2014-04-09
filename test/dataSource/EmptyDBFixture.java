@@ -15,8 +15,13 @@ public class EmptyDBFixture {
             con.setAutoCommit(false);
 
             // delete info in table
+            st.addBatch("delete from instructor_booking");
+            st.addBatch("delete from instructor_sports");
+            st.addBatch("delete from instructor");
+            st.addBatch("delete from queue_facility");
             st.addBatch("delete from facility_booking");
             st.addBatch("delete from Hotel_user");
+            st.addBatch("delete from unpaid_reservations");
             st.addBatch("delete from Reservation");
             st.addBatch("delete from Room");
             st.addBatch("delete from Customer");
@@ -33,7 +38,13 @@ public class EmptyDBFixture {
             st.addBatch("create sequence facility_bookingseq start with 1");
             st.addBatch("drop sequence hotel_userseq");
             st.addBatch("create sequence hotel_userseq start with 1");
-
+            st.addBatch("drop sequence queue_facilityseq");
+            st.addBatch("create sequence queue_facilityseq start with 1");
+            st.addBatch("drop sequence instructorSeq");
+            st.addBatch("create sequence instructorSeq start with 1");
+            st.addBatch("drop sequence instructor_bookingSeq");
+            st.addBatch("create sequence instructor_bookingSeq start with 1");
+            
             st.executeBatch();
             // end transaction
             con.commit();

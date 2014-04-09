@@ -10,4 +10,6 @@ public interface RoomMapperInterface {
 
     List<Room> getAllRooms();
     
+    List<Room> search(Object variable, String columnName);
+    
 }

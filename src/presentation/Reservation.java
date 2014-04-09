@@ -6,9 +6,9 @@ import domain.WrongEmail;
 import domain.WrongNumberOfNights;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.swing.JTextField;
+import utility.DateLogic;
 
 public class Reservation extends javax.swing.JFrame {
 
@@ -25,18 +25,20 @@ public class Reservation extends javax.swing.JFrame {
      */
     public Reservation() {
         initComponents();
-        typeField.addItem("single");
-        typeField.addItem("double");
-        typeField.addItem("family");
-
+        constructor();
     }
 
     public Reservation(LandingPage landingPage) {
-                initComponents();
+        initComponents();
+        constructor();
+        this.landingPage = landingPage;
+    }
+
+    private void constructor() {
+        roomIDsComboBox.removeAllItems();
         typeField.addItem("single");
         typeField.addItem("double");
         typeField.addItem("family");
-        this.landingPage = landingPage;
     }
 
     /**
@@ -72,9 +74,9 @@ public class Reservation extends javax.swing.JFrame {
         checkDatePicker = new org.jdesktop.swingx.JXDatePicker();
         nightsCounter = new javax.swing.JSpinner();
         roomAvailability = new javax.swing.JButton();
-        RoomNumLabel = new javax.swing.JLabel();
         statusText = new javax.swing.JLabel();
         backToMenuButton = new javax.swing.JButton();
+        roomIDsComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registration of apartment");
@@ -132,6 +134,12 @@ public class Reservation extends javax.swing.JFrame {
 
         jLabel2.setText("Ap. type:");
 
+        typeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeFieldActionPerformed(evt);
+            }
+        });
+
         submitButton.setText("Submit");
         submitButton.setToolTipText("");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -147,8 +155,6 @@ public class Reservation extends javax.swing.JFrame {
             }
         });
 
-        RoomNumLabel.setText("Room Number");
-
         statusText.setMaximumSize(new java.awt.Dimension(150, 15));
         statusText.setMinimumSize(new java.awt.Dimension(150, 15));
 
@@ -156,6 +162,13 @@ public class Reservation extends javax.swing.JFrame {
         backToMenuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backToMenuButtonActionPerformed(evt);
+            }
+        });
+
+        roomIDsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        roomIDsComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roomIDsComboBoxActionPerformed(evt);
             }
         });
 
@@ -206,10 +219,13 @@ public class Reservation extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(roomAvailability, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(33, 33, 33)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(RoomNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(33, 33, 33)
+                                        .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(roomIDsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -264,7 +280,7 @@ public class Reservation extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RoomNumLabel))
+                    .addComponent(roomIDsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(submitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -295,31 +311,33 @@ public class Reservation extends javax.swing.JFrame {
 
     private void roomAvailabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomAvailabilityActionPerformed
         statusText.setText(null);
-        
+
         currentBookingNumNights = (Integer) nightsCounter.getValue();
         if (currentBookingNumNights <= 0) {
             statusText.setText("Please choose a positive number of nights");
             return;
         }
-        
-        Calendar arrivalDate = Calendar.getInstance();
-        arrivalDate.clear();
-        arrivalDate.setTime(checkDatePicker.getDate());
+        roomIDsComboBox.removeAllItems();
+        currentBookingArrivalDate = checkDatePicker.getDate();
+        Calendar arrivalDate
+                = DateLogic.utilDateToCalendarDate(currentBookingArrivalDate);
         Calendar departureDate = (Calendar) arrivalDate.clone();
         departureDate.add(Calendar.DATE, currentBookingNumNights);
         java.sql.Date arrival = new java.sql.Date(arrivalDate.getTimeInMillis());
         java.sql.Date departure = new java.sql.Date(departureDate.getTimeInMillis());
-        currentBookingArrivalDate = checkDatePicker.getDate();
-        currentBookingRoomID = control.getAvailableRoomIDOfTypeBetweenDates((String) typeField.getSelectedItem(),
-                arrival, departure);
+        List<Integer> availableRoomIDs
+                = control.getAvailableRoomIDsOfTypeBetweenDates(
+                        (String) typeField.getSelectedItem(), arrival, departure);
         currentBookingType = (String) typeField.getSelectedItem();
-        if (currentBookingRoomID == -1) {
-            RoomNumLabel.setText("No room");
+        if (availableRoomIDs == null) {
             statusText.setText("No room is available on those dates");
+        } else {
+            for (Integer ID : availableRoomIDs) {
+                roomIDsComboBox.addItem(ID);
+            }
+            currentBookingRoomID = availableRoomIDs.get(0);
         }
-        else {
-            RoomNumLabel.setText(currentBookingRoomID + "");
-        }
+
     }//GEN-LAST:event_roomAvailabilityActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
@@ -370,29 +388,26 @@ public class Reservation extends javax.swing.JFrame {
             statusText.setText("That room type hasn't beeen checked");
             return;
         }
-        java.sql.Date arrival = java.sql.Date.valueOf("2000-01-01");
-        arrival.setTime(currentBookingArrivalDate.getTime());
-        boolean reservationSaved = false;
+        java.sql.Date arrival
+                = new java.sql.Date(currentBookingArrivalDate.getTime());
+        boolean reservationSaved;
         try {
             reservationSaved = control.createNewReservation(firstName, familyName, address,
                     country, phone, email, travelAgency, arrival,
                     currentBookingNumNights, currentBookingRoomID);
-        }
-        catch (WrongNumberOfNights ex) {
+        } catch (WrongNumberOfNights ex) {
             statusText.setText("Please choose a positive number of nights");
             return;
-        }
-        catch (WrongEmail ex) {
+        } catch (WrongEmail ex) {
             statusText.setText("Please enter a correct email");
             return;
         } catch (UnavailableReservation ex) {
             statusText.setText("Someone already booked that reservation");
             return;
-        } 
-        if(reservationSaved) {
-            statusText.setText("Registered");
         }
-        else {
+        if (reservationSaved) {
+            statusText.setText("Registered");
+        } else {
             statusText.setText("Not Registered");
         }
     }//GEN-LAST:event_submitButtonActionPerformed
@@ -402,13 +417,25 @@ public class Reservation extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 
+    private void roomIDsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomIDsComboBoxActionPerformed
+        if (roomIDsComboBox.getItemCount() == 0) {
+            currentBookingRoomID = -1;
+        } else {
+            currentBookingRoomID = (Integer) roomIDsComboBox.getSelectedItem();
+        }
+
+    }//GEN-LAST:event_roomIDsComboBoxActionPerformed
+
+    private void typeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeFieldActionPerformed
+
     private String textFieldChecker(JTextField textField, String errorString) {
         String returnString = null;
         if (textField.getText().equals("")) {
             statusText.setText(errorString);
             status = false;
-        }
-        else {
+        } else {
             returnString = textField.getText();
         }
         return returnString;
@@ -430,17 +457,13 @@ public class Reservation extends javax.swing.JFrame {
                     break;
                 }
             }
-        }
-        catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Reservation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex) {
+        } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(Reservation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(Reservation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Reservation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -453,7 +476,6 @@ public class Reservation extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel RoomNumLabel;
     private javax.swing.JTextField addressField;
     private javax.swing.JLabel addressLabel;
     private javax.swing.JButton backToMenuButton;
@@ -475,6 +497,7 @@ public class Reservation extends javax.swing.JFrame {
     private javax.swing.JLabel phoneLabel;
     private javax.swing.JLabel reservationTitle;
     private javax.swing.JButton roomAvailability;
+    private javax.swing.JComboBox roomIDsComboBox;
     private javax.swing.JLabel statusText;
     private javax.swing.JButton submitButton;
     private javax.swing.JTextField travelAgencyField;

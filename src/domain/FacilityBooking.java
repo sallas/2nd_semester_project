@@ -3,6 +3,7 @@ package domain;
 import java.sql.Date;
 
 public class FacilityBooking {
+
     private int ID;
     private int facilityID;
     private Date bookingDate;
@@ -16,12 +17,11 @@ public class FacilityBooking {
         this.timeslot = timeslot;
         this.userID = userID;
     }
-    
+
     public FacilityBooking() {
         bookingDate = null;
     }
 
-    
     public int getID() {
         return ID;
     }
@@ -61,4 +61,12 @@ public class FacilityBooking {
     public void setUserID(int userID) {
         this.userID = userID;
     }
+
+    @Override
+    public String toString() {
+        return "Sports Booking " + "ID= " + ID + " | Facility ID= " + facilityID
+                + " | Booking Date= " + bookingDate + " | Timeslot= " + timeslot
+                + " | User ID= " + userID;
+    }
+
 }

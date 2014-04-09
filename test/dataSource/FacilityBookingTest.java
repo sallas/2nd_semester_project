@@ -14,6 +14,7 @@ public class FacilityBookingTest {
 
     Connection con;
     FacilityBookingMapper fbm;
+    QueueMapperInterface qm;
     TestDBConnector connector = new TestDBConnector();
 
     public FacilityBookingTest() {
@@ -24,6 +25,7 @@ public class FacilityBookingTest {
         con = connector.getConnection();
         ReservationFixture.setUp(con);
         fbm = new FacilityBookingMapper(con);
+        qm = new QueueMapper(con);
     }
 
     @After
@@ -134,7 +136,7 @@ public class FacilityBookingTest {
      */
     @Test
     public void testsaveFacilityBookingNoProblem() {
-        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2099-03-24"), 3, 1);
+        FacilityBooking fb = new FacilityBooking(4, 1, Date.valueOf("2099-03-24"), 3, 1);
         boolean status = fbm.saveFacilityBooking(fb);
         assertTrue(status);
     }
@@ -159,6 +161,23 @@ public class FacilityBookingTest {
         FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2099-03-24"), 3, -1);
         boolean status = fbm.saveFacilityBooking(fb);
         assertFalse(status);
+    }
+    
+    //Tests if the remove method works when there is a match
+    @Test
+    public void testRemoveFacilityBookingMatch(){
+        assertTrue(fbm.removeFacilityBooking(3));
+    }
+    
+    @Test
+    public void testRemoveFacilityBookingNoMatch(){
+        assertFalse(fbm.removeFacilityBooking(999999));
+    }
+    
+    @Test
+    public void testDeleteFacilityBookingByReservationID(){
+        qm.deleteQueueEntryByReservationID(2);
+        assertTrue(fbm.deleteFacilityBookingByReservationID(2));
     }
 
 }
