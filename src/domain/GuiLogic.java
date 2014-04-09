@@ -25,6 +25,7 @@ public class GuiLogic {
 
     private GuiLogic() {
         control = Controller.getInstance();
+        emailValidator = new EmailValidator();
         currentUserID = 3;
         setUpTimeslots();
         guests = new ArrayList<>();
@@ -295,7 +296,22 @@ public class GuiLogic {
         Date departureSQLDate = new Date(departureDate.getTimeInMillis());
         Reservation reservation = new Reservation(-1, roomID,
                 -1, arrival, departureSQLDate);
-        control.saveReservationWithGuests(reservation, guests);
-        return false;
+        return control.saveReservationWithGuests(reservation, guests);
+    }
+
+    public List<String> getCurrentReservationCustomerInfo() {
+        List<String> customerInfo = new ArrayList<>();
+        for (Customer c : guests) {
+            String s = "";
+            s += c.getFirst_name() + " ";
+            s += c.getLast_name() + " ";
+            s += c.getEmail();
+            customerInfo.add(s);
+        }
+        return customerInfo;
+    }
+
+    public void resetGuests() {
+        guests = new ArrayList<>();
     }
 }

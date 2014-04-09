@@ -26,6 +26,7 @@ public class DBFacade {
     private static HotelUserMapperInterface hotelUserMapper;
     private static QueueMapperInterface queueMapper;
     private static InstructorBookingMapper instructorBookingMapper;
+    private static ReservationCustomerMapper resCustomerMapper;
     private static Connection connection;
 
     private DBFacade() {
@@ -47,6 +48,7 @@ public class DBFacade {
         hotelUserMapper = new HotelUserMapper(con);
         queueMapper = new QueueMapper(con);
         instructorBookingMapper = new InstructorBookingMapper(con);
+        resCustomerMapper = new ReservationCustomerMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -79,7 +81,8 @@ public class DBFacade {
 
     public boolean saveReservationInformation(Reservation r, List<Customer> c) {
         return SaveRegistrationLogic.saveReservationInformation(
-                r, c, connection, reservationMapper, customerMapper);
+                r, c, connection, reservationMapper, customerMapper,
+                resCustomerMapper);
     }
 
     public Customer getCustomer(int ID) {
@@ -177,7 +180,7 @@ public class DBFacade {
     public boolean removeReservation(int ID) {
         return deleteReservationLogic.deleteReservation(
                 ID, connection, reservationMapper, hotelUserMapper,
-                queueMapper, facilityBookingMapper);
+                queueMapper, facilityBookingMapper, resCustomerMapper);
     }
 
     public Date getUnpaidReservationBookingDateByID(int ID) {

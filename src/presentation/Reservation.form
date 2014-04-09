@@ -24,8 +24,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="addGuestButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="reservationTitle" min="-2" pref="202" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -89,22 +93,16 @@
                                       <Component id="familyNameField" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="checkDatePicker" min="-2" pref="224" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="nightsLabel" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="guestsComboBox" min="-2" pref="326" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="checkDatePicker" min="-2" pref="224" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="nightsCounter" max="32767" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="0" pref="18" max="32767" attributes="0"/>
-                                              <Component id="addGuestButton" min="-2" pref="103" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="nightsLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                      <Component id="nightsCounter" pref="121" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="guestsComboBox" max="32767" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="removeGuestsButton" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -155,13 +153,23 @@
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="travelAgencyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="guestsComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="addGuestButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="guestLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="addGuestButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="guestsComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="guestLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Component id="removeGuestsButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="checkinLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -366,7 +374,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="addGuestButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Add Guest"/>
+        <Property name="text" type="java.lang.String" value="Add guest to reservation"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addGuestButtonActionPerformed"/>
@@ -376,6 +384,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Guests in reservation:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="removeGuestsButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Remove guests"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeGuestsButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

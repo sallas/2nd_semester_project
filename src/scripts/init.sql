@@ -138,7 +138,7 @@ FOREIGN KEY (facility_id) REFERENCES facility(ID)
 );
 
 CREATE TABLE Reservation_Customer (
-reservation_id number(5) PRIMARY KEY,
+reservation_id number(5) NOT NULL,
 customer_id number(5) NOT NULL,
 FOREIGN KEY (reservation_id) REFERENCES reservation(ID),
 FOREIGN KEY (customer_id) REFERENCES customer(ID)

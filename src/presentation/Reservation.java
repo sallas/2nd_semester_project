@@ -44,6 +44,12 @@ public class Reservation extends javax.swing.JFrame {
         typeField.addItem("single");
         typeField.addItem("double");
         typeField.addItem("family");
+        logic = GuiLogic.getInstance();
+        guestsComboBox.removeAllItems();
+        List<String> customerLogic = logic.getCurrentReservationCustomerInfo();
+        for (String s : customerLogic) {
+            guestsComboBox.addItem(s);
+        }
         guests = 0;
     }
 
@@ -86,6 +92,7 @@ public class Reservation extends javax.swing.JFrame {
         guestsComboBox = new javax.swing.JComboBox();
         addGuestButton = new javax.swing.JButton();
         guestLabel = new javax.swing.JLabel();
+        removeGuestsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registration of apartment");
@@ -183,7 +190,7 @@ public class Reservation extends javax.swing.JFrame {
 
         guestsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        addGuestButton.setText("Add Guest");
+        addGuestButton.setText("Add guest to reservation");
         addGuestButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addGuestButtonActionPerformed(evt);
@@ -192,12 +199,22 @@ public class Reservation extends javax.swing.JFrame {
 
         guestLabel.setText("Guests in reservation:");
 
+        removeGuestsButton.setText("Remove guests");
+        removeGuestsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeGuestsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addGuestButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(reservationTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -250,18 +267,15 @@ public class Reservation extends javax.swing.JFrame {
                                         .addGap(24, 24, 24)
                                         .addComponent(familyNameField))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(nightsLabel))
-                                            .addComponent(guestsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(checkDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(nightsCounter)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(0, 18, Short.MAX_VALUE)
-                                                .addComponent(addGuestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
+                                        .addComponent(nightsLabel)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(nightsCounter, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(guestsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(removeGuestsButton)))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addGap(34, 34, 34))
@@ -298,12 +312,19 @@ public class Reservation extends javax.swing.JFrame {
                     .addComponent(travelAgencyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(travelAgencyLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(guestsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addGuestButton)
-                    .addComponent(guestLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addGuestButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(guestsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(guestLabel))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(removeGuestsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(checkinLabel)
@@ -410,9 +431,14 @@ public class Reservation extends javax.swing.JFrame {
         }
         java.sql.Date arrival
                 = new java.sql.Date(currentBookingArrivalDate.getTime());
-        boolean reservationSaved;
-        logic.saveReservation(arrival, currentBookingNumNights,
-                currentBookingRoomID);
+        if(logic.saveReservation(arrival, currentBookingNumNights,
+                currentBookingRoomID) == true) {
+            statusText.setText("Registered");
+        } else {
+            statusText.setText("Not Registered");
+        }
+            
+            
         
 //        try {
 //            reservationSaved = control.createNewReservation(firstName, familyName, address,
@@ -487,8 +513,15 @@ public class Reservation extends javax.swing.JFrame {
             return;
         }
         statusText.setText("Guest added");
+        String s = firstName + " " + familyName + " " + email;
+        guestsComboBox.addItem(s);
         guests++;
     }//GEN-LAST:event_addGuestButtonActionPerformed
+
+    private void removeGuestsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeGuestsButtonActionPerformed
+        guestsComboBox.removeAllItems();
+        logic.resetGuests();
+    }//GEN-LAST:event_removeGuestsButtonActionPerformed
 
     private String textFieldChecker(JTextField textField, String errorString) {
         String returnString = null;
@@ -558,6 +591,7 @@ public class Reservation extends javax.swing.JFrame {
     private javax.swing.JLabel nightsLabel;
     private javax.swing.JTextField phoneField;
     private javax.swing.JLabel phoneLabel;
+    private javax.swing.JButton removeGuestsButton;
     private javax.swing.JLabel reservationTitle;
     private javax.swing.JButton roomAvailability;
     private javax.swing.JComboBox roomIDsComboBox;

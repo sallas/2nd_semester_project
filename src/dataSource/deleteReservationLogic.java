@@ -16,7 +16,8 @@ public class deleteReservationLogic {
             ReservationMapperInterface reservationMapper,
             HotelUserMapperInterface hotelUserMapper,
             QueueMapperInterface queueMapper,
-            FacilityBookingMapperInterface facilityBookingMapper) {
+            FacilityBookingMapperInterface facilityBookingMapper,
+            ReservationCustomerMapper resCustomerMapper) {
 
         boolean status = true;
         try {
@@ -28,6 +29,7 @@ public class deleteReservationLogic {
             facilityBookingMapper.deleteFacilityBookingByReservationID(ID);
             hotelUserMapper.removeHotelUserByReservationID(ID);
             reservationMapper.removeUnpaidReservation(ID);
+            resCustomerMapper.removeByReservationID(ID);
             status = reservationMapper.removeReservation(ID);
             
             if (!status){

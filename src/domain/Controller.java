@@ -399,8 +399,8 @@ public class Controller {
         return facade.getInstructorBookingByUserIDAndDate(userID, date);
     }
 
-    void saveReservationWithGuests(Reservation reservation, List<Customer> guests) {
-        facade.saveReservationInformation(reservation, guests);
+    public boolean saveReservationWithGuests(Reservation reservation, List<Customer> guests) {
+        return facade.saveReservationInformation(reservation, guests);
     }
 
 }

@@ -13,6 +13,7 @@ public class ReservationMapperTest {
 
     Connection con;
     ReservationMapper rm;
+    ReservationCustomerMapper rcm;
     QueueMapperInterface qm;
     FacilityBookingMapperInterface fbm;
     HotelUserMapperInterface hum;
@@ -32,6 +33,7 @@ public class ReservationMapperTest {
         qm = new QueueMapper(con);
         fbm = new FacilityBookingMapper(con);
         hum = new HotelUserMapper(con);
+        rcm = new ReservationCustomerMapper(con);
     }
 
     @After
@@ -74,8 +76,8 @@ public class ReservationMapperTest {
     @Test
     public void testSaveReservationNewID() {
         Reservation r = new Reservation(1, 100, 1, new Date(01, 07, 2014), new Date(05, 07, 2014));
-        boolean status = rm.saveReservation(r);
-        assertTrue(status);
+        int status = rm.saveReservation(r);
+        assertTrue(status != -1);
     }
 
     /*
@@ -85,8 +87,9 @@ public class ReservationMapperTest {
     @Test
     public void testSaveReservationNoMatchCustomerID() {
         Reservation r = new Reservation(1, 100, 99, new Date(01, 07, 2014), new Date(05, 07, 2014));
-        boolean status = rm.saveReservation(r);
-        assertFalse(status);
+        int status = rm.saveReservation(r);
+        System.out.println(status);
+        assertTrue(status == -1);
     }
 
     /*
@@ -97,8 +100,8 @@ public class ReservationMapperTest {
     public void testSaveReservationNoRoomsAndCustomersInDB() {
         EmptyDBFixture.setUp(con);
         Reservation r = new Reservation(1, 100, 99, new Date(01, 07, 2014), new Date(05, 07, 2014));
-        boolean status = rm.saveReservation(r);
-        assertFalse(status);
+        int status = rm.saveReservation(r);
+        assertTrue(status == -1);
     }
 
     /*
@@ -108,8 +111,8 @@ public class ReservationMapperTest {
     @Test
     public void testSaveReservationNoMatchRoomID() {
         Reservation r = new Reservation(1, 99, 1, new Date(01, 07, 2014), new Date(05, 07, 2014));
-        boolean status = rm.saveReservation(r);
-        assertFalse(status);
+        int status = rm.saveReservation(r);
+        assertTrue(status == -1);
     }
 
     /*
@@ -247,6 +250,7 @@ public class ReservationMapperTest {
         fbm.deleteFacilityBookingByReservationID(2);
         hum.removeHotelUserByReservationID(2);
         rm.removeUnpaidReservation(2);
+        rcm.removeByReservationID(2);
         assertTrue(rm.removeReservation(2));
     }
     

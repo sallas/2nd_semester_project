@@ -46,14 +46,14 @@ public class ReservationMapperMock implements ReservationMapperInterface {
     }
 
     @Override
-    public boolean saveReservation(Reservation r) {
+    public int saveReservation(Reservation r) {
         if (!roomID.contains(r.getRoomID())) {
-            return false;
+            return -1;
         }
         r.setID(sequenceNo);
         reservations.put(sequenceNo, r);
         sequenceNo++;
-        return true;
+        return sequenceNo;
     }
 
     @Override

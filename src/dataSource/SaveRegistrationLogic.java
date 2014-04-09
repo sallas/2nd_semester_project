@@ -2,9 +2,11 @@ package dataSource;
 
 import domain.Customer;
 import domain.Reservation;
+import domain.ReservationCustomer;
 import domain.UnavailableReservation;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -21,7 +23,8 @@ public class SaveRegistrationLogic {
     public static boolean saveReservationInformation(Reservation r,
             List<Customer> c, Connection connection,
             ReservationMapperInterface reservationMapper,
-            CustomerMapperInterface customerMapper) {
+            CustomerMapperInterface customerMapper,
+            ReservationCustomerMapper resCustomerMapper) {
 
         boolean status = true;
         try {
@@ -30,20 +33,29 @@ public class SaveRegistrationLogic {
             reservationMapper.lockReservationTable();
 
             status = status && reservationMapper.checkAvailableReservation(r);
+            
             int customerID = customerMapper.saveNewCustomer(c.get(0));
+            List<ReservationCustomer> resCus = new ArrayList<>();
+            resCus.add(new ReservationCustomer(-1, customerID));
+            status = customerID != -1 && status;
             c.remove(0);
             for (Customer customer : c) {
-                customerMapper.saveNewCustomer(customer);
-            }
-            if (customerID == -1) {
-                status = false;
+                int ID = customerMapper.saveNewCustomer(customer);
+                status = ID != -1 && status;
+                resCus.add(new ReservationCustomer(-1, ID));
             }
             r.setCustomerID(customerID);
-            status = status && reservationMapper.saveReservation(r);
-
+            int resID = reservationMapper.saveReservation(r);
+            status = resID != -1 && status;
+            for (ReservationCustomer rc : resCus) {
+                rc.setReservationID(resID);
+                status = status && resCustomerMapper.saveReservationCustomer(rc);
+            }
+            
             if (!status) {
                 throw new UnavailableReservation("Save Reservation Transaction aborted");
             }
+            
             //=== system transaction - ends with success
             connection.commit();
         } catch (Exception e) {

@@ -180,6 +180,13 @@ public abstract class AbstractMapper {
                 + " WHERE " + columnName + " = ?",
                 exMessage, variable);
     }
+    
+    protected boolean generalDelete(String columnName, String exMessage,
+            Object variable) {
+        return executeSQLInsert("DELETE FROM " + tableName + " WHERE " 
+                + columnName + " = ?", exMessage, variable)
+                == 1;
+    }
 
     protected int getSequenceNumber(String statement, String exMessage) {
         int seq = 0;

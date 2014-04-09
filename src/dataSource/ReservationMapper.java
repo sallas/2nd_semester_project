@@ -35,7 +35,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
     //The first SQL query is meant to create a unique ID for the reservation.
     //The second query simply inserts the data into the database table.
     @Override
-    public boolean saveReservation(Reservation r) {
+    public int saveReservation(Reservation r) {
         int seqNum = getSequenceNumber("SELECT reservationSeq.nextval "
                 + "FROM dual",
                 "Fail in ReservationMapper - saveReservation");
@@ -51,7 +51,7 @@ public class ReservationMapper extends AbstractMapper implements ReservationMapp
                     "Fail in ReservationMapper - saveReservation (unpaid_reservations table)",
                     seqNum, DateLogic.getCurrentDateInSQLDate());
         }
-        return result == 1;
+        return result == 1 ? seqNum : -1;
     }
 
     //This method returns a list of all the reservation objects of specified type

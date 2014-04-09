@@ -22,6 +22,7 @@ public class ReservationFixture {
             st.addBatch("delete from facility_booking");
             st.addBatch("delete from Hotel_user");
             st.addBatch("delete from unpaid_reservations");
+            st.addBatch("delete from Reservation_Customer");
             st.addBatch("delete from Reservation");
             st.addBatch("delete from Room");
             st.addBatch("delete from Customer");
@@ -90,6 +91,12 @@ public class ReservationFixture {
             insert = "insert into instructor_booking values ";
             st.addBatch(insert + "(1, 1, 1, to_date('06-06-2014', 'DD-MM-YYYY')"
                     + ", 1)");
+            //insert into reservation_customer
+            insert = "insert into reservation_customer values ";
+            st.addBatch(insert + "(1, 1)");
+            st.addBatch(insert + "(2, 2)");
+            st.addBatch(insert + "(3, 1)");
+            
 
             st.executeBatch();
             // end transaction

@@ -16,7 +16,7 @@ public interface ReservationMapperInterface {
      * This method saves a reservation into the database.
      * Returns false if reservation wasn't able to be entered
      */
-    boolean saveReservation(Reservation r);
+    int saveReservation(Reservation r);
 
     /*
      * This method returns a list of all the reservation objects of specified type
