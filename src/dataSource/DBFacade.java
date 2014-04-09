@@ -27,6 +27,7 @@ public class DBFacade {
     private static QueueMapperInterface queueMapper;
     private static InstructorBookingMapper instructorBookingMapper;
     private static Connection connection;
+    private static AdministratorMapper admin;
 
     private DBFacade() {
         connection = DBConnector.getConnection();
@@ -47,6 +48,7 @@ public class DBFacade {
         hotelUserMapper = new HotelUserMapper(con);
         queueMapper = new QueueMapper(con);
         instructorBookingMapper = new InstructorBookingMapper(con);
+        admin = new AdministratorMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -187,11 +189,11 @@ public class DBFacade {
     public boolean removeHotelUserByReservationID(int ID) {
         return hotelUserMapper.removeHotelUserByReservationID(ID);
     }
-    
+
     public List<Reservation> searchReservation(Object variable, String columnName) {
         return reservationMapper.search(variable, columnName);
     }
-    
+
     public boolean saveQueueEntry(QueueEntry entry) {
         return queueMapper.saveQueueEntry(entry);
     }
@@ -203,7 +205,7 @@ public class DBFacade {
             System.err.println(e);
         }
     }
-    
+
     public List<Room> searchRoom(Object variable, String columnName) {
         return roomMapper.search(variable, columnName);
     }
@@ -211,19 +213,19 @@ public class DBFacade {
     public List<HotelUser> searchHotelUser(Object variable, String columnName) {
         return hotelUserMapper.search(variable, columnName);
     }
-    
+
     public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return facilityBookingMapper.updateFacilityBookingUserID(bookingID, userID);
     }
-    
+
     public List<Customer> searchCustomer(Object variable, String columnName) {
         return customerMapper.search(variable, columnName);
     }
-    
+
     public boolean deleteQueueEntryForSpecificID(int bookingID, int userID) {
         return queueMapper.deleteQueueEntryForSpecificID(bookingID, userID);
     }
-    
+
     public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
         return facilityBookingMapper.search(variable, columnName);
     }
@@ -235,4 +237,71 @@ public class DBFacade {
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return instructorBookingMapper.getInstructorBookingByUserID(userID);
     }
+
+    public boolean addAccountf(HotelUser a) {
+        return admin.addAccount(a);
+    }
+
+    public boolean deleteAccountf(HotelUser a) {
+        return admin.deleteAccount(a);
+    }
+
+    public boolean AddSportFacilityf(Facility f) {
+        return admin.addSportFacility(f);
+    }
+
+    public boolean DeleteSportFacilityf(Facility f) {
+        return admin.deleteSportFacility(f);
+    }
+
+    public boolean updateUsernamef(HotelUser a) {
+        return admin.updateUername(a);
+    }
+
+    public boolean updatePasswordf(HotelUser a) {
+        return admin.updatePassword(a);
+    }
+
+    public boolean updateAddressf(Customer a) {
+        return admin.updateAddress(a);
+    }
+
+    public boolean updateCountryf(Customer a) {
+        return admin.updateCountry(a);
+    }
+
+    public boolean updateFirst_namef(Customer a) {
+        return admin.updateFirst_name(a);
+    }
+
+    public boolean updateLast_namef(Customer a) {
+        return admin.updateLast_name(a);
+    }
+
+    public boolean updatePhonef(Customer a) {
+        return admin.updatePhone(a);
+    }
+
+    public boolean updateEmailf(Customer a) {
+        return admin.updateEmail(a);
+    }
+
+    public boolean updateTravel_angencyf(Customer a) {
+        return admin.updateTravel_agency(a);
+    }
+
+    public boolean updateReservation_idf(HotelUser a) {
+        return admin.updateReservation_id(a);
+    }
+
+    public boolean updateSpentf(HotelUser a) {
+        return admin.updateSpent(a);
+    }
+
+    public boolean updateStatus(HotelUser a) {
+        return admin.updateStatus(a);
+    }
+
 }
+
+

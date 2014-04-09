@@ -391,4 +391,77 @@ public class Controller {
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return facade.getInstructorBookings(userID);
     }
+
+    public boolean updateUsernamec(HotelUser a) {
+        return facade.updateUsernamef(a);
+    }
+
+    public boolean updatePasswordc(HotelUser a) {
+        return facade.updatePasswordf(a);
+    }
+
+    public boolean updateStatusc(HotelUser a) {
+        return facade.updateStatus(a);
+    }
+
+    public boolean updateReservation_id(HotelUser a) {
+        return facade.updateReservation_idf(a);
+    }
+
+    public boolean updateSpent(HotelUser a) {
+        return facade.updateSpentf(a);
+    }
+
+    public boolean updateAddress(Customer a) {
+        return facade.updateAddressf(a);
+    }
+
+    public boolean updateCountry(Customer a) {
+        return facade.updateCountryf(a);
+    }
+
+    public boolean updateFirst_name(Customer a) {
+        return facade.updateFirst_namef(a);
+    }
+
+    public boolean updateLast_name(Customer a) {
+        return facade.updateLast_namef(a);
+    }
+
+    public boolean updatePhone(Customer a) {
+        return facade.updatePhonef(a);
+    }
+
+    public boolean updateEmail(Customer a) {
+        return facade.updateEmailf(a);
+    }
+
+    public boolean updateTravel_agency(Customer a) {
+        return facade.updateTravel_angencyf(a);
+    }
+
+    public boolean addSportFacility(Facility f) {
+        return facade.AddSportFacilityf(f);
+    }
+
+    public boolean deleteSportFacility(Facility f) {
+        return facade.DeleteSportFacilityf(f);
+    }
+
+    public boolean addAccount(HotelUser a) {
+        return facade.addAccountf(a);
+    }
+
+    public boolean deleteAccount(HotelUser a) {
+        return facade.deleteAccountf(a);
+    }
+
+}
+
+
+
+
+
+
+
 }
