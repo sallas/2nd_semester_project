@@ -437,12 +437,14 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         Date checkDate = dates.get(date);
         currentAmountOfBookingsOnSpecificDate =
                 logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
+        //Bookings per user
         if (currentAmountOfBookingsOnSpecificDate >= 4) {
             statusTextField.setText("You can't book anything more on this date");
             return;
         }
         
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
+        //Bookings for timeslot by same user
         if (logic.userHasBookingOnDateTimeslot(checkDate, timeslot)) {
             statusTextField.setText("You already have a booking on this timeslot");
             return;
@@ -450,23 +452,37 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         Calendar rightNow = Calendar.getInstance();
         Calendar checkDateCalendar = DateLogic.sqlDateToCalendarDate(checkDate);
         checkDateCalendar.add(Calendar.HOUR, 6 + timeslot);
+        //Bookings for relevant time
         if (rightNow.after(checkDateCalendar)) {
             statusTextField.setText("You are to late to book this timeslot");
             return;
         }
+        updateCurrentBooking();
+        //Facilities without booking
+        if (!currentFacility.isHasBooking()) {
+            statusTextField.setText("This facility doesn't have bookings");
+            return;
+        }
         logic.setCurrentFacilityBooking(currentFacility.getID(), checkDate, timeslot);
+        //Unavailable facilities
         if (!logic.checkAvailableCurrentFacilityBooking()) {
+            //Unavailable facilities that have capacities bigger than 1
+            if (currentFacility.getCapacity() > 1) {
+                statusTextField.setText("This facility is full for this timeslot. "
+                        + "Queue is not available.");
+                return;
+            }
             statusTextField.setText("Sorry that timeslot has already been booked");
+            //Queue option dialog
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(null,
-                    "Would you like to get in a queue for this timeslot?", 
+                    "Would you like to get in a queue for this timeslot?",
                     "Warning",
                     dialogButton);
             if(dialogResult == JOptionPane.YES_OPTION){
-                List<FacilityBooking> currentBookings
-                = control.getAllBookingsOfSpecificDateTimeslotFacility(
-                        checkDate, timeslot, currentFacility);
-                control.queueUserForSpecificTimeslot(currentBookings.get(0).getID(),
+                FacilityBooking currentBooking
+                        = logic.getCurrentFacilityBooking();
+                control.queueUserForSpecificTimeslot(currentBooking.getID(),
                         logic.getCurrentUserID());
                 statusTextField.setText("Queued for activity");
                 updateQueueList();
