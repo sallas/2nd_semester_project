@@ -9,6 +9,10 @@ public class Nortification {
         this.message = message;
     }
 
+    public Nortification() {
+    }
+    
+
     public int getID() {
         return ID;
     }

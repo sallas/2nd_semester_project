@@ -15,6 +15,7 @@ public class ReservationFixture {
             con.setAutoCommit(false);
 
             // delete info in table
+            st.addBatch("delete from nortifications");
             st.addBatch("delete from instructor_booking");
             st.addBatch("delete from instructor_sports");
             st.addBatch("delete from instructor");
@@ -41,6 +42,8 @@ public class ReservationFixture {
             st.addBatch("create sequence instructorSeq start with 2");
             st.addBatch("drop sequence instructor_bookingSeq");
             st.addBatch("create sequence instructor_bookingSeq start with 2");
+            st.addBatch("drop sequence nortificationsseq");
+            st.addBatch("create sequence nortificationsseq start with 4");
 
             // insert data into rooms
             String insert = "insert into room values ";
@@ -90,6 +93,11 @@ public class ReservationFixture {
             insert = "insert into instructor_booking values ";
             st.addBatch(insert + "(1, 1, 1, to_date('06-04-2014', 'DD-MM-YYYY')"
                     + ", 1)");
+            //insert into nortifications
+            insert = "insert into nortifications values ";
+            st.addBatch(insert + "(1, 'Test message')");
+            st.addBatch(insert + "(2, 'Test message 2!')");
+            st.addBatch(insert + "(3, 'Test message 3!')");
 
             st.executeBatch();
             // end transaction

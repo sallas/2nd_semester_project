@@ -1,25 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package presentation;
 
 import domain.Controller;
 import domain.GuiLogic;
 import javax.swing.DefaultListModel;
 
-/**
- *
- * @author martin
- */
 public class Nortifications extends javax.swing.JFrame {
 
     private Controller control = Controller.getInstance();
     DefaultListModel<Object> nortificationModel = new DefaultListModel<>();
-    private GuiLogic logic = GuiLogic.getInstance();
+    private GuiLogic logic;
     
     public Nortifications() {
         initComponents();
+        logic = GuiLogic.getInstance();
         nortificationList.setModel(nortificationModel);
         logic.initNortificationsList(nortificationModel);
     }

@@ -243,4 +243,8 @@ public class GuiLogic {
             model.addRow(ob);
         }
     }
+    
+    public void initNortificationsList(DefaultListModel<Object> obj) {
+        //init list here
+    }
 }
