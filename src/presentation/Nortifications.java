@@ -28,11 +28,20 @@ public class Nortifications extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         nortificationList = new javax.swing.JList();
+        returnButton = new javax.swing.JToggleButton();
+        refreshButton = new javax.swing.JToggleButton();
+        clearButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         nortificationList.setToolTipText("");
         jScrollPane1.setViewportView(nortificationList);
+
+        returnButton.setText("Back to menu");
+
+        refreshButton.setText("Refresh");
+
+        clearButton.setText("Clear");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -40,7 +49,14 @@ public class Nortifications extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(returnButton)
+                        .addGap(4, 4, 4)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -48,7 +64,12 @@ public class Nortifications extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(returnButton)
+                    .addComponent(refreshButton)
+                    .addComponent(clearButton))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -89,7 +110,10 @@ public class Nortifications extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton clearButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList nortificationList;
+    private javax.swing.JToggleButton refreshButton;
+    private javax.swing.JToggleButton returnButton;
     // End of variables declaration//GEN-END:variables
 }

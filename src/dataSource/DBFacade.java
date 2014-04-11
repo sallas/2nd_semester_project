@@ -5,6 +5,7 @@ import domain.Facility;
 import domain.FacilityBooking;
 import domain.HotelUser;
 import domain.InstructorBooking;
+import domain.Nortification;
 
 import domain.QueueEntry;
 import domain.Reservation;
@@ -26,6 +27,7 @@ public class DBFacade {
     private static HotelUserMapperInterface hotelUserMapper;
     private static QueueMapperInterface queueMapper;
     private static InstructorBookingMapper instructorBookingMapper;
+    private static NortificationsMapperInterface nortificationMapper;
     private static Connection connection;
 
     private DBFacade() {
@@ -47,6 +49,7 @@ public class DBFacade {
         hotelUserMapper = new HotelUserMapper(con);
         queueMapper = new QueueMapper(con);
         instructorBookingMapper = new InstructorBookingMapper(con);
+        nortificationMapper = new NortificationsMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -234,5 +237,9 @@ public class DBFacade {
 
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return instructorBookingMapper.getInstructorBookingByUserID(userID);
+    }
+
+    public List<Nortification> getAllNortifications() {
+        return nortificationMapper.getAllNortifications();
     }
 }

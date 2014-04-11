@@ -244,7 +244,11 @@ public class GuiLogic {
         }
     }
     
-    public void initNortificationsList(DefaultListModel<Object> obj) {
-        //init list here
+    public void initNortificationsList(DefaultListModel<Object> model) {
+        model.clear();
+        List<Nortification> nor = control.getAllNortifications();
+        for(Nortification el: nor){
+            model.addElement(el.getMessage());
+        }
     }
 }

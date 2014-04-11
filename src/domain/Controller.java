@@ -391,4 +391,8 @@ public class Controller {
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return facade.getInstructorBookings(userID);
     }
+
+    List<Nortification> getAllNortifications() {
+        return facade.getAllNortifications();
+    }
 }
