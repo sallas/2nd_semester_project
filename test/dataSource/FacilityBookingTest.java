@@ -71,7 +71,6 @@ public class FacilityBookingTest {
     public void testGetAllBookingsOfSpecificDateHasBooking() {
         List<FacilityBooking> r = fbm.getAllBookingsOfSpecificDate(Date.valueOf("2014-03-24"));
         assertTrue(r.size() == 2);
-        assertEquals(r.get(0).getID(), 1);
     }
 
     /*

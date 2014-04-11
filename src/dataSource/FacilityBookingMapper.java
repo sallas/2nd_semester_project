@@ -10,6 +10,8 @@ import java.util.List;
 
 public class FacilityBookingMapper extends AbstractMapper implements FacilityBookingMapperInterface {
 
+    
+    
     public FacilityBookingMapper(Connection con) {
         super(con, "facility_booking", FacilityBooking.class);
     }
@@ -117,7 +119,7 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
 
     @Override
     public List<FacilityBooking> getAllFacilityBookingOfSpecificUser(int ID) {
-        return generalSearch("id", "Fail in FacilityBookingMapper -"
+        return generalSearch("user_id", "Fail in FacilityBookingMapper -"
                 + " getAllFacilityBookingOfSpecificUser ", ID);
     }
 

@@ -37,11 +37,9 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
 
     private void constructor() {
         initComponents();
-        Runtime.getRuntime().addShutdownHook(new Thread()
-        {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
-            public void run()
-            {
+            public void run() {
                 control.shutdownConnection();
             }
         });
@@ -59,8 +57,8 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         queueJList.setModel(queueModel);
         refreshAll();
     }
-    
-    public void refreshAll(){
+
+    public void refreshAll() {
         fillUpAvailablityTable();
         updateBookedLabel();
         updateQueueList();
@@ -113,17 +111,16 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }
 
     private void fillUpAvailablityTable() {
+        if (model.getRowCount() > 0) {
+            for (int i = 11; i >= 0; i--) {
+                model.removeRow(i);
+            }
+        }
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
         logic.fillAvailabilityTable(currentFacility.getID(), checkDate, model);
         currentAmountOfBookingsOnSpecificDate
                 = logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
-    }
-
-    private void removeRows() {
-        for (int i = 11; i >= 0; i--) {
-            model.removeRow(i);
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -357,7 +354,6 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         facilityNameLabel.setText(facility);
         currentFacility = control.getFacility(facility);
         facilitySpecsLabel.setText(currentFacility.toString());
-        removeRows();
         fillUpAvailablityTable();
         updateBookedLabel();
         updateQueueList();
@@ -377,24 +373,23 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }//GEN-LAST:event_checkActivtyBookingButtonActionPerformed
 
     private void dayComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayComboBoxActionPerformed
-        removeRows();
         fillUpAvailablityTable();
         updateBookedLabel();
         updateQueueList();
     }//GEN-LAST:event_dayComboBoxActionPerformed
 
     private void timeslotBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeslotBookingButtonActionPerformed
-        
+
         System.out.println(logic.getCurrentUserID());
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
-        currentAmountOfBookingsOnSpecificDate =
-                logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
+        currentAmountOfBookingsOnSpecificDate
+                = logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
         if (currentAmountOfBookingsOnSpecificDate >= 4) {
             statusTextField.setText("You can't book anything more on this date");
             return;
         }
-        
+
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
         if (logic.userHasBookingOnDateTimeslot(checkDate, timeslot)) {
             statusTextField.setText("You already have a booking on this timeslot");
@@ -412,13 +407,13 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
             statusTextField.setText("Sorry that timeslot has already been booked");
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(null,
-                    "Would you like to get in a queue for this timeslot?", 
+                    "Would you like to get in a queue for this timeslot?",
                     "Warning",
                     dialogButton);
-            if(dialogResult == JOptionPane.YES_OPTION){
+            if (dialogResult == JOptionPane.YES_OPTION) {
                 List<FacilityBooking> currentBookings
-                = control.getAllBookingsOfSpecificDateTimeslotFacility(
-                        checkDate, timeslot, currentFacility);
+                        = control.getAllBookingsOfSpecificDateTimeslotFacility(
+                                checkDate, timeslot, currentFacility);
                 control.queueUserForSpecificTimeslot(currentBookings.get(0).getID(),
                         logic.getCurrentUserID());
                 statusTextField.setText("Queued for activity");
@@ -431,7 +426,6 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         } else {
             statusTextField.setText("Your booking wasn't saved");
         }
-        removeRows();
         fillUpAvailablityTable();
         updateBookedLabel();
         updateQueueList();
