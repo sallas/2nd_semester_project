@@ -242,4 +242,22 @@ public class DBFacade {
     public List<Nortification> getAllNortifications() {
         return nortificationMapper.getAllNortifications();
     }
+
+    public boolean deleteAllNortifications() {
+        return nortificationMapper.deleteAllNortifications();
+    }
+
+    public FacilityBooking getFacilityBookingOfSpecificID(int bookingID) {
+        List<FacilityBooking> fbl = 
+                facilityBookingMapper.getAllBookingsOfSpecificID(bookingID);
+        if (fbl.isEmpty()){
+            return null;
+        } else {
+            return fbl.get(0);
+        }
+    }
+
+    public boolean saveNortification(Nortification n) {
+        return nortificationMapper.saveNortification(n);
+    }
 }

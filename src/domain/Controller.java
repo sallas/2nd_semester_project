@@ -3,6 +3,8 @@ package domain;
 import dataSource.DBFacade;
 import java.sql.Connection;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -394,5 +396,25 @@ public class Controller {
 
     List<Nortification> getAllNortifications() {
         return facade.getAllNortifications();
+    }
+
+    public boolean deleteAllNortifications() {
+        return facade.deleteAllNortifications();
+    }
+
+    public FacilityBooking getFacilityBookingOfSpecificID(int bookingID) {
+        return facade.getFacilityBookingOfSpecificID(bookingID);
+    }
+
+    public boolean createNortificationForCanceledEvent(FacilityBooking fb) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        String message = "[" + dateFormat.format(cal.getTime()) + "]";
+        
+        message += "User with ID [" + fb.getUserID() + "] cancaled his booking for "
+                + "facility " + this.getFacilityName(fb.getFacilityID()) + " "
+                + "at " + dateFormat.format(fb.getBookingDate());
+        Nortification n = new Nortification(-1, message);
+        return facade.saveNortification(n);
     }
 }

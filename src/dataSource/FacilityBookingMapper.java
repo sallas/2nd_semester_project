@@ -66,10 +66,17 @@ public class FacilityBookingMapper extends AbstractMapper implements FacilityBoo
                 "Fail in FacilityBookingMapper - "
                 + "getAllBookingsOfSpecificDate", date);
     }
+    
+    @Override
+    public List<FacilityBooking> getAllBookingsOfSpecificID(int id) {
+        return generalSearch("id",
+                "Fail in FacilityBookingMapper - "
+                + "getAllBookingsOfSpecificID", id);
+    }
 
     /*
      * Returns all faciltiy bookings made by user with id userID and on the
-     * spefified date
+     * specified date
      */
     @Override
     public List<FacilityBooking> getAllBookingsOfSpecificDateAndUser(
