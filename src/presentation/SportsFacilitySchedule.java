@@ -16,6 +16,20 @@ import javax.swing.table.DefaultTableModel;
 import utility.DateLogic;
 
 public class SportsFacilitySchedule extends javax.swing.JFrame {
+    
+    public static String[] timeslots = new String[]{
+        "8 - 9",
+        "9 - 10",
+        "10 - 11",
+        "11 - 12",
+        "12 - 13",
+        "13 - 14", 
+        "14 - 15", 
+        "15 - 16",
+        "16 - 17", 
+        "17 - 18", 
+        "18 - 19", 
+        "19 - 20"};
 
     private Controller control = Controller.getInstance();
     private List<Date> dates = new ArrayList<>();
@@ -127,10 +141,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }
 
     private void fillComboBoxes() {
-        timeslotComboBox.setModel(new javax.swing.DefaultComboBoxModel(
-                new String[]{"8 - 9", "9 - 10", "10 - 11", "11 - 12",
-                    "12 - 13", "13 - 14", "14 - 15", "15 - 16",
-                    "16 - 17", "17 - 18", "18 - 19", "19 - 20"}));
+        timeslotComboBox.setModel(new javax.swing.DefaultComboBoxModel(timeslots));
     }
 
     private void setUpDates() {

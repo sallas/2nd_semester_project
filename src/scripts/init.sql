@@ -143,5 +143,5 @@ FOREIGN KEY (facility_id) REFERENCES facility(ID)
 
 CREATE TABLE nortifications(
 id number(10) PRIMARY KEY,
-message varchar(50) NOT NULL
+message varchar(512) NOT NULL
 );

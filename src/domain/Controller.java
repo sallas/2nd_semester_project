@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import presentation.SportsFacilitySchedule;
 
 public class Controller {
 
@@ -408,12 +409,13 @@ public class Controller {
 
     public boolean createNortificationForCanceledEvent(FacilityBooking fb) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat atFormat = new SimpleDateFormat("dd.MM.yyyy");
         Calendar cal = Calendar.getInstance();
         String message = "[" + dateFormat.format(cal.getTime()) + "]";
-        
         message += "User with ID [" + fb.getUserID() + "] cancaled his booking for "
                 + "facility " + this.getFacilityName(fb.getFacilityID()) + " "
-                + "at " + dateFormat.format(fb.getBookingDate());
+                + "at " + atFormat.format(fb.getBookingDate()) + " for timeslot"
+                + " " + SportsFacilitySchedule.timeslots[fb.getTimeslot()-1];
         Nortification n = new Nortification(-1, message);
         return facade.saveNortification(n);
     }
