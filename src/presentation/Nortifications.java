@@ -9,6 +9,7 @@ public class Nortifications extends javax.swing.JFrame {
     private Controller control = Controller.getInstance();
     DefaultListModel<Object> nortificationModel = new DefaultListModel<>();
     private GuiLogic logic;
+    private LandingPage landingPage;
     
     public Nortifications() {
         initComponents();
@@ -17,6 +18,7 @@ public class Nortifications extends javax.swing.JFrame {
         logic.initNortificationsList(nortificationModel);
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,18 +30,28 @@ public class Nortifications extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         nortificationList = new javax.swing.JList();
-        returnButton = new javax.swing.JToggleButton();
-        refreshButton = new javax.swing.JToggleButton();
-        clearButton = new javax.swing.JToggleButton();
+        backButton = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         nortificationList.setToolTipText("");
         jScrollPane1.setViewportView(nortificationList);
 
-        returnButton.setText("Back to menu");
+        backButton.setText("Back to menu");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
         refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
 
         clearButton.setText("Clear");
         clearButton.addActionListener(new java.awt.event.ActionListener() {
@@ -57,11 +69,11 @@ public class Nortifications extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(returnButton)
-                        .addGap(4, 4, 4)
+                        .addComponent(backButton)
+                        .addGap(18, 18, 18)
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(clearButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -69,12 +81,12 @@ public class Nortifications extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(returnButton)
+                    .addComponent(backButton)
                     .addComponent(refreshButton)
                     .addComponent(clearButton))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -84,6 +96,15 @@ public class Nortifications extends javax.swing.JFrame {
         control.deleteAllNortifications();
         logic.initNortificationsList(nortificationModel);
     }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        logic.initNortificationsList(nortificationModel);
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        landingPage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,10 +141,10 @@ public class Nortifications extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton clearButton;
+    private javax.swing.JButton backButton;
+    private javax.swing.JButton clearButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList nortificationList;
-    private javax.swing.JToggleButton refreshButton;
-    private javax.swing.JToggleButton returnButton;
+    private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 }
