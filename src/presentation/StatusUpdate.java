@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package presentation;
 
 import domain.Controller;
@@ -15,13 +14,19 @@ import javax.swing.JOptionPane;
  * @author Kaloyan
  */
 public class StatusUpdate extends javax.swing.JFrame {
-private Controller c;
+    private AdministratorMenu menu;
+    private Controller c;
+
     /**
      * Creates new form StatusUpdate
      */
     public StatusUpdate() {
-         c = new Controller();
+        c = new Controller();
         initComponents();
+    }
+
+    public StatusUpdate(AdministratorMenu menu) {
+        this.menu = menu;
     }
 
     /**
@@ -39,6 +44,7 @@ private Controller c;
         jTextFieldStatus = new javax.swing.JTextField();
         jButtonGetUser = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,15 +70,26 @@ private Controller c;
             }
         });
 
+        jButton1.setText("Back to menu");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonSave)
+                .addGap(69, 69, 69))
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonSave)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,40 +118,45 @@ private Controller c;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelStatus)
                     .addComponent(jTextFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jButtonSave)
-                .addGap(68, 68, 68))
+                .addGap(15, 15, 15)
+                .addComponent(jButton1)
+                .addGap(42, 42, 42))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGetUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGetUserActionPerformed
-        int uId =Integer.parseInt(jTextFieldID.getText());
-       HotelUser h = c.getUserForSpecificUserID(uId);
-       c.setCurrentUser(h);//set the current user for the program 
-       if (h != null)
-       {
-           jTextFieldStatus.setText(Integer.toString(h.getId()));
-           
-         }
-       else 
-           JOptionPane.showMessageDialog(null, "User not found in the database ! ");
+        int uId = Integer.parseInt(jTextFieldID.getText());
+        HotelUser h = c.getUserForSpecificUserID(uId);
+        c.setCurrentUser(h);//set the current user for the program 
+        if (h != null) {
+            jTextFieldStatus.setText(Integer.toString(h.getId()));
+
+        } else {
+            JOptionPane.showMessageDialog(null, "User not found in the database ! ");
+        }
     }//GEN-LAST:event_jButtonGetUserActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-          String status =jTextFieldStatus.getText();
-				    c.processingUpdate=true;//we are updating a user information so controller needs to be in update mode
-				    HotelUser o = c.updateStatus(status); 
-                                    c.processingUpdate=false;//update is finsihed
-				    if (o != null)
-				    {
-				      
-				      jTextFieldStatus.setText(o.getStatus());
-				    }
-				    else
-				      JOptionPane.showMessageDialog(null, "fail");
+        String status = jTextFieldStatus.getText();
+        c.processingUpdate = true;//we are updating a user information so controller needs to be in update mode
+        HotelUser o = c.updateStatus(status);
+        c.processingUpdate = false;//update is finsihed
+        if (o != null) {
+
+            jTextFieldStatus.setText(o.getStatus());
+        } else {
+            JOptionPane.showMessageDialog(null, "fail");
+        }
     }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,6 +194,7 @@ private Controller c;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonGetUser;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JLabel jLabelID;

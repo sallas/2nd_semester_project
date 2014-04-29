@@ -9,13 +9,21 @@ public class Nortifications extends javax.swing.JFrame {
     private Controller control = Controller.getInstance();
     DefaultListModel<Object> nortificationModel = new DefaultListModel<>();
     private GuiLogic logic;
-    private LandingPage landingPage;
+    private ReceptionistMenu menu;
     
     public Nortifications() {
         initComponents();
         logic = GuiLogic.getInstance();
         nortificationList.setModel(nortificationModel);
         logic.initNortificationsList(nortificationModel);
+    }
+    
+    public Nortifications(ReceptionistMenu menu) {
+        initComponents();
+        logic = GuiLogic.getInstance();
+        nortificationList.setModel(nortificationModel);
+        logic.initNortificationsList(nortificationModel);
+        this.menu = menu;
     }
 
     
@@ -102,7 +110,7 @@ public class Nortifications extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        landingPage.setVisible(true);
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 

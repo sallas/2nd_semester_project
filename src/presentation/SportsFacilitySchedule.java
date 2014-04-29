@@ -35,7 +35,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     private List<Date> dates = new ArrayList<>();
     private Facility currentFacility;
     private int currentAmountOfBookingsOnSpecificDate;
-    private LandingPage landingPage;
+    private Login login;
     private DefaultTableModel model;
     DefaultListModel<Object> queueModel = new DefaultListModel<>();
     private GuiLogic logic;
@@ -44,9 +44,9 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         constructor();
     }
 
-    public SportsFacilitySchedule(LandingPage landingPage) {
+    public SportsFacilitySchedule(Login login) {
         constructor();
-        this.landingPage = landingPage;
+        this.login = login;
     }
 
     private void constructor() {
@@ -58,7 +58,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
             }
         });
         logic = GuiLogic.getInstance();
-        List<String> rooms = control.getAllFacilityNames();
+        List<String> rooms = control.getAllFacilityNamesBookable();
         facilityChooser.setModel(new javax.swing.DefaultComboBoxModel(
                 rooms.toArray()));
         String name = (String) facilityChooser.getSelectedItem();
@@ -504,7 +504,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }//GEN-LAST:event_timeslotBookingButtonActionPerformed
 
     private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
-        landingPage.setVisible(true);
+        login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 

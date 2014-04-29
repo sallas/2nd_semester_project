@@ -308,13 +308,8 @@ public class DBFacade {
     }
 
 
-    public String checkCredentials(String username, String password) {
-
-        HotelUser user = log.getUsernameAndPassword(username, password);
-        if (user == null) {
-            return null;
-        }
-        return user.getStatus();
+    public HotelUser checkCredentials(String username, String password) {
+        return log.getUsernameAndPassword(username, password);
     }
 
     public void lockHOtelUser() {

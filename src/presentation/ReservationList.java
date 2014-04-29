@@ -5,16 +5,16 @@ import javax.swing.table.DefaultTableModel;
 
 public class ReservationList extends javax.swing.JFrame {
 
-    private LandingPage landingPage;
+    private ReceptionistMenu menu;
     private GuiLogic logic;
 
     public ReservationList() {
         constructor();
     }
 
-    public ReservationList(LandingPage landingPage) {
+    public ReservationList(ReceptionistMenu menu) {
         constructor();
-        this.landingPage = landingPage;
+        this.menu = menu;
     }
 
     private void constructor() {
@@ -95,7 +95,7 @@ public class ReservationList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        landingPage.setVisible(true);
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

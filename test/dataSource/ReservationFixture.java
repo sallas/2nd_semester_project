@@ -72,12 +72,12 @@ public class ReservationFixture {
             //insert into facility
             insert = "insert into facility values ";
             st.addBatch(insert + "(1, 'Golden gym', 'gym', 20, 1, 1, 0)");
-            st.addBatch(insert + "(2, 'Big tennis', 'tennis', 1, 1, 0, 1)");
+            st.addBatch(insert + "(2, 'Big tennis', 'tennis', 1, 1, 1, 1)");
             //insert into hotel_user
             insert = "insert into hotel_user values ";
-            st.addBatch(insert + "(1, 'user1', 'password1', 'guest', 1, 0)");
-            st.addBatch(insert + "(2, 'user2', 'password2', 'guest', 2, 0)");
-            st.addBatch(insert + "(3, 'user3', 'password3', 'instructor', NULL, 0)");
+            st.addBatch(insert + "(1, 'user1', 'psw', 'guest', 1, 0)");
+            st.addBatch(insert + "(2, 'user2', 'psw', 'guest', 2, 0)");
+            st.addBatch(insert + "(3, 'user3', 'psw', 'instructor', NULL, 0)");
             //insert into facility_booking
             insert = "insert into facility_booking values ";
             st.addBatch(insert + "(1, 1, to_date('24-03-2014', 'DD-MM-YYYY'),"

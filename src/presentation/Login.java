@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package presentation;
 
-import domain.Controller;
+import domain.GuiLogic;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,12 +13,13 @@ import javax.swing.JOptionPane;
  * @author Kaloyan
  */
 public class Login extends javax.swing.JFrame {
-  public Controller control;
+
+    public GuiLogic logic;
+
     /**
      * Creates new form Login
      */
     public Login() {
-       control = new Controller();
         initComponents();
     }
 
@@ -44,9 +44,12 @@ public class Login extends javax.swing.JFrame {
 
         jLabelPassword.setText("Password");
 
-        jTextFieldUsername.setText("jTextField1");
+        jTextFieldUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldUsernameActionPerformed(evt);
+            }
+        });
 
-        jPasswordFieldPassword.setText("jPasswordField1");
         jPasswordFieldPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordFieldPasswordActionPerformed(evt);
@@ -70,10 +73,10 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabelUsername)
                     .addComponent(jLabelPassword))
                 .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                    .addComponent(jTextFieldUsername))
+                .addContainerGap(148, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonLogIn)
@@ -105,33 +108,38 @@ public class Login extends javax.swing.JFrame {
     private void jButtonLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogInActionPerformed
         char[] pass = jPasswordFieldPassword.getPassword();
         String password = new String(pass);
-        if (control.checkCredentials(jTextFieldUsername.getText(), password) == null) {
+        logic = GuiLogic.getInstance();
+        String status = logic.checkCredentials(jTextFieldUsername.getText(), password);
+        if (status == null) {
             JOptionPane.showMessageDialog(null, "not logged in");
         } else {
-            JOptionPane.showMessageDialog(null, "logged in ");
-            String status = control.checkCredentials(jTextFieldUsername.getText(), password);
-            if (status != null) {
-
-                if (status.equals("adm")) {
-                    JOptionPane.showMessageDialog(null, "logged in as admin");
-                    new LandingPage().setVisible(true);
-                    this.setVisible(false);
-                }
-                if (status.equals("usr")) {
-                    JOptionPane.showMessageDialog(null, "logged in as user");
-                    new LandingPage().setVisible(true);
-                    this.setVisible(false);
-                }
-                if (status.equals("emp")) {
-                    JOptionPane.showMessageDialog(null, "logged in as employee");
-                    new LandingPage().setVisible(true);
-                    this.setVisible(false);
-
-                }
-
+            if (status.equals("admin")) {
+                JOptionPane.showMessageDialog(null, "logged in as admin");
+                new AdministratorMenu(this).setVisible(true);
+                this.setVisible(false);
             }
+            else if (status.equals("guest")) {
+                JOptionPane.showMessageDialog(null, "logged in as guest");
+                new SportsFacilitySchedule(this).setVisible(true);
+                this.setVisible(false);
+            }
+            else if (status.equals("receptionist")) {
+                JOptionPane.showMessageDialog(null, "logged in as receptionist");
+                new ReceptionistMenu(this).setVisible(true);
+                this.setVisible(false);
+            }
+            else if (status.equals("instructor")) {
+                JOptionPane.showMessageDialog(null, "logged in as instructor");
+                new InstructorBookingView(this).setVisible(true);
+                this.setVisible(false);
+            }
+
         }
     }//GEN-LAST:event_jButtonLogInActionPerformed
+
+    private void jTextFieldUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldUsernameActionPerformed
 
     /**
      * @param args the command line arguments

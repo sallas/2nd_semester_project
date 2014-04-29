@@ -326,4 +326,13 @@ public class GuiLogic {
     public void resetGuests() {
         guests = new ArrayList<>();
     }
+
+    public String checkCredentials(String text, String password) {
+        HotelUser user = control.checkCredentials(text, password);
+        if(user == null) {
+            return null;
+        }
+        currentUserID = user.getId();
+        return user.getStatus();
+    }
 }

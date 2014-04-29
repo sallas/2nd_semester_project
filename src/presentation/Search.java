@@ -1,6 +1,5 @@
 package presentation;
 
-import domain.Controller;
 import domain.GuiLogic;
 import java.sql.Date;
 import javax.swing.DefaultListModel;
@@ -11,15 +10,15 @@ public class Search extends javax.swing.JFrame {
     private String currentVariable;
     private DefaultListModel model;
     private GuiLogic logic;
-    private LandingPage landingPage;
+    private ReceptionistMenu menu;
 
     public Search() {
         init();
     }
 
-    public Search(LandingPage landingPage) {
+    public Search(ReceptionistMenu menu) {
         init();
-        this.landingPage = landingPage;
+        this.menu = menu;
     }
 
     private void init() {
@@ -220,7 +219,7 @@ public class Search extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
-        landingPage.setVisible(true);
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 

@@ -195,6 +195,23 @@ public class Controller {
     }
 
     /*
+     *  Returns a list of strings containing all sport facility names
+     *  currently in the database that can be booked
+     */
+    public List<String> getAllFacilityNamesBookable() {
+        List<Facility> facilities = facade.getAllFacilities();
+        List<String> facilityNames = new ArrayList<>();
+        for (Facility f : facilities) {
+            if(f.isHasBooking()) {
+                facilityNames.add(f.getName());
+            }
+            facilityMap.put(f.getName(), f);
+        }
+
+        return facilityNames;
+    }
+
+    /*
      *   Returns a facility object of the correct name from our HashMap
      */
     public Facility getFacility(String name) {
@@ -398,10 +415,8 @@ public class Controller {
         this.currentUser = currentUser;
     }
 
-    public String checkCredentials(String username, String password) {
-
+    public HotelUser checkCredentials(String username, String password) {
         return facade.checkCredentials(username, password);
-
     }
 
     public void lockTable() {
@@ -428,11 +443,11 @@ public class Controller {
         message += "User with ID [" + fb.getUserID() + "] cancaled his booking for "
                 + "facility " + this.getFacilityName(fb.getFacilityID()) + " "
                 + "at " + atFormat.format(fb.getBookingDate()) + " for timeslot"
-                + " " + SportsFacilitySchedule.timeslots[fb.getTimeslot()-1];
+                + " " + SportsFacilitySchedule.timeslots[fb.getTimeslot() - 1];
         Nortification n = new Nortification(-1, message);
         return facade.saveNortification(n);
     }
-    
+
     public List<InstructorBooking> getInstructorBookingByUserIDAndDate(
             int userID, Date date) {
         return facade.getInstructorBookingByUserIDAndDate(userID, date);

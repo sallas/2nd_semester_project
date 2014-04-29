@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package presentation;
 
 import domain.Controller;
@@ -15,13 +14,20 @@ import javax.swing.JOptionPane;
  * @author Kaloyan
  */
 public class PasswordUpdate extends javax.swing.JFrame {
-private Controller c;
+
+    private Controller c;
+    private AdministratorMenu menu;
+
     /**
      * Creates new form PasswordUpdate
      */
     public PasswordUpdate() {
-          c = new Controller();
+        c = new Controller();
         initComponents();
+    }
+
+    public PasswordUpdate(AdministratorMenu menu) {
+        this.menu = menu;
     }
 
     /**
@@ -39,6 +45,7 @@ private Controller c;
         jTextFieldID = new javax.swing.JTextField();
         jTextFieldPassword = new javax.swing.JTextField();
         jButtonSave = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,27 +71,35 @@ private Controller c;
             }
         });
 
+        jButton1.setText("Back to menu");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelPassword)
+                    .addComponent(jLabelID))
+                .addGap(81, 81, 81)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonSave)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabelPassword)
-                            .addComponent(jLabelID))
-                        .addGap(81, 81, 81)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addComponent(jButtonGetUser)
-                        .addGap(38, 38, 38))))
+                    .addComponent(jButtonSave)
+                    .addComponent(jButtonGetUser))
+                .addGap(38, 38, 38))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,40 +113,45 @@ private Controller c;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelPassword)
                     .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addComponent(jButtonSave)
-                .addGap(37, 37, 37))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(33, 33, 33))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGetUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGetUserActionPerformed
-        int uId =Integer.parseInt(jTextFieldID.getText());
-       HotelUser h = c.getUserForSpecificUserID(uId);
-       c.setCurrentUser(h);//set the current user for the program 
-       if (h != null)
-       {
-           jTextFieldPassword.setText(Integer.toString(h.getId()));
-           
-         }
-       else 
-           JOptionPane.showMessageDialog(null, "User not found in the database !");
+        int uId = Integer.parseInt(jTextFieldID.getText());
+        HotelUser h = c.getUserForSpecificUserID(uId);
+        c.setCurrentUser(h);//set the current user for the program 
+        if (h != null) {
+            jTextFieldPassword.setText(Integer.toString(h.getId()));
+
+        } else {
+            JOptionPane.showMessageDialog(null, "User not found in the database !");
+        }
     }//GEN-LAST:event_jButtonGetUserActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        String password =jTextFieldPassword.getText();
-				    c.processingUpdate=true;//we are updating a user information so controller needs to be in update mode
-				    HotelUser o = c.updatePassword(password); 
-                                    c.processingUpdate=false;//update is finsihed
-				    if (o != null)
-				    {
-				      
-				      jTextFieldPassword.setText(o.getPsw());
-				    }
-				    else
-				      JOptionPane.showMessageDialog(null, "fail");
+        String password = jTextFieldPassword.getText();
+        c.processingUpdate = true;//we are updating a user information so controller needs to be in update mode
+        HotelUser o = c.updatePassword(password);
+        c.processingUpdate = false;//update is finsihed
+        if (o != null) {
+
+            jTextFieldPassword.setText(o.getPsw());
+        } else {
+            JOptionPane.showMessageDialog(null, "fail");
+        }
     }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,6 +189,7 @@ private Controller c;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonGetUser;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JLabel jLabelID;

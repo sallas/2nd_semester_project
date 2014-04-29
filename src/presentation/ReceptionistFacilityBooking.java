@@ -12,22 +12,22 @@ public class ReceptionistFacilityBooking extends javax.swing.JFrame {
     private Controller control = Controller.getInstance();
     private List<Date> dates = new ArrayList<>();
     private Facility currentFacility;
-    private LandingPage landingPage;
+    private ReceptionistMenu menu;
     private GuiLogic logic;
 
     public ReceptionistFacilityBooking() {
         constructor();
     }
 
-    public ReceptionistFacilityBooking(LandingPage landingPage) {
+    public ReceptionistFacilityBooking(ReceptionistMenu menu) {
         constructor();
-        this.landingPage = landingPage;
+        this.menu = menu;
     }
 
     private void constructor() {
         initComponents();
         logic = GuiLogic.getInstance();
-        List<String> rooms = control.getAllFacilityNames();
+        List<String> rooms = control.getAllFacilityNamesBookable();
         facilityChooser.setModel(new javax.swing.DefaultComboBoxModel(
                 rooms.toArray()));
         String name = (String) facilityChooser.getSelectedItem();
@@ -246,7 +246,7 @@ public class ReceptionistFacilityBooking extends javax.swing.JFrame {
     }//GEN-LAST:event_timeslotBookingButtonActionPerformed
 
     private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
-        landingPage.setVisible(true);
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 

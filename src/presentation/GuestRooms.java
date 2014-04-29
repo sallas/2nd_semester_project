@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class GuestRooms extends javax.swing.JFrame {
 
-    private LandingPage landingPage;
+    private ReceptionistMenu menu;
     private GuiLogic logic;
 
     public GuestRooms() {
@@ -13,9 +13,9 @@ public class GuestRooms extends javax.swing.JFrame {
         constructor();
     }
 
-    public GuestRooms(LandingPage landingPage) {
+    public GuestRooms(ReceptionistMenu menu) {
         initComponents();
-        this.landingPage = landingPage;
+        this.menu = menu;
         constructor();
     }
 
@@ -107,7 +107,7 @@ public class GuestRooms extends javax.swing.JFrame {
 
     private void jButtonBackToMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonBackToMenuActionPerformed
     {//GEN-HEADEREND:event_jButtonBackToMenuActionPerformed
-        landingPage.setVisible(true);
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonBackToMenuActionPerformed
 

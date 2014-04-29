@@ -17,7 +17,7 @@ public class Reservation extends javax.swing.JFrame {
     private int currentBookingNumNights;
     private Date currentBookingArrivalDate = null;
     private String currentBookingType = null;
-    private LandingPage landingPage;
+    private ReceptionistMenu menu;
     private GuiLogic logic;
     private int guests;
 
@@ -29,10 +29,10 @@ public class Reservation extends javax.swing.JFrame {
         constructor();
     }
 
-    public Reservation(LandingPage landingPage) {
+    public Reservation(ReceptionistMenu menu) {
         initComponents();
         constructor();
-        this.landingPage = landingPage;
+        this.menu = menu;
     }
 
     private void constructor() {
@@ -458,7 +458,7 @@ public class Reservation extends javax.swing.JFrame {
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
-        landingPage.setVisible(true);
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 

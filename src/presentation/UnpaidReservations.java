@@ -17,7 +17,7 @@ import utility.DateLogic;
  */
 public class UnpaidReservations extends javax.swing.JFrame {
 
-    private LandingPage landingPage;
+    private ReceptionistMenu menu;
     private Controller controller;
     private DefaultTableModel model;
 
@@ -29,10 +29,10 @@ public class UnpaidReservations extends javax.swing.JFrame {
         constructor();
     }
 
-    public UnpaidReservations(LandingPage landingPage) {
+    public UnpaidReservations(ReceptionistMenu menu) {
         initComponents();
         constructor();
-        this.landingPage = landingPage;
+        this.menu = menu;
     }
 
     private void constructor() {
@@ -174,7 +174,7 @@ public class UnpaidReservations extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteReservationButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        landingPage.setVisible(true);
+        menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 

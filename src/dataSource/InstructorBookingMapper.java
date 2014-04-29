@@ -5,7 +5,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
 
-public class InstructorBookingMapper extends AbstractMapper {
+public class InstructorBookingMapper extends AbstractMapper
+        implements InstructorBookingMapperInterface {
 
     public InstructorBookingMapper(Connection con) {
         super(con, "Instructor_Booking", InstructorBooking.class);
