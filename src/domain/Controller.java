@@ -3,11 +3,14 @@ package domain;
 import dataSource.DBFacade;
 import java.sql.Connection;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import presentation.SportsFacilitySchedule;
 
 public class Controller {
 
@@ -392,6 +395,31 @@ public class Controller {
 
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return facade.getInstructorBookings(userID);
+    }
+
+    List<Nortification> getAllNortifications() {
+        return facade.getAllNortifications();
+    }
+
+    public boolean deleteAllNortifications() {
+        return facade.deleteAllNortifications();
+    }
+
+    public FacilityBooking getFacilityBookingOfSpecificID(int bookingID) {
+        return facade.getFacilityBookingOfSpecificID(bookingID);
+    }
+
+    public boolean createNortificationForCanceledEvent(FacilityBooking fb) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat atFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Calendar cal = Calendar.getInstance();
+        String message = "[" + dateFormat.format(cal.getTime()) + "]";
+        message += "User with ID [" + fb.getUserID() + "] cancaled his booking for "
+                + "facility " + this.getFacilityName(fb.getFacilityID()) + " "
+                + "at " + atFormat.format(fb.getBookingDate()) + " for timeslot"
+                + " " + SportsFacilitySchedule.timeslots[fb.getTimeslot()-1];
+        Nortification n = new Nortification(-1, message);
+        return facade.saveNortification(n);
     }
     
     public List<InstructorBooking> getInstructorBookingByUserIDAndDate(

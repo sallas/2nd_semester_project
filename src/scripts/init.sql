@@ -11,6 +11,7 @@ DROP TABLE customer;
 DROP TABLE room;
 DROP TABLE room_cost;
 DROP TABLE facility;
+DROP TABLE nortifications;
 
 
 CREATE TABLE room(
@@ -35,6 +36,8 @@ DROP SEQUENCE instructorSeq;
 CREATE SEQUENCE instructorSeq START WITH 1;
 DROP SEQUENCE instructor_bookingSeq;
 CREATE SEQUENCE instructor_bookingSeq START WITH 1;
+DROP SEQUENCE nortificationsSeq;
+CREATE SEQUENCE nortificationsSeq START WITH 1;
 
 CREATE TABLE room_cost (
 Type varchar2(30) NOT NULL,
@@ -94,6 +97,7 @@ FACILITY_ID number(5) NOT NULL,
 BOOKING_DATE date NOT NULL,
 TIMESLOT number(5) NOT NULL,
 User_id number(5) NOT NULL,
+IS_ORIGINAL_USER number(1) NOT NULL,
 PRIMARY KEY (ID),
 FOREIGN KEY (FACILITY_ID) REFERENCES facility(ID),
 FOREIGN KEY (User_id) REFERENCES HOTEL_USER(ID)
@@ -114,6 +118,7 @@ ID number(5) NOT NULL,
 BOOKING_DATE date NOT NULL,
 FOREIGN KEY (ID) REFERENCES reservation(ID)
 );
+
 
 CREATE TABLE instructor (
 ID number(5) PRIMARY KEY,
@@ -142,4 +147,9 @@ reservation_id number(5) NOT NULL,
 customer_id number(5) NOT NULL,
 FOREIGN KEY (reservation_id) REFERENCES reservation(ID),
 FOREIGN KEY (customer_id) REFERENCES customer(ID)
+);
+
+CREATE TABLE nortifications(
+id number(10) PRIMARY KEY,
+message varchar(512) NOT NULL
 );

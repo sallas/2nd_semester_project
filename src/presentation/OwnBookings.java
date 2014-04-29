@@ -128,13 +128,14 @@ public class OwnBookings extends javax.swing.JFrame {
     private void cancelBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBookingButtonActionPerformed
         int bookingID = logic.getListOfBookings().get(bookingsTable.getSelectedRow()).getID();
         List<QueueEntry> q = control.getQueueEntriesOfSpecificBooking(bookingID);
+        FacilityBooking fb = control.getFacilityBookingOfSpecificID(bookingID);
         if (q.isEmpty()){
             control.removeFacilityBooking(bookingID);
         } else {
             int newUserID = control.popUserFromQueueForID(bookingID);
-            System.out.println(newUserID);
             control.updateFacilityBookingUserID(bookingID, newUserID);
         }
+        control.createNortificationForCanceledEvent(fb);
         initTable();
     }//GEN-LAST:event_cancelBookingButtonActionPerformed
 

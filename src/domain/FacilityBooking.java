@@ -9,13 +9,15 @@ public class FacilityBooking {
     private Date bookingDate;
     private int timeslot;
     private int userID;
+    private boolean isBookedByOriginalUser = true;
 
-    public FacilityBooking(int ID, int facilityID, Date bookingDate, int timeslot, int userID) {
+    public FacilityBooking(int ID, int facilityID, Date bookingDate, int timeslot, int userID, boolean isBookedByOriginalUser) {
         this.ID = ID;
         this.facilityID = facilityID;
         this.bookingDate = bookingDate;
         this.timeslot = timeslot;
         this.userID = userID;
+        this.isBookedByOriginalUser = isBookedByOriginalUser;
     }
 
     public FacilityBooking() {
@@ -62,6 +64,15 @@ public class FacilityBooking {
         this.userID = userID;
     }
 
+    public boolean isIsBookedByOriginalUser() {
+        return isBookedByOriginalUser;
+    }
+
+    public void setIsBookedByOriginalUser(boolean isBookedByOriginalUser) {
+        this.isBookedByOriginalUser = isBookedByOriginalUser;
+    }
+    
+    
     @Override
     public String toString() {
         return "Sports Booking " + "ID= " + ID + " | Facility ID= " + facilityID
@@ -69,4 +80,6 @@ public class FacilityBooking {
                 + " | User ID= " + userID;
     }
 
+    
+    
 }

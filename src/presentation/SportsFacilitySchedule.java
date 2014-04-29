@@ -16,6 +16,20 @@ import javax.swing.table.DefaultTableModel;
 import utility.DateLogic;
 
 public class SportsFacilitySchedule extends javax.swing.JFrame {
+    
+    public static String[] timeslots = new String[]{
+        "8 - 9",
+        "9 - 10",
+        "10 - 11",
+        "11 - 12",
+        "12 - 13",
+        "13 - 14", 
+        "14 - 15", 
+        "15 - 16",
+        "16 - 17", 
+        "17 - 18", 
+        "18 - 19", 
+        "19 - 20"};
 
     private Controller control = Controller.getInstance();
     private List<Date> dates = new ArrayList<>();
@@ -55,26 +69,52 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         setUpDates();
         model = (DefaultTableModel) timeslotTable.getModel();
         queueJList.setModel(queueModel);
-        refreshAll();
-    }
-
-    public void refreshAll() {
+        updateCurrentBooking();
         fillUpAvailablityTable();
         updateBookedLabel();
         updateQueueList();
+        updateBookedByOriginalUser();
     }
 
-    private void updateQueueList() {
-        queueModel.clear();
+    public void refreshAll() {
+        updateCurrentBooking();
+        removeRows();
+        fillUpAvailablityTable();
+        updateBookedLabel();
+        updateQueueList();
+        updateBookedByOriginalUser();
+    }
+    
+    public void updateCurrentBooking(){
         int date = dayComboBox.getSelectedIndex();
         Date checkDate = dates.get(date);
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
         List<FacilityBooking> currentBookings
                 = control.getAllBookingsOfSpecificDateTimeslotFacility(
-                        checkDate, timeslot, currentFacility);
+                checkDate, timeslot, currentFacility);
         if (!currentBookings.isEmpty()) {
+            logic.setCurrentFacilityBooking(currentBookings.get(0));
+        }
+    }
+    
+    private void updateBookedByOriginalUser() {
+        FacilityBooking currentBooking
+                = logic.getCurrentFacilityBooking();
+        if (currentBooking != null) {
+            if (currentBooking.isIsBookedByOriginalUser()){
+                bookedByOriginalLabel.setText("Yes");
+            } else {
+                bookedByOriginalLabel.setText("No");
+            }
+        }
+    }
+
+    private void updateQueueList() {
+        queueModel.clear();
+        FacilityBooking currentBooking = logic.getCurrentFacilityBooking();
+        if (currentBooking != null) {
             List<QueueEntry> queueEntries
-                    = control.getQueueEntriesOfSpecificBooking(currentBookings.get(0).getID());
+                    = control.getQueueEntriesOfSpecificBooking(currentBooking.getID());
             for (int i = 0; i < queueEntries.size(); i++) {
                 queueModel.add(i, control.getUserForSpecificUserID(queueEntries.get(i).getUserID()).getUsername());
             }
@@ -99,10 +139,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }
 
     private void fillComboBoxes() {
-        timeslotComboBox.setModel(new javax.swing.DefaultComboBoxModel(
-                new String[]{"8 - 9", "9 - 10", "10 - 11", "11 - 12",
-                    "12 - 13", "13 - 14", "14 - 15", "15 - 16",
-                    "16 - 17", "17 - 18", "18 - 19", "19 - 20"}));
+        timeslotComboBox.setModel(new javax.swing.DefaultComboBoxModel(timeslots));
     }
 
     private void setUpDates() {
@@ -147,6 +184,9 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         bookedLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         queueJList = new javax.swing.JList();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jLabel5 = new javax.swing.JLabel();
+        bookedByOriginalLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -208,10 +248,8 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         timeslotTable.setRowSelectionAllowed(false);
         timeslotTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(timeslotTable);
-        if (timeslotTable.getColumnModel().getColumnCount() > 0) {
-            timeslotTable.getColumnModel().getColumn(0).setResizable(false);
-            timeslotTable.getColumnModel().getColumn(1).setResizable(false);
-        }
+        timeslotTable.getColumnModel().getColumn(0).setResizable(false);
+        timeslotTable.getColumnModel().getColumn(1).setResizable(false);
 
         timeslotBookingButton.setText("Book timeslot");
         timeslotBookingButton.addActionListener(new java.awt.event.ActionListener() {
@@ -244,6 +282,17 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         queueJList.setToolTipText("");
         jScrollPane1.setViewportView(queueJList);
 
+        jToggleButton1.setText("REFRESH");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Booked by original user:");
+
+        bookedByOriginalLabel.setText("Yes");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -252,9 +301,9 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                 .addGap(158, 158, 158)
                 .addComponent(facilitySpecsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -275,37 +324,47 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
-                                .addGap(220, 220, 220)
-                                .addComponent(bookedByLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(3, 3, 3)
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(bookedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(220, 220, 220)
+                                        .addComponent(bookedByLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(37, 37, 37)
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bookedByOriginalLabel))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bookedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(backToMenuButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(facilityChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
-                                .addComponent(facilityNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(backToMenuButton)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(43, 43, 43)
+                        .addComponent(facilityChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(facilityNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jToggleButton1)
+                        .addGap(324, 324, 324)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(facilityChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(facilityNameLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(facilitySpecsLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(facilityChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(facilityNameLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(facilitySpecsLabel))
+                    .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -318,7 +377,11 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(bookedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(bookedByOriginalLabel)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -354,9 +417,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         facilityNameLabel.setText(facility);
         currentFacility = control.getFacility(facility);
         facilitySpecsLabel.setText(currentFacility.toString());
-        fillUpAvailablityTable();
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_facilityChooserActionPerformed
 
     private void checkActivtyBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkActivtyBookingButtonActionPerformed
@@ -373,9 +434,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }//GEN-LAST:event_checkActivtyBookingButtonActionPerformed
 
     private void dayComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayComboBoxActionPerformed
-        fillUpAvailablityTable();
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_dayComboBoxActionPerformed
 
     private void timeslotBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeslotBookingButtonActionPerformed
@@ -385,12 +444,14 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         Date checkDate = dates.get(date);
         currentAmountOfBookingsOnSpecificDate
                 = logic.getCurrentAmountOfBookingsOnSpecificDate(checkDate);
+        //Bookings per user
         if (currentAmountOfBookingsOnSpecificDate >= 4) {
             statusTextField.setText("You can't book anything more on this date");
             return;
         }
 
         int timeslot = timeslotComboBox.getSelectedIndex() + 1;
+        //Bookings for timeslot by same user
         if (logic.userHasBookingOnDateTimeslot(checkDate, timeslot)) {
             statusTextField.setText("You already have a booking on this timeslot");
             return;
@@ -398,23 +459,37 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         Calendar rightNow = Calendar.getInstance();
         Calendar checkDateCalendar = DateLogic.sqlDateToCalendarDate(checkDate);
         checkDateCalendar.add(Calendar.HOUR, 6 + timeslot);
+        //Bookings for relevant time
         if (rightNow.after(checkDateCalendar)) {
             statusTextField.setText("You are to late to book this timeslot");
             return;
         }
+        updateCurrentBooking();
+        //Facilities without booking
+        if (!currentFacility.isHasBooking()) {
+            statusTextField.setText("This facility doesn't have bookings");
+            return;
+        }
         logic.setCurrentFacilityBooking(currentFacility.getID(), checkDate, timeslot);
+        //Unavailable facilities
         if (!logic.checkAvailableCurrentFacilityBooking()) {
+            //Unavailable facilities that have capacities bigger than 1
+            if (currentFacility.getCapacity() > 1) {
+                statusTextField.setText("This facility is full for this timeslot. "
+                        + "Queue is not available.");
+                return;
+            }
             statusTextField.setText("Sorry that timeslot has already been booked");
+            //Queue option dialog
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(null,
                     "Would you like to get in a queue for this timeslot?",
                     "Warning",
                     dialogButton);
             if (dialogResult == JOptionPane.YES_OPTION) {
-                List<FacilityBooking> currentBookings
-                        = control.getAllBookingsOfSpecificDateTimeslotFacility(
-                                checkDate, timeslot, currentFacility);
-                control.queueUserForSpecificTimeslot(currentBookings.get(0).getID(),
+                FacilityBooking currentBooking
+                        = logic.getCurrentFacilityBooking();
+                control.queueUserForSpecificTimeslot(currentBooking.getID(),
                         logic.getCurrentUserID());
                 statusTextField.setText("Queued for activity");
                 updateQueueList();
@@ -426,9 +501,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         } else {
             statusTextField.setText("Your booking wasn't saved");
         }
-        fillUpAvailablityTable();
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_timeslotBookingButtonActionPerformed
 
     private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
@@ -437,8 +510,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     }//GEN-LAST:event_backToMenuButtonActionPerformed
 
     private void timeslotComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeslotComboBoxActionPerformed
-        updateBookedLabel();
-        updateQueueList();
+        refreshAll();
     }//GEN-LAST:event_timeslotComboBoxActionPerformed
 
     private void viewOwnBookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOwnBookingButtonActionPerformed
@@ -446,6 +518,10 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
         ownBooking.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_viewOwnBookingButtonActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        refreshAll();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -479,6 +555,7 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backToMenuButton;
     private javax.swing.JLabel bookedByLabel;
+    private javax.swing.JLabel bookedByOriginalLabel;
     private javax.swing.JLabel bookedLabel;
     private javax.swing.JButton checkActivtyBookingButton;
     private javax.swing.JComboBox dayComboBox;
@@ -489,8 +566,10 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JList queueJList;
     private javax.swing.JLabel statusTextField;
     private javax.swing.JButton timeslotBookingButton;

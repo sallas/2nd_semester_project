@@ -26,7 +26,7 @@ public class GuiLogic {
     private GuiLogic() {
         control = Controller.getInstance();
         emailValidator = new EmailValidator();
-        currentUserID = 3;
+        currentUserID = 2;
         setUpTimeslots();
         guests = new ArrayList<>();
     }
@@ -37,6 +37,10 @@ public class GuiLogic {
 
     public FacilityBooking getCurrentFacilityBooking() {
         return currentFacilityBooking;
+    }
+
+    public void setCurrentFacilityBooking(FacilityBooking currentFacilityBooking) {
+        this.currentFacilityBooking = currentFacilityBooking;
     }
 
     public static GuiLogic getInstance() {
@@ -84,7 +88,7 @@ public class GuiLogic {
     public void fillAvailabilityTable(int facilityID, Date checkDate, DefaultTableModel model) {
         FacilityBooking fb;
         for (int i = 0; i < 12; i++) {
-            fb = new FacilityBooking(99, facilityID, checkDate, i + 1, currentUserID);
+            fb = new FacilityBooking(99, facilityID, checkDate, i + 1, currentUserID, true);
             if (control.checkAvailableFacilityBooking(fb)) {
                 String s = timeslots.get(i);
                 model.addRow(new Object[]{s, "Available"});
@@ -111,12 +115,12 @@ public class GuiLogic {
 
     public void setCurrentFacilityBooking(int facilityID, Date checkDate, int timeslot) {
         currentFacilityBooking
-                = new FacilityBooking(-1, facilityID, checkDate, timeslot, currentUserID);
+                = new FacilityBooking(-1, facilityID, checkDate, timeslot, currentUserID, true);
     }
 
     public void setCurrentFacilityBooking(int facilityID, Date checkDate, int timeslot, int userID) {
         currentFacilityBooking
-                = new FacilityBooking(-1, facilityID, checkDate, timeslot, userID);
+                = new FacilityBooking(-1, facilityID, checkDate, timeslot, userID, true);
     }
 
     public boolean checkAvailableCurrentFacilityBooking() {
@@ -248,6 +252,14 @@ public class GuiLogic {
             ob[1] = ib.getBookedDate();
             ob[2] = timeslots.get(ib.getTimeslot() - 1);
             model.addRow(ob);
+        }
+    }
+    
+    public void initNortificationsList(DefaultListModel<Object> model) {
+        model.clear();
+        List<Nortification> nor = control.getAllNortifications();
+        for(Nortification el: nor){
+            model.addElement(el.getMessage());
         }
     }
 

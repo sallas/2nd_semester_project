@@ -15,6 +15,7 @@ public class ReservationFixture {
             con.setAutoCommit(false);
 
             // delete info in table
+            st.addBatch("delete from nortifications");
             st.addBatch("delete from instructor_booking");
             st.addBatch("delete from instructor_sports");
             st.addBatch("delete from instructor");
@@ -42,6 +43,8 @@ public class ReservationFixture {
             st.addBatch("create sequence instructorSeq start with 2");
             st.addBatch("drop sequence instructor_bookingSeq");
             st.addBatch("create sequence instructor_bookingSeq start with 2");
+            st.addBatch("drop sequence nortificationsseq");
+            st.addBatch("create sequence nortificationsseq start with 4");
 
             // insert data into rooms
             String insert = "insert into room values ";
@@ -78,14 +81,14 @@ public class ReservationFixture {
             //insert into facility_booking
             insert = "insert into facility_booking values ";
             st.addBatch(insert + "(1, 1, to_date('24-03-2014', 'DD-MM-YYYY'),"
-                    + "2, 1)");
+                    + "2, 1, 1)");
             st.addBatch(insert + "(2, 2, to_date('24-03-2014', 'DD-MM-YYYY'),"
-                    + "4, 1)");
+                    + "4, 1, 1)");
             st.addBatch(insert + "(3, 1, to_date('26-03-2014', 'DD-MM-YYYY'),"
-                    + "4, 1)");
+                    + "4, 1, 1)");
             insert = "insert into queue_facility values ";
             st.addBatch(insert + "(1, 2, 1)");
-            //insert into facility_booking
+            //insert into instructor
             insert = "insert into instructor values ";
             st.addBatch(insert + "(1, 3)");
             insert = "insert into instructor_booking values ";
@@ -96,6 +99,11 @@ public class ReservationFixture {
             st.addBatch(insert + "(1, 1)");
             st.addBatch(insert + "(2, 2)");
             st.addBatch(insert + "(3, 1)");
+            //insert into nortifications
+            insert = "insert into nortifications values ";
+            st.addBatch(insert + "(1, 'Test message')");
+            st.addBatch(insert + "(2, 'Test message 2!')");
+            st.addBatch(insert + "(3, 'Test message 3!')");
             
 
             st.executeBatch();

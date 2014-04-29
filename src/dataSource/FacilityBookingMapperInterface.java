@@ -40,4 +40,6 @@ public interface FacilityBookingMapperInterface {
     boolean deleteFacilityBookingByReservationID(int ID);
     
     List<FacilityBooking> search(Object variable, String columnName);
+
+    public List<FacilityBooking> getAllBookingsOfSpecificID(int id);
 }

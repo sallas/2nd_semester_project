@@ -5,6 +5,7 @@ import domain.Facility;
 import domain.FacilityBooking;
 import domain.HotelUser;
 import domain.InstructorBooking;
+import domain.Nortification;
 
 import domain.QueueEntry;
 import domain.Reservation;
@@ -27,6 +28,7 @@ public class DBFacade {
     private static QueueMapperInterface queueMapper;
     private static InstructorBookingMapper instructorBookingMapper;
     private static ReservationCustomerMapper resCustomerMapper;
+    private static NortificationsMapperInterface nortificationMapper;
     private static Connection connection;
 
     private DBFacade() {
@@ -49,6 +51,7 @@ public class DBFacade {
         queueMapper = new QueueMapper(con);
         instructorBookingMapper = new InstructorBookingMapper(con);
         resCustomerMapper = new ReservationCustomerMapper(con);
+        nortificationMapper = new NortificationsMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -239,9 +242,30 @@ public class DBFacade {
         return instructorBookingMapper.getInstructorBookingByUserID(userID);
     }
 
+    public List<Nortification> getAllNortifications() {
+        return nortificationMapper.getAllNortifications();
+    }
+
     public List<InstructorBooking> getInstructorBookingByUserIDAndDate(
             int userID, Date date) {
         return instructorBookingMapper.getInstructorBookingByUserIDAndDate(
                 userID, date);
+    }
+    public boolean deleteAllNortifications() {
+        return nortificationMapper.deleteAllNortifications();
+    }
+
+    public FacilityBooking getFacilityBookingOfSpecificID(int bookingID) {
+        List<FacilityBooking> fbl = 
+                facilityBookingMapper.getAllBookingsOfSpecificID(bookingID);
+        if (fbl.isEmpty()){
+            return null;
+        } else {
+            return fbl.get(0);
+        }
+    }
+
+    public boolean saveNortification(Nortification n) {
+        return nortificationMapper.saveNortification(n);
     }
 }

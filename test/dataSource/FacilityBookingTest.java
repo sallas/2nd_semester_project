@@ -1,7 +1,6 @@
 package dataSource;
 
 import domain.FacilityBooking;
-import domain.Reservation;
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
@@ -22,7 +21,7 @@ public class FacilityBookingTest {
 
     @Before
     public void init() {
-        con = connector.getConnection();
+        con = connector.getConnection(); 
         ReservationFixture.setUp(con);
         fbm = new FacilityBookingMapper(con);
         qm = new QueueMapper(con);
@@ -48,7 +47,8 @@ public class FacilityBookingTest {
      */
     @Test
     public void testCheckAvailableFacilityBookingAvailableBooking() {
-        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 1, 999);
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2099-01-01"), 
+                1, 999, true);
         boolean status = fbm.checkAvailableFacilityBooking(fb);
         assertTrue(status);
     }
@@ -58,7 +58,8 @@ public class FacilityBookingTest {
      */
     @Test
     public void testCheckAvailableFacilityBookingNotAvailableBooking() {
-        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2014-03-24"), 2, 999);
+        FacilityBooking fb = new FacilityBooking(1, 1, Date.valueOf("2014-03-24"), 
+                2, 999, true);
         boolean status = fbm.checkAvailableFacilityBooking(fb);
         assertFalse(status);
     }
@@ -135,7 +136,8 @@ public class FacilityBookingTest {
      */
     @Test
     public void testsaveFacilityBookingNoProblem() {
-        FacilityBooking fb = new FacilityBooking(4, 1, Date.valueOf("2099-03-24"), 3, 1);
+        FacilityBooking fb = new FacilityBooking(4, 1, Date.valueOf("2099-03-24"), 
+                3, 1, true);
         boolean status = fbm.saveFacilityBooking(fb);
         assertTrue(status);
     }
@@ -146,7 +148,8 @@ public class FacilityBookingTest {
      */
     @Test
     public void testsaveFacilityBookingNoMatchFacilityID() {
-        FacilityBooking fb = new FacilityBooking(3, -1, Date.valueOf("2099-03-24"), 3, 1);
+        FacilityBooking fb = new FacilityBooking(3, -1, Date.valueOf("2099-03-24"), 
+                3, 1, true);
         boolean status = fbm.saveFacilityBooking(fb);
         assertFalse(status);
     }
@@ -157,7 +160,8 @@ public class FacilityBookingTest {
      */
     @Test
     public void testsaveFacilityBookingNoMatchUser() {
-        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2099-03-24"), 3, -1);
+        FacilityBooking fb = new FacilityBooking(3, 1, Date.valueOf("2099-03-24"), 
+                3, -1, true);
         boolean status = fbm.saveFacilityBooking(fb);
         assertFalse(status);
     }
@@ -178,5 +182,4 @@ public class FacilityBookingTest {
         qm.deleteQueueEntryByReservationID(2);
         assertTrue(fbm.deleteFacilityBookingByReservationID(2));
     }
-
 }
