@@ -6,7 +6,6 @@ import domain.FacilityBooking;
 import domain.HotelUser;
 import domain.InstructorBooking;
 import domain.Nortification;
-
 import domain.QueueEntry;
 import domain.Reservation;
 import domain.Room;
@@ -14,6 +13,7 @@ import domain.UnpaidReservation;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBFacade {
@@ -30,6 +30,9 @@ public class DBFacade {
     private static ReservationCustomerMapper resCustomerMapper;
     private static NortificationsMapperInterface nortificationMapper;
     private static Connection connection;
+    private static AdministratorMapper admin;
+    private static UnitOfWorkProcess uow;
+    private static LoginMapper log;
 
     private DBFacade() {
         connection = DBConnector.getConnection();
@@ -52,6 +55,8 @@ public class DBFacade {
         instructorBookingMapper = new InstructorBookingMapper(con);
         resCustomerMapper = new ReservationCustomerMapper(con);
         nortificationMapper = new NortificationsMapper(con);
+        admin = new AdministratorMapper(con);
+        log = new LoginMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -268,4 +273,52 @@ public class DBFacade {
     public boolean saveNortification(Nortification n) {
         return nortificationMapper.saveNortification(n);
     }
+
+   
+
+    public boolean updateUsernamef(HotelUser a) {
+        ArrayList<HotelUser> temp = new ArrayList<>();//temporary Arraylist for the update
+        temp.add(a);
+        return admin.updateUsername(temp);
+    }
+
+    public boolean updatePasswordf(HotelUser a) {
+        ArrayList<HotelUser> temp = new ArrayList<>();//temporary Arraylist for the update
+        temp.add(a);
+        return admin.updatePassword(temp);
+    }
+
+ 
+    public boolean updateStatusf(HotelUser a) {
+        ArrayList<HotelUser> temp = new ArrayList<>();//temporary Arraylist for the update
+        temp.add(a);
+        return admin.updateStatus(temp);
+    }
+    
+
+
+    public void registerDirtyHotelUser(HotelUser hotelUser) {
+        if (uow != null) {
+            uow.registerDirtyHotelUser(hotelUser);
+        }
+    }
+
+    public void startProcessHotelUserTransaction() {
+        uow = new UnitOfWorkProcess(admin);
+    }
+
+
+    public String checkCredentials(String username, String password) {
+
+        HotelUser user = log.getUsernameAndPassword(username, password);
+        if (user == null) {
+            return null;
+        }
+        return user.getStatus();
+    }
+
+    public void lockHOtelUser() {
+        admin.lockHotelUser();
+    }
+
 }
