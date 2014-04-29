@@ -11,20 +11,24 @@ import java.util.Map;
 
 public class Controller {
 
+    private HotelUser currentUser;
     private DBFacade facade;
     private EmailValidator emailValidator;
     private static Controller instance = null;
     private int currentRoomID;
     private Map<String, Facility> facilityMap;
-
+    public boolean processingUpdate;
     /*
      * Constructor only used for testing purposes
      * NEEDS TO BE REMOVED BEFORE DEPLOYMENT
      */
+
     protected Controller(Connection con) {
         facade = new DBFacade(con);
         emailValidator = new EmailValidator();
         facilityMap = new HashMap<>();
+        processingUpdate = false;
+        currentUser = null;
     }
 
     /*
@@ -343,20 +347,20 @@ public class Controller {
     public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
         return facade.searchFacilityBooking(variable, columnName);
     }
-    
-    public boolean queueUserForSpecificTimeslot(int bookingID, int userID){
+
+    public boolean queueUserForSpecificTimeslot(int bookingID, int userID) {
         QueueEntry entry = new QueueEntry(-1, userID, bookingID);
         return facade.saveQueueEntry(entry);
     }
-    
-    public void shutdownConnection(){
+
+    public void shutdownConnection() {
         facade.shutdown();
     }
-    
+
     public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return facade.updateFacilityBookingUserID(bookingID, userID);
     }
-    
+
     /*
      * Pop user from the queue for specific booking id and return his id.
      */
@@ -392,17 +396,47 @@ public class Controller {
         return facade.getInstructorBookings(userID);
     }
 
-    public boolean checkCredentials(String username, String password) {
-        boolean res = true;
-        HotelUser user = facade.checkCredentials(username, password);
-
-        if (null == user) {
-            res = false;
-        } else if (!user.getUsername().equals(username) && !user.getPsw().equals(password)) {
-            res = true;
+    public HotelUser updateUsername(String username) {
+        if (processingUpdate) {
+            currentUser.setUsername(username);
+            facade.startProcessHotelUserTransaction();//start transaction to update
+            facade.registerDirtyHotelUser(currentUser);// we know that this information must be changed
+            facade.updateUsernamef(currentUser);//update the username from the user
         }
-        System.out.println(res);
-        return res;
+        return currentUser;
     }
 
+    public HotelUser updatePassword(String password) {
+        if (processingUpdate) {
+            currentUser.setPsw(password);
+            facade.startProcessHotelUserTransaction();//start transaction to update
+            facade.registerDirtyHotelUser(currentUser);// we know that this information must be changed
+            facade.updatePasswordf(currentUser);//update the password from the user
+        }
+        return currentUser;
+    }
+
+    public HotelUser updateStatus(String status) {
+        if (processingUpdate) {
+            currentUser.setStatus(status);
+            facade.startProcessHotelUserTransaction();//start transaction to update
+            facade.registerDirtyHotelUser(currentUser);// we know that this information must be changed
+            facade.updateStatusf(currentUser);//update the status from the user
+        }
+        return currentUser;
+    }
+
+    public void setCurrentUser(HotelUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public String checkCredentials(String username, String password) {
+
+        return facade.checkCredentials(username, password);
+
+    }
+
+    public void lockTable() {
+        facade.lockHOtelUser();
+    }
 }

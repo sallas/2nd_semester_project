@@ -7,22 +7,20 @@
 package presentation;
 
 import domain.Controller;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Kaloyan
  */
 public class Login extends javax.swing.JFrame {
-public Controller control;
-    /*
+  public Controller control;
+    /**
      * Creates new form Login
      */
     public Login() {
-        control = new Controller();
-        
+       control = new Controller();
         initComponents();
-    
-    
     }
 
     /**
@@ -37,14 +35,23 @@ public Controller control;
         jLabelUsername = new javax.swing.JLabel();
         jLabelPassword = new javax.swing.JLabel();
         jTextFieldUsername = new javax.swing.JTextField();
-        jButtonLogIn = new javax.swing.JButton();
         jPasswordFieldPassword = new javax.swing.JPasswordField();
+        jButtonLogIn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabelUsername.setText("Username : ");
+        jLabelUsername.setText("Username");
 
-        jLabelPassword.setText("Password : ");
+        jLabelPassword.setText("Password");
+
+        jTextFieldUsername.setText("jTextField1");
+
+        jPasswordFieldPassword.setText("jPasswordField1");
+        jPasswordFieldPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordFieldPasswordActionPerformed(evt);
+            }
+        });
 
         jButtonLogIn.setText("LogIn");
         jButtonLogIn.addActionListener(new java.awt.event.ActionListener() {
@@ -58,49 +65,72 @@ public Controller control;
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelUsername)
                     .addComponent(jLabelPassword))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                    .addComponent(jPasswordFieldPassword))
-                .addGap(0, 169, Short.MAX_VALUE))
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(153, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonLogIn)
-                .addGap(47, 47, 47))
+                .addGap(60, 60, 60))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
+                .addGap(94, 94, 94)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelUsername)
                     .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabelPassword)
                     .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGap(60, 60, 60)
                 .addComponent(jButtonLogIn)
-                .addGap(36, 36, 36))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jPasswordFieldPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordFieldPasswordActionPerformed
+
     private void jButtonLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogInActionPerformed
-       char[] pass = jPasswordFieldPassword.getPassword();
-       String passString = new String(pass);
-        
-       boolean passedTheTest = control.checkCredentials(jTextFieldUsername.getText(), passString);
-        if (passedTheTest = false) {
-            System.out.println("error loggin in "); 
-            
-        } else System.out.println("you can enter now");
-        
+        char[] pass = jPasswordFieldPassword.getPassword();
+        String password = new String(pass);
+        if (control.checkCredentials(jTextFieldUsername.getText(), password) == null) {
+            JOptionPane.showMessageDialog(null, "not logged in");
+        } else {
+            JOptionPane.showMessageDialog(null, "logged in ");
+            String status = control.checkCredentials(jTextFieldUsername.getText(), password);
+            if (status != null) {
+
+                if (status.equals("adm")) {
+                    JOptionPane.showMessageDialog(null, "logged in as admin");
+                    new LandingPage().setVisible(true);
+                    this.setVisible(false);
+                }
+                if (status.equals("usr")) {
+                    JOptionPane.showMessageDialog(null, "logged in as user");
+                    new LandingPage().setVisible(true);
+                    this.setVisible(false);
+                }
+                if (status.equals("emp")) {
+                    JOptionPane.showMessageDialog(null, "logged in as employee");
+                    new LandingPage().setVisible(true);
+                    this.setVisible(false);
+
+                }
+
+            }
+        }
     }//GEN-LAST:event_jButtonLogInActionPerformed
 
     /**

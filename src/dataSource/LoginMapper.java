@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dataSource;
 
 import domain.HotelUser;
@@ -18,22 +17,21 @@ import java.sql.SQLException;
  * @author Kaloyan
  */
 public class LoginMapper {
-    private final Connection con;
+
+    Connection con;
 
     public LoginMapper(Connection con) {
+
         this.con = con;
+
     }
 
-
-
- 
-    public HotelUser getUsernameAndPassword(String username, String password   ) {
-      HotelUser h =null;
+    public HotelUser getUsernameAndPassword(String username, String password) {
+        HotelUser h = null;
         String SQLString = "select * "
                 + "from HOTEL_USER "
                 + "where Username = ? and Psw = ?";
         PreparedStatement statement = null;
-        
         try {
             statement = con.prepareStatement(SQLString);
             statement.setString(1, username);
@@ -41,9 +39,10 @@ public class LoginMapper {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 h = new HotelUser();
-                        h.setUsername(rs.getString(1));
-                        h.setPsw(rs.getString(2));
-                System.out.println(h);
+                h.setUsername(rs.getString(1));
+                h.setPsw(rs.getString(2));
+                h.setStatus(rs.getString("Status"));
+                System.out.println("xxx" + h);
             }
         } catch (SQLException e) {
             System.out.println("Fail in LoginMapper - get UsernameAndPassword");
@@ -58,9 +57,6 @@ public class LoginMapper {
                 System.out.println(e.getMessage());
             }
         }
-        System.out.println(h);
         return h;
-       
     }
-
 }

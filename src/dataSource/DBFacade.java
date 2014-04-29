@@ -5,7 +5,6 @@ import domain.Facility;
 import domain.FacilityBooking;
 import domain.HotelUser;
 import domain.InstructorBooking;
-
 import domain.QueueEntry;
 import domain.Reservation;
 import domain.Room;
@@ -13,6 +12,7 @@ import domain.UnpaidReservation;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBFacade {
@@ -24,10 +24,12 @@ public class DBFacade {
     private static FacilityMapperInterface facilityMapper;
     private static FacilityBookingMapper facilityBookingMapper;
     private static HotelUserMapperInterface hotelUserMapper;
-    private static LoginMapper loginMapper;
     private static QueueMapperInterface queueMapper;
     private static InstructorBookingMapper instructorBookingMapper;
     private static Connection connection;
+    private static AdministratorMapper admin;
+    private static UnitOfWorkProcess uow;
+    private static LoginMapper log;
 
     private DBFacade() {
         connection = DBConnector.getConnection();
@@ -46,9 +48,10 @@ public class DBFacade {
         facilityMapper = new FacilityMapper(con);
         facilityBookingMapper = new FacilityBookingMapper(con);
         hotelUserMapper = new HotelUserMapper(con);
-        loginMapper = new LoginMapper(con);
         queueMapper = new QueueMapper(con);
         instructorBookingMapper = new InstructorBookingMapper(con);
+        admin = new AdministratorMapper(con);
+        log = new LoginMapper(con);
     }
 
     public DBFacade(Connection con) {
@@ -189,11 +192,11 @@ public class DBFacade {
     public boolean removeHotelUserByReservationID(int ID) {
         return hotelUserMapper.removeHotelUserByReservationID(ID);
     }
-    
+
     public List<Reservation> searchReservation(Object variable, String columnName) {
         return reservationMapper.search(variable, columnName);
     }
-    
+
     public boolean saveQueueEntry(QueueEntry entry) {
         return queueMapper.saveQueueEntry(entry);
     }
@@ -205,7 +208,7 @@ public class DBFacade {
             System.err.println(e);
         }
     }
-    
+
     public List<Room> searchRoom(Object variable, String columnName) {
         return roomMapper.search(variable, columnName);
     }
@@ -213,19 +216,19 @@ public class DBFacade {
     public List<HotelUser> searchHotelUser(Object variable, String columnName) {
         return hotelUserMapper.search(variable, columnName);
     }
-    
+
     public boolean updateFacilityBookingUserID(int bookingID, int userID) {
         return facilityBookingMapper.updateFacilityBookingUserID(bookingID, userID);
     }
-    
+
     public List<Customer> searchCustomer(Object variable, String columnName) {
         return customerMapper.search(variable, columnName);
     }
-    
+
     public boolean deleteQueueEntryForSpecificID(int bookingID, int userID) {
         return queueMapper.deleteQueueEntryForSpecificID(bookingID, userID);
     }
-    
+
     public List<FacilityBooking> searchFacilityBooking(Object variable, String columnName) {
         return facilityBookingMapper.search(variable, columnName);
     }
@@ -237,10 +240,52 @@ public class DBFacade {
     public List<InstructorBooking> getInstructorBookings(int userID) {
         return instructorBookingMapper.getInstructorBookingByUserID(userID);
     }
+
+   
+
+    public boolean updateUsernamef(HotelUser a) {
+        ArrayList<HotelUser> temp = new ArrayList<>();//temporary Arraylist for the update
+        temp.add(a);
+        return admin.updateUsername(temp);
+    }
+
+    public boolean updatePasswordf(HotelUser a) {
+        ArrayList<HotelUser> temp = new ArrayList<>();//temporary Arraylist for the update
+        temp.add(a);
+        return admin.updatePassword(temp);
+    }
+
+ 
+    public boolean updateStatusf(HotelUser a) {
+        ArrayList<HotelUser> temp = new ArrayList<>();//temporary Arraylist for the update
+        temp.add(a);
+        return admin.updateStatus(temp);
+    }
     
-public HotelUser checkCredentials(String username, String password ) {
-    System.out.println(loginMapper);
-    return  loginMapper.getUsernameAndPassword( username,password ) ;
-}
+
+
+    public void registerDirtyHotelUser(HotelUser hotelUser) {
+        if (uow != null) {
+            uow.registerDirtyHotelUser(hotelUser);
+        }
+    }
+
+    public void startProcessHotelUserTransaction() {
+        uow = new UnitOfWorkProcess(admin);
+    }
+
+
+    public String checkCredentials(String username, String password) {
+
+        HotelUser user = log.getUsernameAndPassword(username, password);
+        if (user == null) {
+            return null;
+        }
+        return user.getStatus();
+    }
+
+    public void lockHOtelUser() {
+        admin.lockHotelUser();
+    }
 
 }
