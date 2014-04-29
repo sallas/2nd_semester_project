@@ -2,14 +2,10 @@ package presentation;
 
 import domain.Controller;
 import domain.GuiLogic;
-import domain.UnavailableReservation;
 import domain.WrongEmail;
-import domain.WrongNumberOfNights;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTextField;
 import utility.DateLogic;
 

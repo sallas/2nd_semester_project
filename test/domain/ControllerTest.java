@@ -2,12 +2,10 @@ package domain;
 
 import dataSource.EmptyDBFixture;
 import dataSource.ReservationFixture;
-import dataSource.RoomMapper;
 import dataSource.TestDBConnector;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -45,71 +43,6 @@ public class ControllerTest {
         }
     }
 
-    /*
-     * Test saving of a reservation to the database with proper information.
-     */
-    @Test
-    public void saveReservationInControllerProperFull()
-            throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
-        boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), 30, 100);
-        assertTrue(res);
-    }
-
-    /*
-     * Test saving of a reservation with agency set to null.
-     * In Oracle empty string is automatically changed to null.
-     */
-    @Test
-    public void saveReservationInControllerProperNoAgency()
-            throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
-        boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "", Date.valueOf("2099-01-01"), 30, 100);
-        assertTrue(res);
-    }
-
-    /*
-     * Test saving with negative number of nights.
-     */
-    @Test(expected = WrongNumberOfNights.class)
-    public void saveReservationInControllerNegativeNumberOfNights()
-            throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
-        boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), -1, 101);
-        assertFalse(res);
-    }
-
-    /*
-     * Test saving wrong email.
-     */
-    @Test(expected = WrongEmail.class)
-    public void saveReservationInControllerWrongEmail()
-            throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
-        boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igorsdscom", "sunshine", Date.valueOf("2099-01-01"), 2, 101);
-        assertFalse(res);
-    }
-
-    /*
-     * Room id does not exist.
-     */
-    @Test
-    public void saveReservationInControllerWrongRoomID() throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
-        boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2099-01-01"), 2, 20);
-        assertFalse(res);
-    }
-
-    /*
-     * Test saving of a reservation to the database with proper information
-     * but on conflicting dates
-     */
-    @Test(expected = UnavailableReservation.class)
-    public void saveReservationInControllerProperFullUnavailableDates()
-            throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
-        boolean res = controller.createNewReservation("Igor", "the Russian", "Syberia", "notRussia",
-                "00000", "igor@gmail.com", "sunshine", Date.valueOf("2014-03-25"), 30, 100);
-    }
 
     /*
      *   Checks so -1 is returned if no room of speciefied type is available 

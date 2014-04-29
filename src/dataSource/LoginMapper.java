@@ -6,7 +6,6 @@
 package dataSource;
 
 import domain.HotelUser;
-import domain.Reservation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

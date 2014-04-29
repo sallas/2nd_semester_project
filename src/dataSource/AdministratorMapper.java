@@ -10,7 +10,6 @@ import domain.Facility;
 import domain.HotelUser;
 import java.sql.Connection;
 import java.util.ArrayList;
-import oracle.net.aso.i;
 
 /**
  *

@@ -16,9 +16,7 @@ public class Controller {
 
     private HotelUser currentUser;
     private DBFacade facade;
-    private EmailValidator emailValidator;
     private static Controller instance = null;
-    private int currentRoomID;
     private Map<String, Facility> facilityMap;
     public boolean processingUpdate;
     /*
@@ -28,7 +26,6 @@ public class Controller {
 
     protected Controller(Connection con) {
         facade = new DBFacade(con);
-        emailValidator = new EmailValidator();
         facilityMap = new HashMap<>();
         processingUpdate = false;
         currentUser = null;
@@ -64,7 +61,6 @@ public class Controller {
     // Private Constructor (No public constructor exists)
     public Controller() {
         facade = DBFacade.getInstance();
-        emailValidator = new EmailValidator();
         facilityMap = new HashMap<>();
     }
 
@@ -74,39 +70,6 @@ public class Controller {
             instance = new Controller();
         }
         return instance;
-    }
-
-    /*
-     * Create a new reservation in the controller and returns true on success.
-     */
-    public boolean createNewReservation(String firstName, String familyName,
-            String address, String country,
-            String phone, String email,
-            String agency, Date checkin,
-            int nights, int roomID)
-            throws WrongNumberOfNights, WrongEmail, UnavailableReservation {
-        if (nights <= 0) {
-            throw new WrongNumberOfNights("Zero or less than zero"
-                    + "number of nights");
-        }
-        if (!emailValidator.validate(email)) {
-            throw new WrongEmail("Email is wrong.");
-        }
-        Calendar departureDate = Calendar.getInstance();
-        departureDate.clear();
-        departureDate.setTimeInMillis(checkin.getTime());
-        departureDate.add(Calendar.DATE, nights);
-        Date departureSQLDate = new Date(departureDate.getTimeInMillis());
-        Customer customer = new Customer(-1, address, country, firstName,
-                familyName, phone, email, agency);
-        List<Customer> customers = new ArrayList();
-        customers.add(customer);
-        Reservation reservation = new Reservation(-1, roomID,
-                -1, checkin, departureSQLDate);
-        if (!facade.checkAvailableReservation(reservation)) {
-            throw new UnavailableReservation("Another reservation conflict with this reservation");
-        }
-        return facade.saveReservationInformation(reservation, customers);
     }
 
     /*

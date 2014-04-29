@@ -2,7 +2,6 @@ package dataSource;
 
 import domain.Room;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoomMapper extends AbstractMapper implements RoomMapperInterface {

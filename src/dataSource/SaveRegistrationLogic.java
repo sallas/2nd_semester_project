@@ -3,7 +3,6 @@ package dataSource;
 import domain.Customer;
 import domain.Reservation;
 import domain.ReservationCustomer;
-import domain.UnavailableReservation;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class SaveRegistrationLogic {
             }
             
             if (!status) {
-                throw new UnavailableReservation("Save Reservation Transaction aborted");
+                throw new Exception("Save Reservation Transaction aborted");
             }
             
             //=== system transaction - ends with success

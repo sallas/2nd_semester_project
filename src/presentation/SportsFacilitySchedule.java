@@ -78,7 +78,6 @@ public class SportsFacilitySchedule extends javax.swing.JFrame {
 
     public void refreshAll() {
         updateCurrentBooking();
-        removeRows();
         fillUpAvailablityTable();
         updateBookedLabel();
         updateQueueList();

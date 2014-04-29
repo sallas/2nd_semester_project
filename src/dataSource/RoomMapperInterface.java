@@ -1,7 +1,6 @@
 package dataSource;
 
 import domain.Room;
-import java.sql.Date;
 import java.util.List;
 
 public interface RoomMapperInterface {

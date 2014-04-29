@@ -2,7 +2,6 @@ package dataSource;
 
 import domain.QueueEntry;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 public class QueueMapper extends AbstractMapper implements QueueMapperInterface{
