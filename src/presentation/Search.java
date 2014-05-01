@@ -66,7 +66,7 @@ public class Search extends javax.swing.JFrame {
             variableComboBox.addItem("Reservation_ID");
         } else if ("sports booking".equalsIgnoreCase(currentObject)) {
             variableComboBox.addItem("ID");
-            variableComboBox.addItem("Facility_IDd");
+            variableComboBox.addItem("Facility_ID");
             variableComboBox.addItem("Booking_Date");
             variableComboBox.addItem("Timeslot");
             variableComboBox.addItem("User_ID");

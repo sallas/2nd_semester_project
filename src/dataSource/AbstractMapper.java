@@ -61,9 +61,6 @@ public abstract class AbstractMapper {
      * objectType - Type of object to be returned.
      * statement - SQL statement.
      * exMessage - exception message.
-     * resultNames - array of names to the properties. Must be same len as resultArray.
-     * resultArray - array with result types to be mapped. 
-     * [0, 0, 1] ≡ [Integer, Integer, String] ;2 - Date 3 - Boolean
      * values - values for the SQL statement
      */
     protected <T> ArrayList<T> executeQueryAndGatherResults(
