@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class DBConnector {
 
-    private static final String id = "SEM2_TEST_GR24"; //Insert ORACLE id and password
-    private static final String pw = "SEM2_TEST_GR24";
+    private static final String id = "SEM2_GR24"; //Insert ORACLE id and password
+    private static final String pw = "SEM2_GR24";
     private static Connection connection;
 
     private static void intializeConnection() {
