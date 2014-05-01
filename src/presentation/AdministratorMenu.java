@@ -11,6 +11,7 @@ public class AdministratorMenu extends javax.swing.JFrame
     }
 
     public AdministratorMenu(Login login) {
+        initComponents();
         this.login = login;
     }
 
@@ -21,6 +22,7 @@ public class AdministratorMenu extends javax.swing.JFrame
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        updateUsernameButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -50,6 +52,13 @@ public class AdministratorMenu extends javax.swing.JFrame
             }
         });
 
+        updateUsernameButton.setText("Update username");
+        updateUsernameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateUsernameButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -59,7 +68,8 @@ public class AdministratorMenu extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(updateUsernameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33))
         );
         layout.setVerticalGroup(
@@ -69,9 +79,11 @@ public class AdministratorMenu extends javax.swing.JFrame
                 .addComponent(jButton1)
                 .addGap(31, 31, 31)
                 .addComponent(jButton2)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
+                .addComponent(updateUsernameButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jButton3)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addGap(46, 46, 46))
         );
 
         pack();
@@ -95,6 +107,11 @@ public class AdministratorMenu extends javax.swing.JFrame
         new StatusUpdate(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void updateUsernameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUsernameButtonActionPerformed
+        new UsernameUpdate(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_updateUsernameButtonActionPerformed
 
     public static void main(String args[]) 
     {
@@ -132,6 +149,7 @@ public class AdministratorMenu extends javax.swing.JFrame
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton updateUsernameButton;
     // End of variables declaration//GEN-END:variables
 
 }

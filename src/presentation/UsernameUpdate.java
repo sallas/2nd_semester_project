@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package presentation;
 
 import domain.Controller;
@@ -16,9 +15,16 @@ import javax.swing.JOptionPane;
  */
 public class UsernameUpdate extends javax.swing.JFrame {
 
- private Controller c;
+    private Controller c;
+    private AdministratorMenu menu;
+
     public UsernameUpdate() {
         initComponents();
+    }
+
+    public UsernameUpdate(AdministratorMenu menu) {
+        initComponents();
+        this.menu = menu;
     }
 
     /**
@@ -36,6 +42,7 @@ public class UsernameUpdate extends javax.swing.JFrame {
         jTextFieldNewUsername = new javax.swing.JTextField();
         jButtonSave = new javax.swing.JButton();
         jButtonGetUser = new javax.swing.JButton();
+        backToMenuButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,31 +68,38 @@ public class UsernameUpdate extends javax.swing.JFrame {
             }
         });
 
+        backToMenuButton.setText("Back to menu");
+        backToMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backToMenuButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelNewUsername)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextFieldNewUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jLabelID)
-                                .addGap(76, 76, 76)
-                                .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                        .addComponent(jButtonGetUser))
+                        .addComponent(jLabelNewUsername)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextFieldNewUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jButtonSave)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabelID)
+                        .addGap(76, 76, 76)
+                        .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonSave)
+                    .addComponent(jButtonGetUser))
                 .addGap(83, 83, 83))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(backToMenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,40 +114,45 @@ public class UsernameUpdate extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelNewUsername)
                     .addComponent(jTextFieldNewUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addComponent(jButtonSave)
-                .addGap(54, 54, 54))
+                .addGap(18, 18, 18)
+                .addComponent(backToMenuButton)
+                .addGap(41, 41, 41))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-       String username =jTextFieldNewUsername.getText();
-				    c.processingUpdate=true;//we are updating a user information so controller needs to be in update mode
-				    HotelUser o = c.updateUsername(username); 
-                                    c.processingUpdate=false;//update is finsihed
-				    if (o != null)
-				    {
-				      
-				      jTextFieldNewUsername.setText(o.getUsername());
-				    }
-				    else
-				      JOptionPane.showMessageDialog(null, "fail");
+        String username = jTextFieldNewUsername.getText();
+        c.processingUpdate = true;//we are updating a user information so controller needs to be in update mode
+        HotelUser o = c.updateUsername(username);
+        c.processingUpdate = false;//update is finsihed
+        if (o != null) {
+
+            jTextFieldNewUsername.setText(o.getUsername());
+        } else {
+            JOptionPane.showMessageDialog(null, "fail");
+        }
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonGetUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGetUserActionPerformed
-          int uId =Integer.parseInt(jTextFieldID.getText());
-       HotelUser h = c.getUserForSpecificUserID(uId);
-       c.setCurrentUser(h);//set the current user for the program 
-       if (h != null)
-       {
-           jTextFieldNewUsername.setText(Integer.toString(h.getId()));
-           
-         }
-       else 
-           JOptionPane.showMessageDialog(null, "User not found in the database !");
+        int uId = Integer.parseInt(jTextFieldID.getText());
+        HotelUser h = c.getUserForSpecificUserID(uId);
+        c.setCurrentUser(h);//set the current user for the program 
+        if (h != null) {
+            jTextFieldNewUsername.setText(Integer.toString(h.getId()));
+
+        } else {
+            JOptionPane.showMessageDialog(null, "User not found in the database !");
+        }
     }//GEN-LAST:event_jButtonGetUserActionPerformed
+
+    private void backToMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMenuButtonActionPerformed
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backToMenuButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,6 +190,7 @@ public class UsernameUpdate extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backToMenuButton;
     private javax.swing.JButton jButtonGetUser;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JLabel jLabelID;

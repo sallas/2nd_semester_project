@@ -27,6 +27,7 @@ public class PasswordUpdate extends javax.swing.JFrame {
     }
 
     public PasswordUpdate(AdministratorMenu menu) {
+        initComponents();
         this.menu = menu;
     }
 

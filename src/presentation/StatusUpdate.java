@@ -26,6 +26,7 @@ public class StatusUpdate extends javax.swing.JFrame {
     }
 
     public StatusUpdate(AdministratorMenu menu) {
+        initComponents();
         this.menu = menu;
     }
 

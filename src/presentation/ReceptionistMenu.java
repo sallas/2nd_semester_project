@@ -9,6 +9,7 @@ public class ReceptionistMenu extends javax.swing.JFrame {
     }
 
     public ReceptionistMenu(Login login) {
+        initComponents();
         this.login = login;
     }
 
