@@ -3,7 +3,7 @@ package dataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class deleteReservationLogic {
+public class DeleteReservationLogic {
     /*
      * Transaction for deleting a reservation from the database
      * Returns true if reservation was removed.

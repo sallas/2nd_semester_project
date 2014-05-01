@@ -186,7 +186,7 @@ public class DBFacade {
     }
 
     public boolean removeReservation(int ID) {
-        return deleteReservationLogic.deleteReservation(
+        return DeleteReservationLogic.deleteReservation(
                 ID, connection, reservationMapper, hotelUserMapper,
                 queueMapper, facilityBookingMapper, resCustomerMapper);
     }
